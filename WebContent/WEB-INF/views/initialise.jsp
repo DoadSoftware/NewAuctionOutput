@@ -75,6 +75,7 @@
 			          <option value="UTT_VIZ">UTT</option>
 			          <option value="UTT_BIGSCREEN">UTT BIG SCREEN</option>
 			          <option value="MUMBAI_T20_VIZ">MUMBAI T20</option>
+			          <option value="RALLY">RALLY</option>
 			          <option value="MUMBAI_T20_BIGSCREEN">MUMBAI T20 BIG SCREEN</option>
 			      </select>
 			    </div>
@@ -84,6 +85,7 @@
 			    <div class="col-sm-6 col-md-6">
 			      <select id="which_category" name="which_category" class="browser-default custom-select custom-select-sm"
 			      		onchange="processUserSelection(this)">
+			      		<option value="Men"> </option>
 			          <option value="Men">Men</option>
 			          <option value="Women">Women</option> 
 			      </select>

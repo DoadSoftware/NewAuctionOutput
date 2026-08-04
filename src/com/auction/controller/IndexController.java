@@ -28,6 +28,7 @@ import com.auction.broadcaster.KCL;
 import com.auction.broadcaster.KCL_BIGSCREEN;
 import com.auction.broadcaster.MUMBAI_T20_BIGSCREEN;
 import com.auction.broadcaster.MUMBAI_T20_VIZ;
+import com.auction.broadcaster.RALLY;
 import com.auction.broadcaster.PSL;
 import com.auction.broadcaster.PWL;
 import com.auction.broadcaster.UTT_VIZ;
@@ -40,6 +41,7 @@ import com.auction.model.Auction;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
 import com.auction.model.Player;
+import com.auction.model.Split;
 import com.auction.model.Team;
 import com.auction.service.AuctionService;
 import com.auction.util.AuctionFunctions;
@@ -64,6 +66,7 @@ public class IndexController
 	public static PSL this_psl;
 	public static MUMBAI_T20_VIZ this_mumbai_t20_viz;
 	public static MUMBAI_T20_BIGSCREEN this_MUMBAI_T20_BIGSCREEN;
+	public static RALLY this_rally;
 	public static KCL this_kcl;
 	public static PWL this_pwl;
 	public static KCL_BIGSCREEN this_KCL_BIGSCREEN;
@@ -77,6 +80,7 @@ public class IndexController
 	public static long last_bid_time_stamp = 0;
 	
 	List<NameSuper> session_nameSupers = new ArrayList<NameSuper>();
+	List<Split> session_split = new ArrayList<Split>();
 	List<Flipper> session_flipper = new ArrayList<Flipper>();
 	List<Team> session_team = new ArrayList<Team>();
 	List<Player> session_player = new ArrayList<Player>();
@@ -162,6 +166,7 @@ public class IndexController
 			this_ispl_viz_2024 = new VIZ_ISPL_2024();
 			this_psl = new PSL();
 			this_mumbai_t20_viz = new MUMBAI_T20_VIZ();
+			this_rally = new RALLY();
 			
 			this_MUMBAI_T20_BIGSCREEN = new MUMBAI_T20_BIGSCREEN();
 			this_kcl = new KCL();
@@ -207,13 +212,16 @@ public class IndexController
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Logo$In_Out START \0");
 				break;
 			case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			case "KCL_BIGSCREEN": case "PWL":
+			case "KCL_BIGSCREEN": case "PWL": case "RALLY":
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {
 				case "MUMBAI_T20_VIZ":
 					this_mumbai_t20_viz.resetData(print_writer);
 					break;
+				case "RALLY":
+					this_rally.resetData(print_writer);
+					break;	
 				case "MUMBAI_T20_BIGSCREEN":
 					this_MUMBAI_T20_BIGSCREEN.resetData(print_writer);
 					break;
@@ -262,7 +270,7 @@ public class IndexController
 		}
 	}
 
-	@RequestMapping(value = {"/processAuctionProcedures"}, method={RequestMethod.GET,RequestMethod.POST})    
+	@RequestMapping(value = {"/processAuctionProcedures.html"}, method={RequestMethod.GET,RequestMethod.POST})    
 	public @ResponseBody String processAuctionProcedures(
 			@RequestParam(value = "whatToProcess", required = false, defaultValue = "") String whatToProcess,
 			@RequestParam(value = "valueToProcess", required = false, defaultValue = "") String valueToProcess) 
@@ -282,12 +290,14 @@ public class IndexController
 				this_kcl.enableAudio = "TRUE";
 				this_pwl.enableAudio ="TRUE";
 				this_mumbai_t20_viz.enableAudio ="TRUE";
+				this_rally.enableAudio ="TRUE";
 			}else {
 				this_ispl_viz_2024.enableAudio = "FALSE";
 				this_psl.enableAudio = "FALSE";
 				this_kcl.enableAudio = "FALSE";
 				this_pwl.enableAudio ="FALSE";
 				this_mumbai_t20_viz.enableAudio ="FALSE";
+				this_rally.enableAudio ="FALSE";
 			}
 			return null;	
 		case "RE_READ_DATA":
@@ -373,6 +383,13 @@ public class IndexController
 					}
 					this_mumbai_t20_viz.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 					break;
+					
+				case "RALLY":
+					if(this_rally.data.isBid_Start_or_not() == true) {
+						this_rally.data.setWhichside(2);
+					}
+					this_rally.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;	
 						
 				case "MUMBAI_T20_BIGSCREEN":
 					if(this_MUMBAI_T20_BIGSCREEN.data.isBid_Start_or_not() == true) {
@@ -411,6 +428,9 @@ public class IndexController
 			case "MUMBAI_T20_VIZ":
 				this_mumbai_t20_viz.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
+			case "RALLY":
+				this_rally.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;	
 			case "MUMBAI_T20_BIGSCREEN":
 				this_MUMBAI_T20_BIGSCREEN.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;				
@@ -433,8 +453,12 @@ public class IndexController
 		switch (whatToProcess) {
 		case "FLIPPER_GRAPHICS-OPTIONS": case "FLIPPER_TEXT_GRAPHICS-OPTIONS": case "CRAWLERFREETEXT_GRAPHICS-OPTIONS":
 			return (List<T>) session_flipper;
-		case "NAMESUPER_GRAPHICS-OPTIONS":
+//		case "NAMESUPER_GRAPHICS-OPTIONS":
+//		    return (List<T>) session_nameSupers;
+		case "NAMESUPER_GRAPHICS-OPTIONS": case "NAMESUPERSS_GRAPHICS-OPTIONS":
 		    return (List<T>) session_nameSupers;
+		case "SPLITPIP_GRAPHICS-OPTIONS":  case "SPLIT_GRAPHICS-OPTIONS": 
+			return (List<T>) session_split;    
 		case "PLAYERPROFILE_GRAPHICS-OPTIONS": case "FF_PLAYERPROFILE_GRAPHICS-OPTIONS": case "LT_PLAYERPROFILE_GRAPHICS-OPTIONS":
 		case "PROFILE_GRAPHICS-OPTIONS": case "PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS": case "FF_BIG_PLAYERPROFILE_GRAPHICS-OPTIONS":
 		    return (List<T>) session_player;
@@ -459,9 +483,10 @@ public class IndexController
 
 	public void getDataFromDB()
 	{
-		//session_flipper = auctionService.getFlipper();
+		session_flipper = auctionService.getFlipper();
 		session_nameSupers = auctionService.getNameSupers();
 		session_team = auctionService.getTeams();
+		session_split = auctionService.getSplits();
 		session_player = auctionService.getAllPlayer();
 	}
 }

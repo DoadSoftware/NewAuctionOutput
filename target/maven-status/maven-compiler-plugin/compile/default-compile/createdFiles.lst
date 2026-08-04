@@ -8,6 +8,7 @@ com\auction\broadcaster\KCL.class
 com\auction\broadcaster\KCL_BIGSCREEN.class
 com\auction\config\DataSourceConfig.class
 com\auction\containers\Data.class
+com\auction\broadcaster\RALLY.class
 com\auction\broadcaster\ISPL.class
 com\auction\broadcaster\MUMBAI_T20_BIGSCREEN.class
 com\auction\controller\IndexController.class

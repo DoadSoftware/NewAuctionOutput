@@ -52,6 +52,9 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#expiry_message").show();
 			$("#auction_div").hide();
 			break;
+		case 'w':
+			processAuctionProcedures('POPULATE-WATERMARK');
+			break;
 		case ' '://Space
 			if(which_GFX === "POPULATE-SQUAD_ANIMATION"){
 				stopTeamRotation();
@@ -141,11 +144,18 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			addItemsToList('SQUADCATEGORIES-OPTIONS',null);
 			break;
 		case 'c': //FF SQUAD
-			$("#captions_div").hide();
-			$("#cancel_match_setup_btn").hide();
-			$("#expiry_message").hide();
-			$("#auction_div").hide();
-			processAuctionProcedures('FLIPPER_SQUAD_GRAPHICS-OPTIONS');
+			switch ($('#selected_broadcaster').val()){
+			case 'RALLY':
+				processAuctionProcedures('POPULATE-RIGHT_SUPER');
+				break;
+			default:
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('FLIPPER_SQUAD_GRAPHICS-OPTIONS');
+				break;
+			}
 			break;
 			
 		case 'F4': //FF IDENT
@@ -198,7 +208,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -212,7 +222,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL': case 'PSL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL': case 'PSL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -229,7 +239,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;	
 		case 'Control_s': //FF 5 TOP BUY AUCTION
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -343,7 +353,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 'Shift_R': //FF ICONIC PLAYERS
 			switch ($('#selected_broadcaster').val()){
-			case 'PSL': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+			case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -376,6 +386,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				$("#auction_div").hide();
 				processAuctionProcedures('SQUAD_ANIMATION_GRAPHICS-OPTIONS');
 				break;
+			case 'RALLY':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('SPLIT_GRAPHICS-OPTIONS');
+				break;	
 			default://ISPL
 				processAuctionProcedures('POPULATE-LOF_SQUAD_SIZE');
 				break;
@@ -401,7 +418,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 		case 'f': //LOF PURSE REMAINING
 			switch ($('#selected_broadcaster').val()){
 			case 'VIZ_ISPL_2024': case 'PSL': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL': case 'UTT_VIZ':
-			case 'MUMBAI_T20_VIZ':
+			case 'MUMBAI_T20_VIZ': case 'RALLY':
 				processAuctionProcedures('POPULATE-LOF_REMAINING_PURSE');
 				break;
 			default://ISPL
@@ -448,11 +465,18 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			processAuctionProcedures('CRAWL_SQUAD_GRAPHICS-OPTIONS');
 			break;
 		case 'l': //LOF SQUAD
-			$("#captions_div").hide();
-			$("#cancel_match_setup_btn").hide();
-			$("#expiry_message").hide();
-			$("#auction_div").hide();
-			processAuctionProcedures('LOF_SQUAD_GRAPHICS-OPTIONS');
+			switch ($('#selected_broadcaster').val()){
+			case 'RALLY':
+				processAuctionProcedures('POPULATE-LOCATION');
+				break;
+			default://ISPL
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('LOF_SQUAD_GRAPHICS-OPTIONS');
+				break;
+			}
 			break;
 		case '7':
 			processAuctionProcedures('POPULATE-LOF_SQUAD_REMAIN');
@@ -500,6 +524,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				$("#auction_div").hide();
 				addItemsToList('FLIPPER-OPTIONS',null);
 				break;
+			case 'RALLY':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('NAMESUPERSS_GRAPHICS-OPTIONS');
+				break;	
 			default://ISPL
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
@@ -509,13 +540,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				break;
 			}
 			break;
-		case 'Alt_x':
-		    $("#captions_div").hide();
+		case 'Alt_z':
+			$("#captions_div").hide();
 			$("#cancel_match_setup_btn").hide();
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
 			processAuctionProcedures('CRAWLERFREETEXT_GRAPHICS-OPTIONS');
-	    	break;	
+	    		break;	
 		case 'v':
 			$("#captions_div").hide();
 			$("#cancel_match_setup_btn").hide();
@@ -527,7 +558,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 		case 'm': //LT ICONIC PPLAYERS
 			
 			switch ($('#selected_broadcaster').val()){
-			case 'KCL': case 'PWL': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+			case 'KCL': case 'PWL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 				processAuctionProcedures('LOF_SLOT_CHANGEON');
 				break;
 			default://ISPL
@@ -543,17 +574,28 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			processAuctionProcedures('LT_PLAYERPROFILE_GRAPHICS-OPTIONS');
 			break;
 		case 'b': //LT PLAYER PROFILE STATS
-			$("#captions_div").hide();
-			$("#cancel_match_setup_btn").hide();
-			$("#expiry_message").hide();
-			$("#auction_div").hide();
-			addItemsToList('LT_PP_STATS-OPTIONS',null);
+			switch ($('#selected_broadcaster').val()){
+			case 'RALLY':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				addItemsToList('BACKG-OPTIONS',null);
+				break;
+			default://ISPL
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				addItemsToList('LT_PP_STATS-OPTIONS',null);
+				break;
+			}
 			break;
 		case 'F12':
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			case 'UTT_VIZ': case'UTT_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
@@ -584,14 +626,26 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
 			addItemsToList('ZONE-PLAYER_FULL-OPTIONS',null);
-			break;
+			break;	
 		case 'p': //ZONE PLAYERS CHANGE ON
-			processAuctionProcedures('POPULATE-ZONE_PLAYERS_FULL');
+			switch ($('#selected_broadcaster').val()){
+			case 'RALLY':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('SPLITPIP_GRAPHICS-OPTIONS');
+				break;
+			default://ISPL
+				processAuctionProcedures('POPULATE-ZONE_PLAYERS_FULL');
+				break;
+			}
+			
 			break
 			
 		case 'q':
 		switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -882,7 +936,7 @@ function processUserSelection(whichInput)
 		}
 		break;
 		
-	case 'populate_namesuper_btn': case 'populate_namesuper_player_btn': case 'populate_playerprofile_btn':	case 'populate_squad_btn': case 'populate_category_btn': case 'populate_Top_Sold_btn': 
+	case 'populate_namesuper_btn': case 'populate_split_btn': case 'populate_splitpip_btn': case 'populate_namesuperss_btn': case 'populate_namesuper_player_btn': case 'populate_playerprofile_btn':	case 'populate_squad_btn': case 'populate_category_btn': case 'populate_Top_Sold_btn': 
 	case 'populate_single_purse_btn': case 'curr_bid_section': case 'populate_googly_purse_btn':  case 'populate_teams_btn': case 'populate_profile_stats_btn': case 'populate_single_purse_btn': 
 	case 'populate_zonePlayer_full_btn': case 'curr_bid_section': case 'populate_lof_remaining_purse_btn': case 'populate_crawl_Top_Sold_team_btn': case 'populate_Lof_Top_Sold_team_btn': 
 	case "populate_squad_Player_btn": case "populate_ffTop5Buys_btn": case 'populate_squad_size_category_wise_btn': case 'populate_ff_playerprofile_btn': case 'populate_ff_Top_Sold_team_btn': 
@@ -890,7 +944,7 @@ function processUserSelection(whichInput)
 	case 'populate_flipper_btn': case 'populate_zonePlayer_stats_btn': case 'populate_team_curr_bid_btn': case 'populate_ff_Top_Five_Sold_team_btn': case 'single_Sold_team_btn': 
 	case 'populate_zonewisePlayer_sold_btn':case "populate_profile_Change_stats_btn": case 'populate_flipper_squad_btn':case "populate_Squad_team_btn":case "populate_Squad_Role_team_btn":
 	case 'populate_Lof_Team_Bid_btn': case 'populate_profileff_btn': case 'populate_flipper_text_btn': case 'populate_squad_animation_btn': case 'populate_retain_players_squad_btn':
-	case 'populate_ff_big_playerprofile_btn':
+	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn':
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
@@ -900,6 +954,18 @@ function processUserSelection(whichInput)
 		case 'populate_namesuper_btn':
 			processAuctionProcedures('POPULATE-L3-NAMESUPER');
 			break;
+		case 'populate_split_btn':
+			processAuctionProcedures('POPULATE-L3-SPLIT');
+			break;	
+		case 'populate_splitpip_btn':
+			processAuctionProcedures('POPULATE-L3-SPLITPIP');
+			break;	
+		case 'populate_namesuperss_btn':
+			processAuctionProcedures('POPULATE-L3-NAMESUPERSS');
+			break;
+		case 'populate_backg_btn':
+			processAuctionProcedures('POPULATE-BACKG');
+			break;		
 		case 'populate_flipper_btn':
 			processAuctionProcedures('POPULATE-L3-FLIPPER');
 			break;
@@ -1038,7 +1104,7 @@ function processUserSelection(whichInput)
 			$('#vizPortNumber').attr('value','1980');
 			$('label[for=which_layer], select#which_layer').hide();
 			break;
-		case	 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+		case	 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 			$('label[for=which_category], select#which_category').show();
 			break;
 		}
@@ -1084,28 +1150,65 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL_VIZ':
 			valueToProcess = '/Default/LT'+ ',' + $('#selectNameSuper option:selected').val();
 			break;
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectNameSuper option:selected').val() + ',' + $('#selectLogo option:selected').val();
 			break;
 		}
 		break;
+	case 'POPULATE-L3-SPLIT':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+		case 'ISPL_VIZ':
+			valueToProcess = '/Default/LT'+ ',' + $('#selectNameSuper option:selected').val();
+			break;
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			valueToProcess = $('#selectSplit option:selected').val() + ',' + $('#selectLogo option:selected').val();
+			break;
+		}
+		break;
+		case 'POPULATE-L3-SPLITPIP':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+		case 'ISPL_VIZ':
+			valueToProcess = '/Default/LT'+ ',' + $('#selectNameSuper option:selected').val();
+			break;
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			valueToProcess = $('#selectSplit option:selected').val() + ',' + $('#selectLogo option:selected').val();
+			break;
+		}
+		break;	
+	case 'POPULATE-L3-NAMESUPERSS':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+		case 'ISPL_VIZ':
+			valueToProcess = '/Default/LT'+ ',' + $('#selectNameSuper option:selected').val();
+			break;
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			valueToProcess = $('#selectNameSuper option:selected').val() + ',' + $('#selectLogo option:selected').val();
+			break;
+		}
+		break;
+	case 'POPULATE-BACKG':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+			valueToProcess = $('#selectShowData option:selected').val();
+			break;
+		}
+		break;			
 	case 'POPULATE-L3-FLIPPER':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ':  case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY':  case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectFlipper option:selected').val();
 			break;
 		}
 		break;
 	case 'POPULATE-L3-CRWLERFREETEXT':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024':  case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024':  case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectFlipper option:selected').val();
 			break;
 		}
 		break;
 	case 'POPULATE-L3-FLIPPER_TEXT':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectFlipper option:selected').val();
 			break;
 		}
@@ -1114,7 +1217,7 @@ function processAuctionProcedures(whatToProcess)
 		
 	case 'POPULATE-PLAYERPROFILE_FF': case 'POPULATE-PROFILE_FF': case 'POPULATE-PLAYERPROFILE_FF_BIG':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectShowProfileStats option:selected').val() 
 				+ ',' + $('#PlayerData option:selected').val();
 			break;
@@ -1122,7 +1225,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-PLAYERPROFILE_LT':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectShowData option:selected').val() + ',' + $('#PlayerData option:selected').val();
 			break;
 		case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
@@ -1132,7 +1235,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-PLAYERPROFILE_LT_STATS':  case 'POPULATE-ZONEWISE_PLAYERS_SOLD':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 			valueToProcess = $('#selectShowData option:selected').val() + ',' + $('#PlayerData option:selected').val();
 			break;
 		case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
@@ -1142,7 +1245,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-ZONE_PLAYERS_STATS': case 'POPULATE-ZONE_PLAYERS_FULL':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectShowData option:selected').val();
 			break;
 		}
@@ -1158,7 +1261,7 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL_VIZ':
 			valueToProcess = '/Default/BidLt'+ ',' + $('#selectPlayerName option:selected').val();
 			break;
-		case 'VIZ_ISPL_2024': case 'PSL': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectPlayerName option:selected').val();
 			break;
 		case "UTT_VIZ":
@@ -1171,7 +1274,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-FF_RETAIN_PLAYERS':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'PSL': case 'MUMBAI_T20_VIZ':case 'MUMBAI_T20_BIGSCREEN':
+		case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY':case 'MUMBAI_T20_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
 		}
@@ -1197,14 +1300,14 @@ function processAuctionProcedures(whatToProcess)
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val() + ',' + $('#selectSubHeader option:selected').val();
 			break;
 		}
 		break;
 	case 'POPULATE-LOF_CATRGORY':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectSubHeader option:selected').val();
 			break;
 		}
@@ -1224,7 +1327,7 @@ function processAuctionProcedures(whatToProcess)
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val() + ',' + $('#selectcrawlerData option:selected').val();
 			break;
 		}
@@ -1253,7 +1356,7 @@ function processAuctionProcedures(whatToProcess)
 	case 'POPULATE-LOF_TEAM_TOP_SOLD': case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-LOF_SQUAD': case 'POPULATE-TEAM_CURR_BID': 
 	case "POPULATE-FF_SQUAD_TEAM":case "POPULATE-FF_SQUAD_ROLE_TEAM": case 'POPULATE-CRAWLER_TEAM_TOP_SOLD': case 'POPULATE-CRAWLE_SQUAD':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;	
 		}
@@ -1277,7 +1380,7 @@ function processAuctionProcedures(whatToProcess)
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val()+","+$('#selectImage option:selected').val();
 			break;
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;	
 		}
@@ -1287,14 +1390,14 @@ function processAuctionProcedures(whatToProcess)
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val()+","+$('#selectImage option:selected').val();
 			break;
-		case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;	
 		}
 		break;
 	case "POPULATE-SQUAD-PLAYER":
 		switch ($('#selected_broadcaster').val().toUpperCase()) {	
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
 		}
@@ -1307,7 +1410,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-LOF_SQUAD_SIZE_CATEGORY_WISE':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {	
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
 		}
@@ -1355,21 +1458,21 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-GOOGLY_POWER':
 		switch ($('#selected_broadcaster').val().toUpperCase()){
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectTeamName option:selected').val();
 			break;
 		}
 		break;
 	case 'POPULATE-PROFILE_STATS': 
 		switch ($('#selected_broadcaster').val().toUpperCase()){
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ':case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY':case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectProfileStats option:selected').val() + ',' + $('#PlayerData option:selected').val();
 			break;
 		}
 		break;
 	case "POPULATE-PROFILE_STATS_CHANGE":
 		switch ($('#selected_broadcaster').val().toUpperCase()){
-		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ':case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY':case 'MUMBAI_T20_BIGSCREEN':  case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectShowProfileStats option:selected').val();
 			break;
 		}
@@ -1390,8 +1493,15 @@ function processAuctionProcedures(whatToProcess)
 				break;
 			case 'READ-MATCH-AND-POPULATE': case 'RE_READ_DATA':
 				session_auction = data;
-				if(data){
-					initialiseForm("UPDATE-MATCH-ON-OUTPUT-FORM",data);
+				
+				switch ($('#selected_broadcaster').val()){
+				case 'RALLY':
+					break;
+				default:
+					if(data){
+						initialiseForm("UPDATE-MATCH-ON-OUTPUT-FORM",data);
+					}
+					break;	
 				}
 				if(whatToProcess == 'RE_READ_DATA'){
 					alert('Data is Loaded');
@@ -1411,6 +1521,19 @@ function processAuctionProcedures(whatToProcess)
 				addItemsToList('NAMESUPER-OPTIONS',data);
 				match_data = data;
 				break;
+			case 'SPLIT_GRAPHICS-OPTIONS':
+				addItemsToList('SPLIT-OPTIONS',data);
+				match_data = data;
+				break;	
+			
+			case 'SPLITPIP_GRAPHICS-OPTIONS':
+				addItemsToList('SPLITPIP-OPTIONS',data);
+				match_data = data;
+				break;		
+			case 'NAMESUPERSS_GRAPHICS-OPTIONS':
+				addItemsToList('NAMESUPERSS-OPTIONS',data);
+				match_data = data;
+				break;	
 			case 'FLIPPER_GRAPHICS-OPTIONS':
 				addItemsToList('FLIPPER-OPTIONS',data);
 				match_data = data;
@@ -1577,7 +1700,7 @@ function processAuctionProcedures(whatToProcess)
 			}
 			break;
 			case 'POPULATE-SQUAD': case 'POPULATE-LOF_SQUAD': case 'POPULATE-ZONE_PLAYERS_STATS': case 'POPULATE-FF_FIVE_TOP_BUY_TEAM':
-			case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-FF_RETAIN_PLAYERS': case "POPULATE-FF_SQUAD_ROLE_TEAM":
+			case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-FF_RETAIN_PLAYERS': case "POPULATE-FF_SQUAD_ROLE_TEAM": case 'POPULATE-BACKG':
 				if(confirm('Animate In?') == true){
 					switch(whatToProcess){
 					case 'POPULATE-SQUAD':
@@ -1586,6 +1709,9 @@ function processAuctionProcedures(whatToProcess)
 					case 'POPULATE-LOF_SQUAD':
 						processAuctionProcedures('ANIMATE-IN-LOF_SQUAD');
 						break;
+					case 'POPULATE-BACKG':
+						processAuctionProcedures('ANIMATE-IN-BACKG');
+						break;	
 					case 'POPULATE-ZONE_PLAYERS_STATS':
 						processAuctionProcedures('ANIMATE-IN-ZONE-PLAYER_STATS');
 						break;
@@ -1621,6 +1747,9 @@ function processAuctionProcedures(whatToProcess)
 			
 			case 'POPULATE-CRAWL-PURSE_REMAINING': case 'POPULATE-CRAWL-SQUAD_SIZE': case'POPULATE-CRAWL_TOP_SOLD':
 			case 'POPULATE-PURSE_SIZE_ALL': case 'POPULATE-PURSE_SLOT_ALL':
+			
+			case 'POPULATE-RIGHT_SUPER': case 'POPULATE-LOCATION': case 'POPULATE-WATERMARK': case 'POPULATE-L3-SPLIT': case 'POPULATE-L3-SPLITPIP':
+			case 'POPULATE-L3-NAMESUPERSS':	
 			
 				if(whatToProcess == 'POPULATE-RTM_ENABLED' || whatToProcess == 'POPULATE-CURR_BID' || whatToProcess == 'POPULATE-RTM_PLAYER')	{
 					switch(whatToProcess){
@@ -1658,6 +1787,24 @@ function processAuctionProcedures(whatToProcess)
 						$("#auction_div").show();
 						
 			        	switch(whatToProcess) {
+						case 'POPULATE-WATERMARK':
+							processAuctionProcedures('ANIMATE-IN-WATERMARK');
+							break;					
+						case 'POPULATE-LOCATION':
+							processAuctionProcedures('ANIMATE-IN-LOCATION');
+							break;	
+						case 'POPULATE-RIGHT_SUPER':
+							processAuctionProcedures('ANIMATE-IN-RIGHTSUPER');
+							break;
+						case 'POPULATE-L3-SPLIT':	
+							processAuctionProcedures('ANIMATE-IN-SPLIT');	
+							break;
+						case 'POPULATE-L3-SPLITPIP':	
+							processAuctionProcedures('ANIMATE-IN-SPLITPIP');	
+							break;
+						case 'POPULATE-L3-NAMESUPERSS':
+							processAuctionProcedures('ANIMATE-IN-NAMESUPERSS');	
+							break;		
 						case 'POPULATE-IDENT':
 							processAuctionProcedures('ANIMATE-IN-IDENT');
 							break;
@@ -1909,10 +2056,10 @@ function addItemsToList(whatToProcess, dataToProcess)
 	case 'TEAM_CURRENT_BID-OPTIONS': case 'FF_TOP_FIVE_SOLD_TEAM-OPTIONS': case 'SINGLE_TEAM-OPTIONS':  case 'ZONEWISE_PLAYER_SOLD-OPTIONS':case "GRAPHICS-FF_FIVE_TOP_BUYS_AUCTION":
 	case 'PROFILE_FF_STATS-OPTIONS': case 'FLIPPER_SQUAD-OPTIONS':case "FF_SQUAD_TEAM-OPTIONS":case "FF_SQUAD_ROLE_TEAM-OPTIONS":case "LOF_TEAM_BID_OPTIONS": 
 	case 'PROFILEFF-OPTIONS': case 'FLIPPER_TEXT-OPTIONS': case 'CRAWL_TOP_SOLD_TEAM-OPTIONS': case 'CRAWL_SQUAD-OPTIONS': case 'ZONE-PLAYER_FULL-OPTIONS': case 'SQUAD_ANIMATION-OPTIONS':
-	case 'FF_BIG_PLAYERPROFILE-OPTIONS':	
+	case 'FF_BIG_PLAYERPROFILE-OPTIONS':	case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':case'NAMESUPERSS-OPTIONS': case 'BACKG-OPTIONS':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL':
-		case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ':  case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+		case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY':  case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
  			
  			/*if(whatToProcess != 'PLAYERPROFILE-OPTIONS'){
 				$("#select_graphic_options_div").empty();
@@ -1988,6 +2135,36 @@ function addItemsToList(whatToProcess, dataToProcess)
 					row.insertCell(cellCount).appendChild(select);
 					cellCount = cellCount + 1;
 				break;
+				case 'BACKG-OPTIONS':
+					select = document.createElement('select');
+					select.style = 'width:100px';
+					select.id = 'selectShowData';
+					select.name = select.id;
+					
+					option = document.createElement('option');
+					option.value = 'NAYA_CHAPTER';
+					option.text = 'INDIA KA NAYA CHAPTER';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
+					option.value = 'COUNT_COUNTINUES';
+					option.text = 'THE COUNT COUNTINUES';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
+					option.value = 'CHHATRON_KI_KHOJ';
+					option.text = 'CHHATRON KI KHOJ';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
+					option.value = 'CHHATRON_KI_KHOJ_RIGHT_BACK';
+					option.text = 'CHHATRON KI KHOJ RIGHT BACK';
+					select.appendChild(option);
+						
+					select.setAttribute('onchange',"processUserSelection(this)");
+					row.insertCell(cellCount).appendChild(select);
+					cellCount = cellCount + 1;
+					break;
 				case 'ZONE-PLAYER-OPTIONS': case 'ZONEWISE_PLAYER_SOLD-OPTIONS': case 'ZONE-PLAYER_FULL-OPTIONS':
 					select = document.createElement('select');
 					select.style = 'width:100px';
@@ -2131,7 +2308,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 				case 'FF_TOP_FIVE_SOLD_TEAM-OPTIONS': case 'SINGLE_TEAM-OPTIONS': case 'FLIPPER_SQUAD-OPTIONS':case "FF_SQUAD_TEAM-OPTIONS":case "FF_SQUAD_ROLE_TEAM-OPTIONS":
 				case 'SQUAD_ANIMATION-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()) {
-						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN':  case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ':  case 'KCL': case 'PWL': case 'KCL_BIGSCREEN':
+						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN':  case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY':  case 'KCL': case 'PWL': case 'KCL_BIGSCREEN':
 							select = document.createElement('select');
 							select.id = 'selectTeamName';
 							select.name = select.id;
@@ -2202,9 +2379,9 @@ function addItemsToList(whatToProcess, dataToProcess)
 							break;
 						} 
 						break;
-				case 'FLIPPER_TEXT-OPTIONS':
+				case 'FLIPPER_TEXT-OPTIONS': case 'FREETEXT-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()){
-						case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+						case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 							select = document.createElement('select');
 							select.style = 'width:130px';
 							select.id = 'selectFlipper';
@@ -2222,7 +2399,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 							break;
 					}
 					break;
-				case 'FLIPPER-OPTIONS': case 'FREETEXT-OPTIONS':
+				case 'FLIPPER-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()) {
 					case 'DOAD_IN_HOUSE_EVEREST': case 'DOAD_IN_HOUSE_VIZ': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL':
 						select = document.createElement('select');
@@ -2241,7 +2418,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 						cellCount = cellCount + 1;
 						break;
 						
-					case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
+					case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 						select = document.createElement('select');
 						select.style = 'width:130px';
 						select.id = 'selectFlipper';
@@ -2262,9 +2439,43 @@ function addItemsToList(whatToProcess, dataToProcess)
 						break;
 					}
 					break;
-				case'NAMESUPER-OPTIONS':
+					case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':
+						select = document.createElement('select');
+						select.style = 'width:130px';
+						select.id = 'selectSplit';
+						select.name = select.id;
+						
+						dataToProcess.forEach(function(ns,index,arr1){
+							option = document.createElement('option');
+							option.value = ns.splitId;
+							option.text = ns.prompt ;
+							select.appendChild(option);
+						});
+						
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						
+						select = document.createElement('select');
+						select.id = 'selectLogo';
+						select.name = select.id;
+						
+						option = document.createElement('option');
+						option.value = 'WITHOUT_LOGO';
+						option.text = 'WITHOUT LOGO';
+						select.appendChild(option);
+						
+						option = document.createElement('option');
+						option.value = 'WITH_LOGO';
+						option.text = 'WITH LOGO';
+						select.appendChild(option);
+					
+						select.setAttribute('onchange',"processUserSelection(this)");
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						break;		
+				case'NAMESUPER-OPTIONS': case'NAMESUPERSS-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'DOAD_IN_HOUSE_EVEREST': case 'DOAD_IN_HOUSE_VIZ': case 'ISPL_VIZ':  case 'UTT_BIGSCREEN': case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': 
+					case 'DOAD_IN_HOUSE_EVEREST': case 'DOAD_IN_HOUSE_VIZ': case 'ISPL_VIZ':  case 'UTT_BIGSCREEN': case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 
 				    case 'KCL': case 'KCL_BIGSCREEN': case 'PWL':
 						select = document.createElement('select');
 						select.style = 'width:130px';
@@ -2375,7 +2586,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 				break;
 			case 'PLAYERPROFILE_MAIN-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN':  case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'PWL': case 'KCL_BIGSCREEN':
+					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN':  case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'PWL': case 'KCL_BIGSCREEN':
 						select = document.createElement('select');
 						select.id = 'selectPlayerName';
 						select.name = select.id;
@@ -2438,7 +2649,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 	                break;	
 			case 'FF_PLAYERPROFILE-OPTIONS': case 'LT_PLAYERPROFILE-OPTIONS': case 'PROFILEFF-OPTIONS': case 'PLAYERPROFILE-OPTIONS': case 'FF_BIG_PLAYERPROFILE-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL':  case 'PWL': case 'KCL_BIGSCREEN':
+					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL':  case 'PWL': case 'KCL_BIGSCREEN':
 						select = document.createElement('select');
 						select.id = 'selectPlayerName';
 						select.name = select.id;
@@ -2517,7 +2728,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 							cellCount = cellCount + 1;
 						}*/
 						switch ($('#selected_broadcaster').val().toUpperCase()) {
-						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': 
+						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 
 						       switch(whatToProcess){
 								case 'FF_PLAYERPROFILE-OPTIONS': case 'PROFILEFF-OPTIONS':
 									select = document.createElement('select');
@@ -2541,7 +2752,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 										row.insertCell(cellCount).appendChild(select);
 										cellCount = cellCount + 1;
 										break;
-									case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+									case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 										option = document.createElement('option');
 										option.value = 'without';
 										option.text = 'WithOut Stats';
@@ -2579,7 +2790,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 									}
 									
 									switch ($('#selected_broadcaster').val().toUpperCase()){
-									case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+									case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 										// Second cell: reserved for conditional dropdown
 									    const seCell = row.insertCell(cellCount);
 									    seCell.id = 'Playerstats'; // So we can target it easily later
@@ -2610,7 +2821,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 										                statsDropdown.appendChild(option);
 										            });
 													break;
-												case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
+												case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
 													['MCA T20s', 'DT20', 'FC', 'LIST A'].forEach(value => {
 										                const option = document.createElement('option');
 										                option.value = value;
@@ -2657,7 +2868,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 								            option.text = value === 'freetext' ? 'Franchise pick' : value.charAt(0).toUpperCase() + value.slice(1);
 								            select.appendChild(option);
 								        });
-									} else if(broadcaster === 'MUMBAI_T20_VIZ'){
+									} else if(broadcaster === 'MUMBAI_T20_VIZ' || broadcaster === 'RALLY'){
 										['player', 'thisyearteam','stats','category'].forEach(value => {
 								            const option = document.createElement('option');
 								            option.value = value;
@@ -2959,7 +3170,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 
 			case 'LOF_REMAINING_PURSE-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-				case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL': 
+				case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'PWL': 
 				case 'UTT_VIZ':
 					select = document.createElement('select');
 					select.id = 'selectType';
@@ -2988,6 +3199,22 @@ function addItemsToList(whatToProcess, dataToProcess)
 			option = document.createElement('input');
 		    option.type = 'button';
 			switch (whatToProcess) {
+			case 'SPLIT-OPTIONS':
+				option.name = 'populate_split_btn';
+			    option.value = 'Populate Split';
+				break;
+			case 'SPLITPIP-OPTIONS':
+				option.name = 'populate_splitpip_btn';
+			    option.value = 'Populate Split Single';
+				break;		
+			case'NAMESUPERSS-OPTIONS':
+			    option.name = 'populate_namesuperss_btn';
+			    option.value = 'Populate Namesuper';
+				break;
+			case 'BACKG-OPTIONS':
+				option.name = 'populate_backg_btn';
+			    option.value = 'Populate BG';
+				break;		
 			case 'FLIPPER-OPTIONS':
 				option.name = 'populate_flipper_btn';
 			    option.value = 'Populate Flipper';

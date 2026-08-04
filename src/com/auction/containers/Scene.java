@@ -107,6 +107,26 @@ public class Scene {
 		print_writer.println("-1 IMAGE INFO\0");
 		
 		switch (config.getBroadcaster().toUpperCase()) {
+		case "RALLY":
+			switch (whatToProcess) {
+			case "OVERLAYS":
+				print_writer.println("-1 RENDERER SET_OBJECT SCENE*/Default/Main \0");
+				print_writer.println("-1 RENDERER*SCENE_DATA INITIALIZE \0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE SHOW 0.0 \0");
+				break;
+			case "FULL-FRAMERS":
+				print_writer.println("-1 RENDERER*BACK_LAYER SET_OBJECT SCENE*/Default/" + 
+					(config.getBroadcaster().equalsIgnoreCase("UTT_VIZ") ? "gfx_Fullframes" : "FullFrames") + " \0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*SCENE_DATA INITIALIZE \0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE SHOW 0.0 \0");
+				break;
+			case "BIGSCREEN":
+				print_writer.println("-1 RENDERER*BACK_LAYER SET_OBJECT SCENE*/Default/gfx_BigScreen" + " \0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*SCENE_DATA INITIALIZE \0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE SHOW 0.0 \0");
+				break;
+			}
+			break;
 		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN":   case "KCL":  case "KCL_BIGSCREEN": case "PWL":
 		case "PSL":	case "UTT_BIGSCREEN":
 			switch (whatToProcess) {
