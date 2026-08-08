@@ -128,7 +128,7 @@ public class Scene {
 			}
 			break;
 		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN":   case "KCL":  case "KCL_BIGSCREEN": case "PWL":
-		case "PSL":	case "UTT_BIGSCREEN":
+		case "PSL":	case "UTT_BIGSCREEN": case "ISPL_VIZ":
 			switch (whatToProcess) {
 			case "OVERLAYS":
 				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");

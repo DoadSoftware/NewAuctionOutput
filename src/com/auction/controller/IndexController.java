@@ -78,6 +78,8 @@ public class IndexController
 	public int current_layer = 1;
 	public static long last_match_time_stamp = 0;
 	public static long last_bid_time_stamp = 0;
+	List<Player> allPlayer = new ArrayList<Player>();
+	List<Team> allTeam = new ArrayList<Team>();
 	
 	List<NameSuper> session_nameSupers = new ArrayList<NameSuper>();
 	List<Split> session_split = new ArrayList<Split>();
@@ -205,17 +207,26 @@ public class IndexController
 //				print_writer.println("LAYER3*EVEREST*STAGE*DIRECTOR*Loop START;");
 				this_doad.which_graphics_onscreen = "BG";
 				break;
+//			case "ISPL_VIZ":                                          // <-- INSERT THIS NEW CASE HERE
+//				session_selected_scenes.add(new Scene("<YOUR_VIZ_SCENE_PATH>","0"));
+//				session_selected_scenes.add(new Scene("","1"));
+//				session_selected_scenes.get(0).scene_load(print_writer, session_selected_broadcaster);
+//				this_ispl_viz.which_graphics_onscreen = "BG";
+//				break;
 			case "UTT_BIGSCREEN":
 				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
 				this_utt_bigscreen.which_graphics_onscreen = "";
 				this_utt_bigscreen.resetData(print_writer);
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Logo$In_Out START \0");
-				break;
-			case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
+				break; 
+			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
 			case "KCL_BIGSCREEN": case "PWL": case "RALLY":
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {
+				case "ISPL_VIZ":
+					session_selected_scenes.add(new Scene("","0"));
+					break;
 				case "MUMBAI_T20_VIZ":
 					this_mumbai_t20_viz.resetData(print_writer);
 					break;
@@ -248,7 +259,7 @@ public class IndexController
 			
 			session_auction = new Auction();
 			session_auction = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON), Auction.class);
-			session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+			session_auction = AuctionFunctions.populateMatchVariables(session_auction, session_player, session_team);
 			session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(),session_auction.getPlayers(), 
 					session_auction.getPlayersList(),session_selected_broadcaster));
 			
@@ -306,7 +317,7 @@ public class IndexController
 		case "READ-MATCH-AND-POPULATE":
 			if(last_match_time_stamp != new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON).lastModified()) {
 				session_auction = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON), Auction.class);
-				session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+				session_auction = AuctionFunctions.populateMatchVariables(session_auction, session_player, session_team);
 				session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(),
 						session_auction.getPlayers(), session_auction.getPlayersList(),session_selected_broadcaster));
 				last_match_time_stamp = new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON).lastModified();

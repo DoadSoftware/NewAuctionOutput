@@ -2838,10 +2838,10 @@ public class MUMBAI_T20_VIZ extends Scene{
 //				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$ImageGrp$Select_Image*FUNCTION*Omo*vis_con SET 1\0");
 //			}
 			
-			if(auctionService.getAllPlayer().get(playerId - 1).getPair().equalsIgnoreCase("YES")) {
-				populateProfileStats(print_writer, "STYLE",0, which_side, auction, auctionService);
-				showPlayerOrNot = "YES";
-			}
+//			if(auctionService.getAllPlayer().get(playerId - 1).getPair().equalsIgnoreCase("YES")) {
+//				populateProfileStats(print_writer, "STYLE",0, which_side, auction, auctionService);
+//				showPlayerOrNot = "YES";
+//			}
 			
 			if(auctionService.getAllPlayer().get(playerId - 1).getDraft().equalsIgnoreCase("YES")) {
 				plyerBug = "$MoveForSold";
@@ -5896,7 +5896,8 @@ public class MUMBAI_T20_VIZ extends Scene{
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$HeaderAll$Side" + which_side + "$select_HeaderType$HeaderType1$txt_SubHeader"
 					+ "*GEOM*TEXT SET " + "SEASON 1" + "\0");
 		}
-		
+		System.out.println("match.getTeam().size()---------------"+match.getTeam().size());
+		System.out.println("match.getTeam().size()---------------"+match.getPlayers().size());
 		for(int i=0; i <= match.getTeam().size()-1; i++) {
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining" + mensOrWomens + "$DataAll$Team" + (i+1)
 					+ "$TeamGrp$txt_TeamFirstName*GEOM*TEXT SET " + match.getTeam().get(i).getTeamName2() + "\0");
@@ -5991,7 +5992,7 @@ public class MUMBAI_T20_VIZ extends Scene{
 				session_auction.getPlayers(), session_auction.getPlayersList(),session_selected_broadcaster));
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$HeaderAll$Side" + which_side + "$select_HeaderType*FUNCTION*Omo*vis_con SET 2\0");
-		
+		System.out.println("match1------"+match.getTeam().get(0).getTeamName1());
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$HeaderAll$Side" + which_side + "$select_HeaderType$HeaderType2$Header$txt_Header1"
 				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName2() + "\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$HeaderAll$Side" + which_side + "$select_HeaderType$HeaderType2$Header$txt_Header2"

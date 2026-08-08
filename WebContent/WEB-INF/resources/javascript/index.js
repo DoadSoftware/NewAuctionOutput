@@ -696,9 +696,13 @@ function initialiseForm(whatToProcess,dataToProcess)
 				document.getElementById('player_name').innerHTML = "NAME : " + dataToProcess.players[dataToProcess.players.length-1].full_name +
 				' ('+ dataToProcess.players[dataToProcess.players.length-1].category+ ')';
 				document.getElementById('player_status').innerHTML = "STATUS : " + dataToProcess.players[dataToProcess.players.length-1].soldOrUnsold;
-				if(dataToProcess.playersList[dataToProcess.players[dataToProcess.players.length-1].playerId-1].lastYearTeam){
-					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : " + dataToProcess.team[dataToProcess.
-						playersList[dataToProcess.players[dataToProcess.players.length-1].playerId-1].lastYearTeam-1].teamName1;
+				if(dataToProcess.playersList[dataToProcess.players[dataToProcess.players.length-1].playerId-1].lastYearTeam != undefined){
+					if(dataToProcess.playersList[dataToProcess.players[dataToProcess.players.length-1].playerId-1].lastYearTeam){
+						document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : " + dataToProcess.team[dataToProcess.
+							playersList[dataToProcess.players[dataToProcess.players.length-1].playerId-1].lastYearTeam-1].teamName1;
+					}else{
+						document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
+					}
 				}else{
 					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
 				}
