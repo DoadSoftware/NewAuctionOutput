@@ -1275,7 +1275,8 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL_VIZ':
 			valueToProcess = '/Default/BidLt'+ ',' + $('#selectPlayerName option:selected').val();
 			break;
-		case 'VIZ_ISPL_2024': case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
+		case 'VIZ_ISPL_2024': case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': 
+		case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL': case 'VCL':
 			valueToProcess = $('#selectPlayerName option:selected').val();
 			break;
 		case "UTT_VIZ":
@@ -2602,7 +2603,8 @@ function addItemsToList(whatToProcess, dataToProcess)
 				break;
 			case 'PLAYERPROFILE_MAIN-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN':  case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': case 'VCL': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'PWL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN':
+					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN':  case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': 
+					case 'VCL': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'PWL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN':
 						select = document.createElement('select');
 						select.id = 'selectPlayerName';
 						select.name = select.id;
