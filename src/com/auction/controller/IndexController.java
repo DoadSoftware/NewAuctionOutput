@@ -224,9 +224,15 @@ public class IndexController
 				this_utt_bigscreen.which_graphics_onscreen = "";
 				this_utt_bigscreen.resetData(print_writer);
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Logo$In_Out START \0");
-				break; 
+				break;
+			case "VCL_BIGSCREEN":
+				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
+				this_VCL_BIGSCREEN.which_graphics_onscreen = "";
+				this_VCL_BIGSCREEN.resetData(print_writer);
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Logo$In_Out START \0");
+				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			case "KCL_BIGSCREEN": case "VCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL":
+			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL":
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {

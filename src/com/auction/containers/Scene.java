@@ -142,9 +142,9 @@ public class Scene {
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE SHOW 0.0 \0");
 				break;
 			case "BIGSCREEN":
-				print_writer.println("-1 RENDERER*BACK_LAYER SET_OBJECT SCENE*/Default/gfx_BigScreen" + " \0");
-				print_writer.println("-1 RENDERER*BACK_LAYER*SCENE_DATA INITIALIZE \0");
-				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE SHOW 0.0 \0");
+				print_writer.println("-1 RENDERER SET_OBJECT SCENE*/Default/FullFrames" + " \0");
+				print_writer.println("-1 RENDERER*SCENE_DATA INITIALIZE \0");
+				print_writer.println("-1 RENDERER*STAGE SHOW 0.0 \0");
 				break;
 			}
 			break;

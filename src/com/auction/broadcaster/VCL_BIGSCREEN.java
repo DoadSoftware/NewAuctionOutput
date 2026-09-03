@@ -77,7 +77,7 @@ public class VCL_BIGSCREEN extends Scene{
 	{
 		if(update_gfx == true) {
 			if(which_graphics_onscreen.equalsIgnoreCase("IDENT")) {
-				populateIdent(true,print_writer,whichSideNotProfile,session_selected_broadcaster);
+				populateIdent(true,print_writer,whichSideNotProfile,session_selected_broadcaster, auctionService);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
 				populateProfileFF(true,print_writer, whichSideNotProfile, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
 						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
@@ -206,7 +206,7 @@ public class VCL_BIGSCREEN extends Scene{
 					}else {
 						whichSideNotProfile = 1;
 					}
-					populateIdent(false,print_writer,whichSideNotProfile,session_selected_broadcaster);
+					populateIdent(false,print_writer,whichSideNotProfile,session_selected_broadcaster, auctionService);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
 				case "POPULATE-TOP_SOLD_TEAM":
@@ -475,7 +475,7 @@ public class VCL_BIGSCREEN extends Scene{
 						ChangeOn(print_writer, which_graphics_onscreen, whatToProcess);
 						switch (whatToProcess.toUpperCase()) {
 						case "ANIMATE-IN-IDENT":
-							populateIdent(true,print_writer,1,session_selected_broadcaster);
+							populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
 							break;
 						case "ANIMATE-SINGLEPURSE_TEAM":
 							populateSingleTeam(print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), auction, auctionService, valueToProcess);
@@ -895,7 +895,7 @@ public class VCL_BIGSCREEN extends Scene{
 				
 				
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$SinglePurse$DataAll$Row2" +
-						"$txt_Value*GEOM*TEXT SET "+ AuctionFunctions.ConvertToLakh((Integer.valueOf(team.getTeamTotalPurse()) - total)) + " K \0");
+						"$txt_Value*GEOM*TEXT SET "+ AuctionFunctions.ConvertToLakh((Integer.valueOf(team.getTeamTotalPurse()) - total)) + " L \0");
 				
 				for (int i = 1; i <= match.getTeamZoneList().size(); i++) {
 					PlayerCount teamZone = match.getTeamZoneList().get(i - 1); 
@@ -1378,7 +1378,7 @@ public class VCL_BIGSCREEN extends Scene{
 		case "ANIMATE-IN-PLAYERPROFILE_FF": case "ANIMATE-IN-PROFILE_FF":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
 			if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_In  START\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Inn  START\0");
 			}
 			break;
 		case "ANIMATE-IN-FF_TOP_BUYS_AUCTION": case "ANIMATE-IN-FF_TOP_BUY_TEAM":
@@ -1549,7 +1549,7 @@ public class VCL_BIGSCREEN extends Scene{
 		prevRowHighlight = rowHighlight;
 	}
 
-	public void populateIdent(boolean is_this_updating,PrintWriter print_writer,int which_side,String session_selected_broadcaster) {
+	public void populateIdent(boolean is_this_updating,PrintWriter print_writer,int which_side,String session_selected_broadcaster, AuctionService auctionService) {
 		
 		if(is_this_updating == false) {
 			
@@ -1563,10 +1563,10 @@ public class VCL_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header1$txt_Header1*GEOM*TEXT SET " 
 				+ "PLAYER" + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header2*GEOM*TEXT SET " 
-				+ "AUCTION 2025" + "\0");
+				+ "AUCTION 2026" + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info1$txt_Info*GEOM*TEXT SET " 
-				+ "KABADDI CHAMPIONS LEAGUE" + "\0");
+				+ auctionService.getVariousText().get(2).getSubheader() + "\0");
 		String venue = "";
 	    try {
 	        venue = new String(Files.readAllBytes(Paths.get("C:/Sports/Auction/MatchIdent.txt"))).trim();
@@ -1673,7 +1673,7 @@ public class VCL_BIGSCREEN extends Scene{
 				+ "Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Side1$"
 				+ "Select_Value$txt_Value*GEOM*TEXT SET " +  
-				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000")).replace(".00", "")+ " K"+"\0");
+				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000")).replace(".00", "")+ " L"+"\0");
 		
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$"
 //				+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 0\0");
@@ -1696,7 +1696,7 @@ public class VCL_BIGSCREEN extends Scene{
 									+ "TeamLogo$Side2$Select_Logo*FUNCTION*Omo*vis_con SET 1\0");
 							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Profile$BasePrice$"
-									+ "Side2$Select_Value$Status$select_Status$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+									+ "Side2$Select_Value$Status$select_Status$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" L"+"\0");
 							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Profile$TeamLogo$"
 									+ "Side2$img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
@@ -1714,7 +1714,7 @@ public class VCL_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 									+ "Select_Value$txt_Title*GEOM*TEXT SET SOLD-RTM\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-									+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+									+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" L"+"\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
 									+ "img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
@@ -1846,45 +1846,50 @@ public class VCL_BIGSCREEN extends Scene{
 			
 			
 		}
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+				+ "$select_Stars*FUNCTION*Omo*vis_con SET 0\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+				 "CATEGORY: " + auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
 		
 		
-		if(!auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("A") && 
-				!auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("B")) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-					+ "$select_Stars*FUNCTION*Omo*vis_con SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-					 "CATEGORY C\0");
-			if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("2")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 2\0");
-			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("3")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 3\0");
-			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("4")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 4\0");
-			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("5")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 5\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 1\0");
-			}
-		}else {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
-					+ "$select_Stars*FUNCTION*Omo*vis_con SET 0\0");
-			if(auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("U19")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET UNDER 19\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-					 "CATEGORY" 	+ " " + auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
-			}
-		}
+//		if(!auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("A") && 
+//				!auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("B")) {
+//			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//					+ "$select_Stars*FUNCTION*Omo*vis_con SET 1\0");
+//			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+//					 "CATEGORY C\0");
+//			if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("2")) {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 2\0");
+//			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("3")) {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 3\0");
+//			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("4")) {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 4\0");
+//			}else if(auctionService.getAllPlayer().get(playerId - 1).getCategory().contains("5")) {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 5\0");
+//			}else {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//						+ "$select_Stars$select_StarNumber*FUNCTION*Omo*vis_con SET 1\0");
+//			}
+//		}else {
+//			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category"
+//					+ "$select_Stars*FUNCTION*Omo*vis_con SET 0\0");
+//			if(auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("U19")) {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET UNDER 19\0");
+//			}else {
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+//					 "CATEGORY" 	+ " " + auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
+//			}
+//		}
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 1\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " + "VCL AUCTION 2025" + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " 
+		+ auctionService.getVariousText().get(3).getHeader() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice"
 				+ "*ACTIVE SET 1\0");
@@ -1916,14 +1921,20 @@ public class VCL_BIGSCREEN extends Scene{
 					+ "" + "\0");
 		}
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player"
-				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName().trim() + AuctionUtil.PNG_EXTENSION + "\0");
+//		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player"
+//				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName().trim() + AuctionUtil.PNG_EXTENSION + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$PlayerRole$txt_Role*GEOM*TEXT SET " + 
-				(auctionService.getAllPlayer().get(playerId - 1).getRole().toUpperCase().equalsIgnoreCase("BATSMAN") ? "BATTER" : 
-					auctionService.getAllPlayer().get(playerId - 1).getRole().toUpperCase())  + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp"
+				+ "$ImageMask$Abhishek_Kumar_Dalhor*TEXTURE*IMAGE SET "+ photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
 		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp"
+				+ "$ImageMask$Abhishek_Kumar_Dalhor*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Profile$PlayerRole$txt_Role*GEOM*TEXT SET " + 
+				auctionService.getAllPlayer().get(playerId - 1).getPlayer_position().toUpperCase()  + "\0");
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$Profile$PlayerRole$txt_Role*GEOM*TEXT SET " + 
+				auctionService.getAllPlayer().get(playerId - 1).getPlayer_position().toUpperCase()  + "\0");
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$"
 //				+ "$select_Stars*FUNCTION*Omo*vis_con SET 0\0");
 //		if(auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("U19")) {
@@ -1940,7 +1951,7 @@ public class VCL_BIGSCREEN extends Scene{
 				+ "Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 				+ "Select_Value$txt_Value*GEOM*TEXT SET " +  
-				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000"))+ " K"+"\0");
+				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000"))+ " L"+"\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$"
 				+ "TeamLogo$select_TeamLogo*FUNCTION*Omo*vis_con SET 0\0");
 		
@@ -1962,7 +1973,7 @@ public class VCL_BIGSCREEN extends Scene{
 									+ "TeamLogo$Side2$Select_Logo*FUNCTION*Omo*vis_con SET 1\0");
 							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Profile$BasePrice$"
-									+ "Side2$Select_Value$Status$select_Status$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+									+ "Side2$Select_Value$Status$select_Status$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" L"+"\0");
 							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Profile$TeamLogo$"
 									+ "Side2$img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
@@ -1980,7 +1991,7 @@ public class VCL_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 									+ "Select_Value$txt_Title*GEOM*TEXT SET SOLD-RTM\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-									+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+									+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" L"+"\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
 									+ "img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
@@ -2084,9 +2095,11 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		int total = 0;
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 3\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_Header1*GEOM*TEXT SET KABADDI CHAMPIONS LEAGUE\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_Header1*GEOM*TEXT SET "
+		+auctionService.getVariousText().get(0).getHeader() + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_Header2*GEOM*TEXT SET \0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_SubHeader*GEOM*TEXT SET AUCTION 2025\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_SubHeader*GEOM*TEXT SET "
+		+auctionService.getVariousText().get(0).getSubheader() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 3\0");
 		
@@ -2121,7 +2134,7 @@ public class VCL_BIGSCREEN extends Scene{
 			}
 			
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" + row + "$Value$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(tm.getTeamTotalPurse()) - total)) + " K" + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(tm.getTeamTotalPurse()) - total)) + " L" + "\0");
 			
 			if((Integer.valueOf(tm.getTeamTotalPurse()) - total) == 100000) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
@@ -2161,7 +2174,8 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$Header$txt_Header1*GEOM*TEXT SET TOP BUYS\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$Header$txt_Header2*GEOM*TEXT SET \0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$SubHeader$txt_SubHeader*GEOM*TEXT SET KABADDI CHAMPIONS LEAGUE AUCTION 2025\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$SubHeader$txt_SubHeader*GEOM*TEXT SET "
+		+auctionService.getVariousText().get(0).getSubheader()+ "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$LogoGrp$img_TeamLogo"
 				+ "*TEXTURE*IMAGE SET " + logo_path + "TLogo" + "\0");
@@ -2180,13 +2194,13 @@ public class VCL_BIGSCREEN extends Scene{
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 		
 		
-		for(int i=1; i<=8; i++) {
+		for(int i=1; i<=10; i++) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
 		}
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-				if(row < 9 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
+				if(row < 11 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
 					row = row + 1;
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"*ACTIVE SET 1\0");
 	        		if(auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getSurname() != null) {
@@ -2197,16 +2211,11 @@ public class VCL_BIGSCREEN extends Scene{
 		        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Name$txt_LastName*GEOM*TEXT SET \0");
 	        		}
 	        		
-	        		if(auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getIconic().equalsIgnoreCase("YES")) {
-	        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Name*FUNCTION*Maxsize*WIDTH_X SET 450\0");
-	        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 1\0");
-	        		}else {
-	        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Name*FUNCTION*Maxsize*WIDTH_X SET 530\0");
-	        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
-	        		}
+	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Name*FUNCTION*Maxsize*WIDTH_X SET 530\0");
+        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$TopBuysData$Icon*ACTIVE SET 0\0");
 	        		
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_TeamName*GEOM*TEXT SET "+auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
-	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$img_Icon*ACTIVE SET 0\0");
 				}
 			}
@@ -2298,7 +2307,7 @@ public class VCL_BIGSCREEN extends Scene{
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
 	        				"$txt_TeamName*GEOM*TEXT SET "+auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
-	        				"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+	        				"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 	        		
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + "$ImageGrp$img_Player"
 							+ "*TEXTURE*IMAGE SET " + photo_path + auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
@@ -2409,7 +2418,7 @@ public class VCL_BIGSCREEN extends Scene{
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
 	    					"$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
-	        				"$Data2$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+	        				"$Data2$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 	        		
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + "$ImageGrp$img_Player"
 							+ "*TEXTURE*IMAGE SET " + photo_path + auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
@@ -2468,13 +2477,13 @@ public class VCL_BIGSCREEN extends Scene{
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 		
 		
-		for(int i=1; i<=8; i++) {
+		for(int i=1; i<=10; i++) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
 		}
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-				if(row < 9 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
+				if(row < 11 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
 					row = row + 1;
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"*ACTIVE SET 1\0");
 	        		if(auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getSurname() != null) {
@@ -2505,7 +2514,7 @@ public class VCL_BIGSCREEN extends Scene{
 	        			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_TeamName*GEOM*TEXT SET CATEGORY: C\0");
 	        		}
 	        		
-	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 	        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$img_Icon*TEXTURE*IMAGE SET "
 	    					+setPlayerRole(auctionService.getAllPlayer().get(plyr.getPlayerId()-1))+" \0");
 				}
@@ -2581,7 +2590,7 @@ public class VCL_BIGSCREEN extends Scene{
 										+ "Price*ACTIVE SET 0\0");
 								
 								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$"
-										+ "txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+										+ "txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$img_TeamLogo"
 										+ "*TEXTURE*IMAGE SET " + logo_path + auction.getTeam().get(plyr.getTeamId() - 1).getTeamName4()+"\0");
 								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$img_LogoBase"
@@ -2644,7 +2653,7 @@ public class VCL_BIGSCREEN extends Scene{
 										+ "*FUNCTION*Omo*vis_con SET 1\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$Price*ACTIVE SET 0\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$txt_Value*GEOM*TEXT SET "
-										+ AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+										+ AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" L"+"\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$txt_TeamName*GEOM*TEXT SET "
 										+ auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
 								
@@ -2750,7 +2759,7 @@ public class VCL_BIGSCREEN extends Scene{
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Text*GEOM*TEXT SET " + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName1() + "\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-								AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " K" + "\0");
+								AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " L" + "\0");
 						
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + which_side + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName4() + "\0");
@@ -2785,7 +2794,7 @@ public class VCL_BIGSCREEN extends Scene{
 			String price = auctionService.getAllPlayer().get(playerId - 1).getLastYearPrice() + "000";
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-					AuctionFunctions.ConvertToLakh(Double.valueOf(price)) + " K" + "\0");
+					AuctionFunctions.ConvertToLakh(Double.valueOf(price)) + " L" + "\0");
 		}
 		else if(show_stats.equalsIgnoreCase("stats")) {
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
@@ -2926,7 +2935,7 @@ public class VCL_BIGSCREEN extends Scene{
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Text*GEOM*TEXT SET " + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName1() + "\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-								AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " K" + "\0");
+								AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " L" + "\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + which_side + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName4() + "\0");
 						
@@ -2959,7 +2968,7 @@ public class VCL_BIGSCREEN extends Scene{
 			String price = auctionService.getAllPlayer().get(playerId - 1).getLastYearPrice() + "000";
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-					AuctionFunctions.ConvertToLakh(Double.valueOf(price)) + " K" + "\0");
+					AuctionFunctions.ConvertToLakh(Double.valueOf(price)) + " L" + "\0");
 		}
 		else if(show_stats.equalsIgnoreCase("stats")) {
 			
@@ -3148,11 +3157,11 @@ public class VCL_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 3\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$Header$txt_Header1"
-				+ "*GEOM*TEXT SET " + "KABADDI CHAMPIONS LEAGUE" + "\0");
+				+ "*GEOM*TEXT SET " + auctionService.getVariousText().get(0).getHeader() + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$Header$txt_Header2"
 				+ "*GEOM*TEXT SET \0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$SubHeader$txt_SubHeader"
-				+ "*GEOM*TEXT SET " + "AUCTION 2025" + "\0");
+				+ "*GEOM*TEXT SET " + auctionService.getVariousText().get(0).getSubheader() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$LogoGrp$img_TeamLogo"
 				+ "*TEXTURE*IMAGE SET " + logo_path + "TLogo" + "\0");
@@ -3187,7 +3196,7 @@ public class VCL_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1)
 					+ "$txt_SquadSize*GEOM*TEXT SET " + row + "\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1) + "$Value$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total)) + " K" + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total)) + " L" + "\0");
 			
 			if((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total) == 100000) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
@@ -3238,7 +3247,7 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		if(sub.equalsIgnoreCase("PurseRemaining")) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
-					+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " K\0");
+					+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " L\0");
 			
 		}else {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
@@ -3246,7 +3255,7 @@ public class VCL_BIGSCREEN extends Scene{
 			
 		}
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
-//				+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " K\0");
+//				+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " L\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$LogoGrp$img_TeamLogo"
 				+ "*TEXTURE*IMAGE SET " + logo_path + match.getTeam().get(team_id-1).getTeamName4() + "\0");
@@ -3280,13 +3289,9 @@ public class VCL_BIGSCREEN extends Scene{
 		        	int cTotal = 0;
 		        	
 		        	for (Map.Entry<String, Integer> entry : teamZone.getCategory().entrySet()) {
-		        		if(entry.getKey().trim().contains("C")) {
-		        			cTotal += entry.getValue();
-		        		}else {
-		        			count.add(entry.getKey() + "-" + entry.getValue());
-		        		}
+		        		count.add(entry.getKey() + "-" + entry.getValue());
 		        	}
-		        	count.add(2, "C" + "-" + cTotal);
+//		        	count.add(2, "C" + "-" + cTotal);
 		        	for(int s=0;s<=count.size()-1;s++) {
 		        		j++;
 		        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" 
@@ -3297,7 +3302,7 @@ public class VCL_BIGSCREEN extends Scene{
 		        	
 		        	
 		        	print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category" 
-			            		+"*FUNCTION*Grid*num_row SET 3\0");
+			            		+"*FUNCTION*Grid*num_row SET 5\0");
 		        }
 		    } 
 		}
@@ -3309,29 +3314,14 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
-			if(data_str.get(k).equalsIgnoreCase("A") || data_str.get(k).equalsIgnoreCase("B") || data_str.get(k).equalsIgnoreCase("C") || 
-					data_str.get(k).equalsIgnoreCase("ZONE")) {
+			if(data_str.get(k).equalsIgnoreCase("ACE") || data_str.get(k).equalsIgnoreCase("ELITE") || data_str.get(k).equalsIgnoreCase("PRO") || 
+					data_str.get(k).equalsIgnoreCase("ROOKIE") || data_str.get(k).equalsIgnoreCase("DARKHORSE")) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row 
-						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
+						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
 				
-				switch(data_str.get(k)) {
-				case "A":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "A" + "\0");
-					break;
-				case "B":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "B" + "\0");
-					break;
-				case "C":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "C" + "\0");
-					break;
-				case "ZONE":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + row + "\0");
-					break;
-				}
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + "$Blank$NameGrp$"
+						+ "txt_LastName*GEOM*TEXT SET " + (k+1) + "\0");
+
 			}else {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row 
 						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
@@ -3416,7 +3406,7 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		if(sub.equalsIgnoreCase("PurseRemaining")) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
-					+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " K\0");
+					+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " L\0");
 			
 		}else {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
@@ -3456,13 +3446,9 @@ public class VCL_BIGSCREEN extends Scene{
 		        	int cTotal = 0;
 		        	
 		        	for (Map.Entry<String, Integer> entry : teamZone.getCategory().entrySet()) {
-		        		if(entry.getKey().trim().contains("C")) {
-		        			cTotal += entry.getValue();
-		        		}else {
-		        			count.add(entry.getKey() + "-" + entry.getValue());
-		        		}
+		        		count.add(entry.getKey() + "-" + entry.getValue());
 		        	}
-		        	count.add(2, "C" + "-" + cTotal);
+//		        	count.add(2, "C" + "-" + cTotal);
 		        	for(int s=0;s<=count.size()-1;s++) {
 		        		j++;
 		        		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" 
@@ -3473,7 +3459,7 @@ public class VCL_BIGSCREEN extends Scene{
 		        	
 		        	
 		        	print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category" 
-			            		+"*FUNCTION*Grid*num_row SET 3\0");
+			            		+"*FUNCTION*Grid*num_row SET 5\0");
 		        }
 		    } 
 		}
@@ -3485,29 +3471,14 @@ public class VCL_BIGSCREEN extends Scene{
 		
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
-			if(data_str.get(k).equalsIgnoreCase("A") || data_str.get(k).equalsIgnoreCase("B") || data_str.get(k).equalsIgnoreCase("C") || 
-					data_str.get(k).equalsIgnoreCase("ZONE")) {
+			if(data_str.get(k).equalsIgnoreCase("ACE") || data_str.get(k).equalsIgnoreCase("ELITE") || data_str.get(k).equalsIgnoreCase("PRO") || 
+					data_str.get(k).equalsIgnoreCase("ROOKIE") || data_str.get(k).equalsIgnoreCase("DARKHORSE")) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row 
-						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
+						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
 				
-				switch(data_str.get(k)) {
-				case "A":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "A" + "\0");
-					break;
-				case "B":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "B" + "\0");
-					break;
-				case "C":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + "C" + "\0");
-					break;
-				case "ZONE":
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$IconGrpGrp$img_Icon*TEXTURE*IMAGE SET " + icon_path + row + "\0");
-					break;
-				}
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + "$Blank$NameGrp$"
+						+ "txt_LastName*GEOM*TEXT SET " + (k+1) + "\0");
+
 			}else {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row 
 						+ "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
@@ -3878,7 +3849,7 @@ public class VCL_BIGSCREEN extends Scene{
 				break;
 			case "PLAYERPROFILE_FF":
 				previewCommand = "anim_Fullframe$In_Out$Header 0.0 anim_Fullframe$In_Out$Header$In 0.0 Change$Profile 2.180 "
-						+ "Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.180 ";
+						+ "Change$Profile$Change_Out 0.620 Change$Profile$Change_Inn 2.180 ";
 				break;
 			case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
 				previewCommand = previewCommand + "Change$Header 2.600 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
@@ -3916,7 +3887,7 @@ public class VCL_BIGSCREEN extends Scene{
 				break;
 			case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
 				if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-					previewCommand = previewCommand + "Change$Profile 2.180 Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.180 ";
+					previewCommand = previewCommand + "Change$Profile 2.180 Change$Profile$Change_Out 0.620 Change$Profile$Change_Inn 2.180 ";
 				}
 				break;
 			case "POPULATE-REMAINING_PURSE_ALL":case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
