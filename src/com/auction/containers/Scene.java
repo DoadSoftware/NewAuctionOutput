@@ -127,7 +127,7 @@ public class Scene {
 				break;
 			}
 			break;
-		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN":   case "KCL":  case "KCL_BIGSCREEN": case "PWL":
+		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "VCL":  case "KCL": case "VCL_BIGSCREEN":  case "KCL_BIGSCREEN": case "PWL":
 		case "PSL":	case "UTT_BIGSCREEN": case "ISPL_VIZ":
 			switch (whatToProcess) {
 			case "OVERLAYS":

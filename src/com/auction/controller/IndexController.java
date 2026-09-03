@@ -25,6 +25,8 @@ import com.auction.broadcaster.Doad;
 import com.auction.broadcaster.ISPL;
 import com.auction.broadcaster.ISPL_VIZ;
 import com.auction.broadcaster.KCL;
+import com.auction.broadcaster.VCL;
+import com.auction.broadcaster.VCL_BIGSCREEN;
 import com.auction.broadcaster.KCL_BIGSCREEN;
 import com.auction.broadcaster.MUMBAI_T20_BIGSCREEN;
 import com.auction.broadcaster.MUMBAI_T20_VIZ;
@@ -68,8 +70,10 @@ public class IndexController
 	public static MUMBAI_T20_BIGSCREEN this_MUMBAI_T20_BIGSCREEN;
 	public static RALLY this_rally;
 	public static KCL this_kcl;
+	public static VCL this_vcl;
 	public static PWL this_pwl;
 	public static KCL_BIGSCREEN this_KCL_BIGSCREEN;
+	public static VCL_BIGSCREEN this_VCL_BIGSCREEN;
 	public static PrintWriter print_writer;
 	public static String expiry_date = "2026-12-31";
 	public static String error_message = "";
@@ -172,8 +176,10 @@ public class IndexController
 			
 			this_MUMBAI_T20_BIGSCREEN = new MUMBAI_T20_BIGSCREEN();
 			this_kcl = new KCL();
+			this_vcl = new VCL();
 			this_pwl =new PWL();
 			this_KCL_BIGSCREEN = new KCL_BIGSCREEN();
+			this_VCL_BIGSCREEN = new VCL_BIGSCREEN();
 			this_utt_viz = new UTT_VIZ();
 			
 			this_utt_bigscreen = new UTT_BIGSCREEN();
@@ -220,7 +226,7 @@ public class IndexController
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Logo$In_Out START \0");
 				break; 
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			case "KCL_BIGSCREEN": case "PWL": case "RALLY":
+			case "KCL_BIGSCREEN": case "VCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL":
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {
@@ -239,11 +245,17 @@ public class IndexController
 				case "KCL":
 					this_kcl.resetData(print_writer);
 					break;
+				case "VCL":
+					this_vcl.resetData(print_writer);
+					break;	
 				case "PWL":
 					this_pwl.resetData(print_writer);
 					break;
 				case "KCL_BIGSCREEN":
 					this_KCL_BIGSCREEN.resetData(print_writer);
+					break;
+				case "VCL_BIGSCREEN":
+					this_VCL_BIGSCREEN.resetData(print_writer);
 					break;
 				case "PSL":
 					this_psl.resetData(print_writer);
@@ -299,6 +311,7 @@ public class IndexController
 				this_ispl_viz_2024.enableAudio = "TRUE";
 				this_psl.enableAudio = "TRUE";
 				this_kcl.enableAudio = "TRUE";
+				this_vcl.enableAudio = "TRUE";
 				this_pwl.enableAudio ="TRUE";
 				this_mumbai_t20_viz.enableAudio ="TRUE";
 				this_rally.enableAudio ="TRUE";
@@ -306,6 +319,7 @@ public class IndexController
 				this_ispl_viz_2024.enableAudio = "FALSE";
 				this_psl.enableAudio = "FALSE";
 				this_kcl.enableAudio = "FALSE";
+				this_vcl.enableAudio = "FALSE";
 				this_pwl.enableAudio ="FALSE";
 				this_mumbai_t20_viz.enableAudio ="FALSE";
 				this_rally.enableAudio ="FALSE";
@@ -329,6 +343,12 @@ public class IndexController
 							this_KCL_BIGSCREEN.data.setWhichside(2);
 						}
 						this_KCL_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+						break;
+					case "VCL_BIGSCREEN":
+						if(this_VCL_BIGSCREEN.data.isBid_Start_or_not() == true) {
+							this_VCL_BIGSCREEN.data.setWhichside(2);
+						}
+						this_VCL_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 						break;
 					}
 				}
@@ -382,6 +402,12 @@ public class IndexController
 					}
 					this_kcl.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 					break;
+				case "VCL":
+					if(this_vcl.data.isBid_Start_or_not() == true) {
+						this_vcl.data.setWhichside(2);
+					}
+					this_vcl.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;					
 				case "PWL":
 					if(this_pwl.data.isBid_Start_or_not() == true) {
 						this_pwl.data.setWhichside(2);
@@ -448,11 +474,17 @@ public class IndexController
 			case "KCL":
 				this_kcl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
+			case "VCL":
+				this_vcl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;	
 			case "PWL":
 				this_pwl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
 			case "KCL_BIGSCREEN":
 				this_KCL_BIGSCREEN.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;
+			case "VCL_BIGSCREEN":
+				this_VCL_BIGSCREEN.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
 			}
 			return objectMapper.writeValueAsString(session_auction);
