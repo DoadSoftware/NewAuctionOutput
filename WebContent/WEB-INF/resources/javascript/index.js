@@ -707,140 +707,143 @@ function initialiseForm(whatToProcess,dataToProcess)
 					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
 				}
 			}
-				const tbody = document.getElementById('zone_table_body');
-				
-				tbody.innerHTML = "";
-				if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL' 
-				|| $('#selected_broadcaster').val().toUpperCase() == 'VCL_BIGSCREEN' || $('#selected_broadcaster').val().toUpperCase() == 'KCL_BIGSCREEN'
-				){
-					for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
+				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN'){
+					const tbody = document.getElementById('zone_table_body');
+									
+					tbody.innerHTML = "";
+					
+					if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL' 
+					|| $('#selected_broadcaster').val().toUpperCase() == 'VCL_BIGSCREEN' || $('#selected_broadcaster').val().toUpperCase() == 'KCL_BIGSCREEN'
+					){
+						for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
 
-					    const row = tbody.insertRow();
+						    const row = tbody.insertRow();
+						    row.style.fontSize = '16px';
+						    row.style.fontWeight = '800';
+						    row.style.color = '#BC8F8F';
+						
+						    const team = dataToProcess.teamZoneList[i];
+						
+						    let categoryList = [];
+						    let cTotal = 0;
+						
+						    for (const key in team.category) {
+						        if (key.trim().includes("C")) {
+						            cTotal += Number(team.category[key]);
+						        } else {
+						            categoryList.push({
+						                name: key,
+						                value: team.category[key]
+						            });
+						        }
+						    }
+						
+						    categoryList.push({
+						        name: "C",
+						        value: cTotal
+						    });
+						
+						    row.innerHTML = `
+						        <td>${team.teamName1}</td>
+						        ${categoryList.map(c => `<td>${c.value}</td>`).join("")}
+						    `;
+						
+						    
+						    categoryList.forEach((cat, index) => {
+						        if (cat.value >= 8) {
+						            row.cells[index + 1].style.backgroundColor = "#E34234";
+						            row.cells[index + 1].style.color = "white";
+						        }
+						    });
+						}
+
+					}else if($('#selected_broadcaster').val().toUpperCase() == 'PWL'){
+						const order = ["A+", "A", "B", "C"]; // same order as Java
+
+						for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
+						
+						    const row = tbody.insertRow();
+						    row.style.fontSize = '16px';
+						    row.style.fontWeight = '800';
+						    row.style.color = '#BC8F8F';
+						
+						    const team = dataToProcess.teamZoneList[i];
+						
+						    let categoryList = [];
+						    let cTotal = 0;
+						
+						    
+						    for (const key in team.category) {
+						        if (key.trim().includes("C")) {
+						            cTotal += Number(team.category[key]);
+						        } else {
+						            categoryList.push({
+						                name: key,
+						                value: Number(team.category[key])
+						            });
+						        }
+						    }
+						
+						    categoryList.push({
+						        name: "C",
+						        value: cTotal
+						    });
+						
+						    categoryList.sort((a, b) => {
+						        return order.indexOf(a.name) - order.indexOf(b.name);
+						    });
+						
+						    
+						    row.innerHTML = `
+						        <td>${team.teamName1}</td>
+						        ${categoryList.map(c => `<td>${c.value}</td>`).join("")}
+						    `;
+						
+						   
+						    categoryList.forEach((cat, index) => {
+						        if (cat.value >= 8) {
+						            row.cells[index + 1].style.backgroundColor = "#E34234";
+						            row.cells[index + 1].style.color = "white";
+						        }
+						    });
+						}
+
+					}else{
+						for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
+					    const row = tbody.insertRow(); // Insert a new row
 					    row.style.fontSize = '16px';
 					    row.style.fontWeight = '800';
 					    row.style.color = '#BC8F8F';
 					
-					    const team = dataToProcess.teamZoneList[i];
-					
-					    let categoryList = [];
-					    let cTotal = 0;
-					
-					    for (const key in team.category) {
-					        if (key.trim().includes("C")) {
-					            cTotal += Number(team.category[key]);
-					        } else {
-					            categoryList.push({
-					                name: key,
-					                value: team.category[key]
-					            });
-					        }
-					    }
-					
-					    categoryList.push({
-					        name: "C",
-					        value: cTotal
-					    });
+					    const north = dataToProcess.teamZoneList[i].northZone || 0;
+					    const east = dataToProcess.teamZoneList[i].eastZone || 0;
+					    const south = dataToProcess.teamZoneList[i].southZone || 0;
+					    const west = dataToProcess.teamZoneList[i].westZone || 0;
+					    const central = dataToProcess.teamZoneList[i].centralZone || 0;
+					    const u19 = dataToProcess.teamZoneList[i].u19 || 0;
 					
 					    row.innerHTML = `
-					        <td>${team.teamName1}</td>
-					        ${categoryList.map(c => `<td>${c.value}</td>`).join("")}
+					        <td>${dataToProcess.teamZoneList[i].teamName1}</td>
+					        <td>${north}</td>
+					        <td>${east}</td>
+					        <td>${south}</td>
+					        <td>${west}</td>
+					        <td>${central}</td>
+					        <td>${u19}</td>
 					    `;
 					
 					    
-					    categoryList.forEach((cat, index) => {
-					        if (cat.value >= 8) {
+					    const zoneValues = [north, east, south, west, central, u19];
+					
+					    zoneValues.forEach((value, index) => {
+					        // index + 1 because cell 0 is the team name
+					        if (value >= 8) {
 					            row.cells[index + 1].style.backgroundColor = "#E34234";
 					            row.cells[index + 1].style.color = "white";
 					        }
 					    });
 					}
-
-				}else if($('#selected_broadcaster').val().toUpperCase() == 'PWL'){
-					const order = ["A+", "A", "B", "C"]; // same order as Java
-
-					for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
-					
-					    const row = tbody.insertRow();
-					    row.style.fontSize = '16px';
-					    row.style.fontWeight = '800';
-					    row.style.color = '#BC8F8F';
-					
-					    const team = dataToProcess.teamZoneList[i];
-					
-					    let categoryList = [];
-					    let cTotal = 0;
-					
-					    
-					    for (const key in team.category) {
-					        if (key.trim().includes("C")) {
-					            cTotal += Number(team.category[key]);
-					        } else {
-					            categoryList.push({
-					                name: key,
-					                value: Number(team.category[key])
-					            });
-					        }
-					    }
-					
-					    categoryList.push({
-					        name: "C",
-					        value: cTotal
-					    });
-					
-					    categoryList.sort((a, b) => {
-					        return order.indexOf(a.name) - order.indexOf(b.name);
-					    });
-					
-					    
-					    row.innerHTML = `
-					        <td>${team.teamName1}</td>
-					        ${categoryList.map(c => `<td>${c.value}</td>`).join("")}
-					    `;
-					
-					   
-					    categoryList.forEach((cat, index) => {
-					        if (cat.value >= 8) {
-					            row.cells[index + 1].style.backgroundColor = "#E34234";
-					            row.cells[index + 1].style.color = "white";
-					        }
-					    });
 					}
-
-				}else{
-					for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
-				    const row = tbody.insertRow(); // Insert a new row
-				    row.style.fontSize = '16px';
-				    row.style.fontWeight = '800';
-				    row.style.color = '#BC8F8F';
-				
-				    const north = dataToProcess.teamZoneList[i].northZone || 0;
-				    const east = dataToProcess.teamZoneList[i].eastZone || 0;
-				    const south = dataToProcess.teamZoneList[i].southZone || 0;
-				    const west = dataToProcess.teamZoneList[i].westZone || 0;
-				    const central = dataToProcess.teamZoneList[i].centralZone || 0;
-				    const u19 = dataToProcess.teamZoneList[i].u19 || 0;
-				
-				    row.innerHTML = `
-				        <td>${dataToProcess.teamZoneList[i].teamName1}</td>
-				        <td>${north}</td>
-				        <td>${east}</td>
-				        <td>${south}</td>
-				        <td>${west}</td>
-				        <td>${central}</td>
-				        <td>${u19}</td>
-				    `;
-				
-				    
-				    const zoneValues = [north, east, south, west, central, u19];
-				
-				    zoneValues.forEach((value, index) => {
-				        // index + 1 because cell 0 is the team name
-				        if (value >= 8) {
-				            row.cells[index + 1].style.backgroundColor = "#E34234";
-				            row.cells[index + 1].style.color = "white";
-				        }
-				    });
-				}
 				}
 		}
 		break;

@@ -96,8 +96,8 @@ public class IndexController
 	Data data = new Data();
 	Auction auc = new Auction();
 	int whichInning,player_id,team_id,session_port;
-	String session_selected_broadcaster,selected_layer,selected_scene,session_selected_ip, 
-	viz_scene_path, which_graphics_onscreen,selected_category;
+	public String session_selected_broadcaster,selected_layer,selected_scene,session_selected_ip, 
+	viz_scene_path, which_graphics_onscreen,selected_category, session_photo_option;
 	boolean is_Infobar_on_Screen = false;
 	boolean is_director_on_bottom = false;
 	boolean is_Ident_on_Screen = false;
@@ -252,6 +252,7 @@ public class IndexController
 					this_kcl.resetData(print_writer);
 					break;
 				case "VCL":
+					 //this_vcl.session_photo_option = session_photo_option;
 					this_vcl.resetData(print_writer);
 					break;	
 				case "PWL":
