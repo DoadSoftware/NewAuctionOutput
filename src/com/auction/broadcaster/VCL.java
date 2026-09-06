@@ -4850,7 +4850,7 @@ public class VCL extends Scene{
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + whichSide + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + ns.getSponsor() + "\0");
 				}else {
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + whichSide + "$select_LogoBase*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + whichSide + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + "TLogo\0");
+					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + whichSide + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + "TLogo03\0");
 				}
 				
 				if(side2ValueToProcess.split(",")[1].equalsIgnoreCase("WITH_LOGO")) {
