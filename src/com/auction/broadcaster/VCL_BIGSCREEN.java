@@ -722,46 +722,49 @@ public class VCL_BIGSCREEN extends Scene{
 					case "FF_FIVE_TOP_BUY_TEAM":case "FF_SQUAD_TEAM": case "FF_SQUAD_ROLE_TEAM": case "ANIMATE-SINGLEPURSE_TEAM": case "SQUAD_ANIMATION":
 					case "ZONE-PLAYER_FULL":	
 						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$Select_GraphicsType*FUNCTION*Omo*vis_con SET 10\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side2$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-						
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BS_Logo START\0");
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						
 						switch (which_graphics_onscreen) {
 						case "IDENT":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$MatchId START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$MatchId$Change_Out START\0");
 							break;
 						case "PLAYERPROFILE_FF":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Out START\0");
 							break;
 						case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuys START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuys$Change_Out START\0");
 							break;
 						case "FF_SQUAD_TEAM":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_New START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_New$Change_Out START\0");
 							break;
 						case "FF_SQUAD_ROLE_TEAM":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category$Change_Out START\0");
 							break;
 						case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining$Change_Out START\0");
 							break;
 						case "SQUAD": case "ZONE-PLAYER_STATS": case "SQUAD_ANIMATION": case "ZONE-PLAYER_FULL":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad$Change_Out START\0");
 							break;
 						case "FF_ICONIC_PLAYERS":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers START\0");
 							break;
 						case "FF_FIVE_TOP_BUYS_AUCTION": case "FF_FIVE_TOP_BUY_TEAM":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuysImage START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuysImage$Change_Out START\0");
 							break;
 						case "ANIMATE-SINGLEPURSE_TEAM":	
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$SinglePurse START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$SinglePurse$Change_Out START\0");
 							break;
 						}
 						
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
+						
+						TimeUnit.MILLISECONDS.sleep(1000);
+						
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BS_Logo START\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
+						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$Select_GraphicsType*FUNCTION*Omo*vis_con SET 10\0");
 						TimeUnit.MILLISECONDS.sleep(2000);
 						
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 10\0");

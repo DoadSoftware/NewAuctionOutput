@@ -2459,7 +2459,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 						break;
 					}
 					break;
-					case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':
+					case 'SPLIT-OPTIONS':
 						select = document.createElement('select');
 						select.style = 'width:130px';
 						select.id = 'selectSplit';
@@ -2492,7 +2492,51 @@ function addItemsToList(whatToProcess, dataToProcess)
 						select.setAttribute('onchange',"processUserSelection(this)");
 						row.insertCell(cellCount).appendChild(select);
 						cellCount = cellCount + 1;
-						break;		
+						break;	
+					case 'SPLITPIP-OPTIONS':
+						select = document.createElement('select');
+						select.style = 'width:130px';
+						select.id = 'selectSplit';
+						select.name = select.id;
+						
+						dataToProcess.forEach(function(ns,index,arr1){
+							option = document.createElement('option');
+							option.value = ns.splitId;
+							option.text = ns.prompt ;
+							select.appendChild(option);
+						});
+						
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						
+						select = document.createElement('select');
+						select.id = 'selectLogo';
+						select.name = select.id;
+						
+						option = document.createElement('option');
+						option.value = 'ONLY_NAMES';
+						option.text = '2 SCREEN ONLY NAMES';
+						select.appendChild(option);
+						
+						option = document.createElement('option');
+						option.value = '4_ONLY_NAMES';
+						option.text = '4 EQUAL SCREEN ONLY NAMES';
+						select.appendChild(option);
+						
+						option = document.createElement('option');
+						option.value = '4_BIG_NAMES';
+						option.text = '1 BIG AND 3 EQUAL SCREEN ONLY NAMES';
+						select.appendChild(option);
+						
+						option = document.createElement('option');
+						option.value = '2_LOCATION_NAMES';
+						option.text = '2 SCREEN WITH LOCATION';
+						select.appendChild(option);
+					
+						select.setAttribute('onchange',"processUserSelection(this)");
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						break;				
 				case'NAMESUPER-OPTIONS': case'NAMESUPERSS-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()) {
 					case 'DOAD_IN_HOUSE_EVEREST': case 'DOAD_IN_HOUSE_VIZ': case 'ISPL_VIZ':  case 'UTT_BIGSCREEN': case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 

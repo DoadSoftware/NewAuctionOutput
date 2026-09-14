@@ -327,7 +327,7 @@ public class RALLY extends Scene{
 						whichSideNotProfile = 1;
 					}
 					side2ValueToProcess = valueToProcess;
-					populateSplitpip(print_writer, whichSideNotProfile,Integer.valueOf(valueToProcess.split(",")[0]), auction,auctionService, 
+					populateSplitpip(print_writer, whichSideNotProfile,Integer.valueOf(valueToProcess.split(",")[0]),valueToProcess.split(",")[1], auction,auctionService, 
 							session_selected_broadcaster);
 					processPreviewLowerThirds(print_writer, whatToProcess, whichSideNotProfile);
 					break;
@@ -5544,11 +5544,11 @@ public class RALLY extends Scene{
 		switch (data.toUpperCase()) {
 		case "NAYA_CHAPTER":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - PRAYAGRAJ"+"\0");
+			print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - PUNE"+"\0");
 			break;
 		case "COUNT_COUNTINUES":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 2\0");
-			print_writer.println("-1 RENDERER*TREE*$BG$02$Text$Text3*GEOM*TEXT SET "+" STARTING SOON - PRAYAGRAJ STARTING SOON - PRAYAGRAJ STARTING SOON - PRAYAGRAJ"+"\0");
+			print_writer.println("-1 RENDERER*TREE*$BG$02$Text$Text3*GEOM*TEXT SET "+"JOIN THE MOVEMENT: RAHULGANDHI.IN/CKJ"+"\0");
 			break;
 		case "CHHATRON_KI_KHOJ":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 3\0");
@@ -5567,7 +5567,7 @@ public class RALLY extends Scene{
 
         String time = currentTime.format(formatter);
         
-        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET PRAYAGRAJ, UTTAR PRADESH\0");
+        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET PUNE, MAHARASHTRA\0");
         
 		print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$Time*GEOM*CLOCK*DEPEND SET DEPEND_LOCALTIME\0");
 		
@@ -5589,23 +5589,93 @@ public class RALLY extends Scene{
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Top$NAME*GEOM*TEXT SET "+ns.getFirstname()+"\0");
 				}
 				if(ns.getSubLine() != null) {
+					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Select_Gold*FUNCTION*Omo*vis_con SET 0\0");
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom$NAME*GEOM*TEXT SET "+ns.getSubLine()+"\0");
 				}else {
+					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Select_Gold*FUNCTION*Omo*vis_con SET 1\0");
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom$NAME*GEOM*TEXT SET \0");
 				}
 			}
 		}
 	}
-	public void populateSplitpip(PrintWriter print_writer, int whichSide, int nameSuperId, Auction auction,AuctionService auctionService, String session_selected_broadcaster) {
+	public void populateSplitpip(PrintWriter print_writer, int whichSide, int nameSuperId,String whichGfx, Auction auction,AuctionService auctionService, String session_selected_broadcaster) {
 		
-		print_writer.println("-1 RENDERER*TREE*$PIP$Window*ACTIVE SET 0\0");
-		
-		for(Split ns : auctionService.getSplits()) {
-			if(ns.getSplitId() == nameSuperId) {
-				
-				print_writer.println("-1 RENDERER*TREE*$PIP$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
-				print_writer.println("-1 RENDERER*TREE*$PIP$titles_Right$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
+		switch (whichGfx.toUpperCase()) {
+		case "ONLY_NAMES":
+			print_writer.println("-1 RENDERER*TREE*$PIP$Select*FUNCTION*Omo*vis_con SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option01$Window*ACTIVE SET 0\0");
+			
+			for(Split ns : auctionService.getSplits()) {
+				if(ns.getSplitId() == nameSuperId) {
+					
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option01$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option01$titles_Right$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
+				}
 			}
+			break;
+		case "4_ONLY_NAMES":
+			print_writer.println("-1 RENDERER*TREE*$PIP$Select*FUNCTION*Omo*vis_con SET 1\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopLeft$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopRight$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomLeft$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomRight$Title*FUNCTION*Omo*vis_con SET 1\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BG*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopLeft$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopRight$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomLeft$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomRight$Window*ACTIVE SET 0\0");
+			
+			for(Split ns : auctionService.getSplits()) {
+				if(ns.getSplitId() == nameSuperId) {
+					
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopLeft$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option02$TopRight$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomLeft$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine1() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option02$BottomRight$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine2() +"\0");
+				}
+			}
+			break;
+		case "4_BIG_NAMES":
+			print_writer.println("-1 RENDERER*TREE*$PIP$Select*FUNCTION*Omo*vis_con SET 2\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopLeft$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopRight$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$MiddleRight$Title*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$BottomRight$Title*FUNCTION*Omo*vis_con SET 1\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$BG*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopLeft$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopRight$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$MiddleRight$Window*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option03$BottomRight$Window*ACTIVE SET 0\0");
+			
+			for(Split ns : auctionService.getSplits()) {
+				if(ns.getSplitId() == nameSuperId) {
+					
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopLeft$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option03$TopRight$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option03$MiddleRight$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine1() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option03$BottomRight$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine2() +"\0");
+				}
+			}
+			break;
+		case "2_LOCATION_NAMES":
+			print_writer.println("-1 RENDERER*TREE*$PIP$Select*FUNCTION*Omo*vis_con SET 3\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$PIP$Option04$Window*ACTIVE SET 0\0");
+			
+			for(Split ns : auctionService.getSplits()) {
+				if(ns.getSplitId() == nameSuperId) {
+					
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option04$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option04$titles_Right$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option04$Location_Band$Left$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine1() +"\0");
+					print_writer.println("-1 RENDERER*TREE*$PIP$Option04$Location_Band$Right$Top$NAME*GEOM*TEXT SET "+ ns.getSubLine2() +"\0");
+				}
+			}
+			break;	
 		}
 	}
 	public void populateSplit(PrintWriter print_writer, int whichSide, int nameSuperId, Auction auction,AuctionService auctionService, String session_selected_broadcaster) {
@@ -5617,8 +5687,11 @@ public class RALLY extends Scene{
 				
 				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Left$Top$NAME*GEOM*TEXT SET "+ ns.getLeftname() +"\0");
 				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Right$Top$NAME*GEOM*TEXT SET "+ ns.getRightname() +"\0");
-				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Left$Bottom$NAME*GEOM*TEXT SET "+ ns.getSubLine1() +"\0");
-				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Right$Bottom$NAME*GEOM*TEXT SET "+ ns.getSubLine2() +"\0");
+				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Left$Bottom$NAME*GEOM*TEXT SET "+ (ns.getSubLine1() != null ? ns.getSubLine1() : "") +"\0");
+				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Right$Bottom$NAME*GEOM*TEXT SET "+ (ns.getSubLine2() != null ? ns.getSubLine2() : "")+"\0");
+				
+				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Left$Select_Gold*FUNCTION*Omo*vis_con SET " + (ns.getSubLine1() != null ? "0" : "1") + "\0");
+				print_writer.println("-1 RENDERER*TREE*$Split_Screen$titles_Right$Select_Gold*FUNCTION*Omo*vis_con SET " + (ns.getSubLine2() != null ? "0" : "1") + "\0");
 			}
 		}
 	}
