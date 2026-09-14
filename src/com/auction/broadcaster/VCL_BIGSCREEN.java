@@ -723,7 +723,6 @@ public class VCL_BIGSCREEN extends Scene{
 					case "ZONE-PLAYER_FULL":	
 						
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side2$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-						
 						switch (which_graphics_onscreen) {
 						case "IDENT":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$MatchId$Change_Out START\0");
@@ -747,7 +746,7 @@ public class VCL_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad$Change_Out START\0");
 							break;
 						case "FF_ICONIC_PLAYERS":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers$Change_Out START\0");
 							break;
 						case "FF_FIVE_TOP_BUYS_AUCTION": case "FF_FIVE_TOP_BUY_TEAM":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuysImage$Change_Out START\0");
@@ -756,6 +755,14 @@ public class VCL_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$SinglePurse$Change_Out START\0");
 							break;
 						}
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
+						TimeUnit.MILLISECONDS.sleep(1000);
+						
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BS_Logo START\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
+						TimeUnit.MILLISECONDS.sleep(200);
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$Select_GraphicsType*FUNCTION*Omo*vis_con SET 10\0");
+						
 						
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 						
@@ -1920,6 +1927,7 @@ public class VCL_BIGSCREEN extends Scene{
 		
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player"
 //				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName().trim() + AuctionUtil.PNG_EXTENSION + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp*ACTIVE SET 0\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp"
 				+ "$ImageMask$Abhishek_Kumar_Dalhor*TEXTURE*IMAGE SET "+ photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
