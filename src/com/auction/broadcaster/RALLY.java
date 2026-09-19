@@ -41,7 +41,7 @@ public class RALLY extends Scene{
 	public String session_selected_category = "",plyerBug = "",plyerBug2 = "",PlayerPhotoOrNot = "";
 	public Data data = new Data();
 	public int whichSideCrawler=1,preval=0;	
-	public String which_graphics_onscreen = "",which_data="",which_watermark="",which_rightsuper="",which_location="", rtm_googly_on_screen = "",which_stat = "",which_crwaler_onscreen;
+	public String which_graphics_onscreen = "",which_data="",which_watermark="",which_rightsuper="",which_location="",which_breaking = "", rtm_googly_on_screen = "",which_stat = "",which_crwaler_onscreen;
 	public int current_layer = 2, whichSide = 1, whichSideNotProfile=1, rowHighlight = 1,prevRowHighlight = 1, rtmGooglyWhichSide = 1;
 	public int player_id = 0,team_id=0,player_number=0;
 	public int zoneSize = 0, current_index = 0;
@@ -124,7 +124,7 @@ public class RALLY extends Scene{
 		case "POPULATE-FF_FIVE_TOP_BUY_TEAM": case "POPULATE-ZONEWISE_PLAYERS_SOLD": case "POPULATE-FLIPPER_SQUAD": case "POPULATE-FF_SQUAD_TEAM":
 		case "POPULATE-FF_SQUAD_ROLE_TEAM":case "POPULATE-LOF_TEAM_BID_AUCTION": case "POPULATE-L3-FLIPPER_TEXT": case "POPULATE-PROFILE_FF":
 		case "LOF_SLOT_CHANGEON": case "POPULATE-FF_RETAIN_PLAYERS": case "POPULATE-PURSE_SIZE_ALL": case "POPULATE-PURSE_SLOT_ALL": case "POPULATE-RIGHT_SUPER":
-		case "POPULATE-LOCATION": case "POPULATE-BACKG": case "POPULATE-L3-SPLIT": case "POPULATE-L3-SPLITPIP":
+		case "POPULATE-LOCATION": case "POPULATE-BACKG": case "POPULATE-L3-SPLIT": case "POPULATE-L3-SPLITPIP": case "POPULATE-BREAKING":
 			
 		//crawl	
 		case "POPULATE-CRAWLE_SQUAD":
@@ -148,8 +148,15 @@ public class RALLY extends Scene{
 					}
 				}
 				switch (whatToProcess.toUpperCase()) {
+				case "POPULATE-BREAKING":
+					String fileDatas = new String(
+					        Files.readAllBytes(Paths.get("C:\\Sports\\Auction\\Breaking.txt")),
+					        StandardCharsets.UTF_8
+					);
+					populateBreaking(print_writer,whichSide ,fileDatas, session_selected_broadcaster);
+					processPreview(print_writer, whatToProcess, whichSide);
+					break;
 				case "POPULATE-LOCATION":
-					System.out.println("INSIDE = " + whatToProcess);
 					populateLocation(print_writer,whichSide , session_selected_broadcaster);
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
@@ -733,6 +740,7 @@ public class RALLY extends Scene{
 		case "ANIMATE-IN-FLIPPER": case "ANIMATE-IN-TEAM_CURR_BID": case "ANIMATE-IN-ZONEWISE_PLAYERS_SOLD": case "ANIMATE-IN-FLIPPER_SQUAD":
 		case "ANIMATE-IN-FF_SQUAD_ROLE_TEAM":	case "ANIMATE-IN-LOF_TEAM_BID_AUCTION": case "ANIMATE-IN-FLIPPER_TEXT": case "ANIMATE-IN-PROFILE_FF":
 		case "ANIMATE-IN-PURSE_SIZE_ALL":	 case "ANIMATE-IN-PURSE_SLOT_ALL": case "ANIMATE-IN-LOCATION": case "ANIMATE-IN-BACKG": case "ANIMATE-IN-WATERMARK":
+		case "ANIMATE-IN-BREAKING":	
 
 		case "ANIMATE-IN-LOF_SQUAD": case "ANIMATE-IN-LOF_SQUAD_REMAIN":
 
@@ -1137,6 +1145,19 @@ public class RALLY extends Scene{
 				case "ANIMATE-IN-BACKG":
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*BG START\0");
 					which_graphics_onscreen = whatToProcess.replace("ANIMATE-IN-", "");
+					break;
+				case "ANIMATE-IN-BREAKING":
+					if(which_breaking.isEmpty()) {
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Breaking$In_Out START\0");
+						which_breaking = whatToProcess.replace("ANIMATE-IN-", "");
+					}else {
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Breaking$In_Out CONTINUE\0");
+						which_breaking = "";
+						
+						TimeUnit.MILLISECONDS.sleep(2000);
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Breaking$In_Out SHOW 0.0\0");
+					}
+					
 					break;
 				case "ANIMATE-IN-LOCATION":
 					if(which_location.isEmpty()) {
@@ -5544,11 +5565,11 @@ public class RALLY extends Scene{
 		switch (data.toUpperCase()) {
 		case "NAYA_CHAPTER":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - PUNE"+"\0");
+			print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - INDORE"+"\0");
 			break;
 		case "COUNT_COUNTINUES":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 2\0");
-			print_writer.println("-1 RENDERER*TREE*$BG$02$Text$Text3*GEOM*TEXT SET "+"JOIN THE MOVEMENT: RAHULGANDHI.IN/CKJ"+"\0");
+			print_writer.println("-1 RENDERER*TREE*$BG$02$Text$Text3*GEOM*TEXT SET "+"JOIN THE MOVEMENT: RAHULGANDHI.IN/CKG"+"\0");
 			break;
 		case "CHHATRON_KI_KHOJ":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 3\0");
@@ -5559,6 +5580,10 @@ public class RALLY extends Scene{
 			break;
 		}
 	}
+	public void populateBreaking(PrintWriter print_writer, int whichSide,String filename,String session_selected_broadcaster) {
+		
+		print_writer.println("-1 RENDERER*TREE*$Breaking_News$Side1$text*GEOM*TEXT SET "+filename+"\0");
+	}
 	public void populateLocation(PrintWriter print_writer, int whichSide,String session_selected_broadcaster) {
 		
 		LocalTime currentTime = LocalTime.now();
@@ -5567,7 +5592,7 @@ public class RALLY extends Scene{
 
         String time = currentTime.format(formatter);
         
-        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET PUNE, MAHARASHTRA\0");
+        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET INDORE, MADHYA PRADESH\0");
         
 		print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$Time*GEOM*CLOCK*DEPEND SET DEPEND_LOCALTIME\0");
 		
@@ -5591,9 +5616,11 @@ public class RALLY extends Scene{
 				if(ns.getSubLine() != null) {
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Select_Gold*FUNCTION*Omo*vis_con SET 0\0");
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom$NAME*GEOM*TEXT SET "+ns.getSubLine()+"\0");
+					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom*ACTIVE SET 1\0");
 				}else {
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Select_Gold*FUNCTION*Omo*vis_con SET 1\0");
 					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom$NAME*GEOM*TEXT SET \0");
+					print_writer.println("-1 RENDERER*TREE*$Name_Super_Double$Bottom*ACTIVE SET 1\0");
 				}
 			}
 		}

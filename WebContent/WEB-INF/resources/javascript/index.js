@@ -558,9 +558,12 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 		case 'm': //LT ICONIC PPLAYERS
 			
 			switch ($('#selected_broadcaster').val()){
-			case 'KCL': case 'VCL': case 'PWL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
+			case 'KCL': case 'VCL': case 'PWL': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN':
 				processAuctionProcedures('LOF_SLOT_CHANGEON');
 				break;
+			case 'RALLY':
+				processAuctionProcedures('POPULATE-BREAKING');
+				break;	
 			default://ISPL
 				processAuctionProcedures('POPULATE-LT_ICONIC_PLAYERS');
 				break;
@@ -1768,7 +1771,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-PURSE_SIZE_ALL': case 'POPULATE-PURSE_SLOT_ALL':
 			
 			case 'POPULATE-RIGHT_SUPER': case 'POPULATE-LOCATION': case 'POPULATE-WATERMARK': case 'POPULATE-L3-SPLIT': case 'POPULATE-L3-SPLITPIP':
-			case 'POPULATE-L3-NAMESUPERSS':	
+			case 'POPULATE-L3-NAMESUPERSS':	case 'POPULATE-BREAKING':
 			
 				if(whatToProcess == 'POPULATE-RTM_ENABLED' || whatToProcess == 'POPULATE-CURR_BID' || whatToProcess == 'POPULATE-RTM_PLAYER')	{
 					switch(whatToProcess){
@@ -1784,7 +1787,8 @@ function processAuctionProcedures(whatToProcess)
 					}
 				}else if(whatToProcess == 'POPULATE-PROFILE_STATS' || 
 						whatToProcess == 'POPULATE-SQUAD-PLAYER' || 
-						whatToProcess == 'POPULATE-LOF_TEAM_BID_AUCTION')	{
+						whatToProcess == 'POPULATE-LOF_TEAM_BID_AUCTION' || 
+						whatToProcess == 'POPULATE-L3-SPLITPIP')	{
 					if(confirm('Animate In?') == true){
 						switch(whatToProcess) {
 						case 'POPULATE-PROFILE_STATS':
@@ -1795,7 +1799,10 @@ function processAuctionProcedures(whatToProcess)
 							break;
 						case "POPULATE-LOF_TEAM_BID_AUCTION":
 							processAuctionProcedures('ANIMATE-IN-LOF_TEAM_BID_AUCTION');
-							break;		
+							break;
+						case 'POPULATE-L3-SPLITPIP':	
+							processAuctionProcedures('ANIMATE-IN-SPLITPIP');	
+							break;			
 						}
 					}
 				}else{
@@ -1806,6 +1813,9 @@ function processAuctionProcedures(whatToProcess)
 						$("#auction_div").show();
 						
 			        	switch(whatToProcess) {
+						case 'POPULATE-BREAKING':
+							processAuctionProcedures('ANIMATE-IN-BREAKING');
+							break;	
 						case 'POPULATE-WATERMARK':
 							processAuctionProcedures('ANIMATE-IN-WATERMARK');
 							break;					
@@ -1817,9 +1827,6 @@ function processAuctionProcedures(whatToProcess)
 							break;
 						case 'POPULATE-L3-SPLIT':	
 							processAuctionProcedures('ANIMATE-IN-SPLIT');	
-							break;
-						case 'POPULATE-L3-SPLITPIP':	
-							processAuctionProcedures('ANIMATE-IN-SPLITPIP');	
 							break;
 						case 'POPULATE-L3-NAMESUPERSS':
 							processAuctionProcedures('ANIMATE-IN-NAMESUPERSS');	
