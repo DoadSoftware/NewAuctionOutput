@@ -6917,6 +6917,10 @@ public class RALLY extends Scene{
 			case "POPULATE-L3-SPLIT":
 				previewCommand = "Split_Screen$In_Out 0.860 Split_Screen$In_Out$In 0.740";
 				break;
+				
+			case "POPULATE-BREAKING":
+				previewCommand = "Breaking$In_Out 1.280 Breaking$In_Out$In 0.760";
+				break;	
 			case "POPULATE-L3-SPLITPIP":
 				previewCommand = "PIP$In_Out 0.800 PIP$In_Out$In 0.620";
 				break;	
@@ -6926,6 +6930,8 @@ public class RALLY extends Scene{
 			case "POPULATE-RTM_AVAILABLE":
 				previewCommand = previewCommand + "anim_RTM$In_Out 0.500 anim_RTM$In_Out$Essentials 0.500 anim_RTM$In_Out$Essentials$In 0.500 anim_RTM$In_Out$Text$In 0.500";
 				break;
+		
+				
 			case "POPULATE-GOOGLY_POWER":
 				previewCommand = previewCommand + "anim_Googly$In_Out 0.500 anim_Googly$In_Out$In 0.500";
 				break;
