@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.auction.broadcaster.ADT10;
 import com.auction.broadcaster.Doad;
+import com.auction.broadcaster.ILT20;
+import com.auction.broadcaster.ILT20_BIGSCREEN;
 import com.auction.broadcaster.ISPL;
 import com.auction.broadcaster.ISPL_VIZ;
 import com.auction.broadcaster.KCL;
@@ -71,9 +75,12 @@ public class IndexController
 	public static RALLY this_rally;
 	public static KCL this_kcl;
 	public static VCL this_vcl;
+	public static ILT20 this_ilt20;
+	public static ADT10 this_adt10;
 	public static PWL this_pwl;
 	public static KCL_BIGSCREEN this_KCL_BIGSCREEN;
 	public static VCL_BIGSCREEN this_VCL_BIGSCREEN;
+	public static ILT20_BIGSCREEN this_ILT20_BIGSCREEN;
 	public static PrintWriter print_writer;
 	public static String expiry_date = "2026-12-31";
 	public static String error_message = "";
@@ -177,9 +184,12 @@ public class IndexController
 			this_MUMBAI_T20_BIGSCREEN = new MUMBAI_T20_BIGSCREEN();
 			this_kcl = new KCL();
 			this_vcl = new VCL();
+			this_adt10 = new ADT10();
+			this_ilt20 = new ILT20();
 			this_pwl =new PWL();
 			this_KCL_BIGSCREEN = new KCL_BIGSCREEN();
 			this_VCL_BIGSCREEN = new VCL_BIGSCREEN();
+			this_ILT20_BIGSCREEN = new ILT20_BIGSCREEN();
 			this_utt_viz = new UTT_VIZ();
 			
 			this_utt_bigscreen = new UTT_BIGSCREEN();
@@ -231,8 +241,14 @@ public class IndexController
 				this_VCL_BIGSCREEN.resetData(print_writer);
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Logo$In_Out START \0");
 				break;
+			case "ILT20_BIGSCREEN":
+				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
+				this_ILT20_BIGSCREEN.which_graphics_onscreen = "";
+				this_ILT20_BIGSCREEN.resetData(print_writer);
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Logo$In_Out START \0");
+				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL":
+			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL": case "ILT20":
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {
@@ -255,6 +271,13 @@ public class IndexController
 					 //this_vcl.session_photo_option = session_photo_option;
 					this_vcl.resetData(print_writer);
 					break;	
+				case "ILT20":
+					this_ilt20.resetData(print_writer);
+					break;	
+					
+				case "ADT10":
+					this_adt10.resetData(print_writer);
+					break;	
 				case "PWL":
 					this_pwl.resetData(print_writer);
 					break;
@@ -263,6 +286,9 @@ public class IndexController
 					break;
 				case "VCL_BIGSCREEN":
 					this_VCL_BIGSCREEN.resetData(print_writer);
+					break;
+				case "ILT20_BIGSCREEN":
+					this_ILT20_BIGSCREEN.resetData(print_writer);
 					break;
 				case "PSL":
 					this_psl.resetData(print_writer);
@@ -319,6 +345,8 @@ public class IndexController
 				this_psl.enableAudio = "TRUE";
 				this_kcl.enableAudio = "TRUE";
 				this_vcl.enableAudio = "TRUE";
+				this_adt10.enableAudio = "TRUE";
+				this_ilt20.enableAudio = "TRUE";
 				this_pwl.enableAudio ="TRUE";
 				this_mumbai_t20_viz.enableAudio ="TRUE";
 				this_rally.enableAudio ="TRUE";
@@ -327,6 +355,8 @@ public class IndexController
 				this_psl.enableAudio = "FALSE";
 				this_kcl.enableAudio = "FALSE";
 				this_vcl.enableAudio = "FALSE";
+				this_adt10.enableAudio = "FALSE";
+				this_ilt20.enableAudio = "FALSE";
 				this_pwl.enableAudio ="FALSE";
 				this_mumbai_t20_viz.enableAudio ="FALSE";
 				this_rally.enableAudio ="FALSE";
@@ -356,6 +386,12 @@ public class IndexController
 							this_VCL_BIGSCREEN.data.setWhichside(2);
 						}
 						this_VCL_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+						break;
+					case "ILT20_BIGSCREEN":
+						if(this_ILT20_BIGSCREEN.data.isBid_Start_or_not() == true) {
+							this_ILT20_BIGSCREEN.data.setWhichside(2);
+						}
+						this_ILT20_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 						break;
 					}
 				}
@@ -414,7 +450,20 @@ public class IndexController
 						this_vcl.data.setWhichside(2);
 					}
 					this_vcl.updateData(session_auction,session_curr_bid,auctionService,print_writer);
-					break;					
+					break;	
+				case "ADT10":
+					if(this_adt10.data.isBid_Start_or_not() == true) {
+						this_adt10.data.setWhichside(2);
+					}
+					this_adt10.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;	
+				case "ILT20":
+					if(this_ilt20.data.isBid_Start_or_not() == true) {
+						this_ilt20.data.setWhichside(2);
+					}
+					this_ilt20.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;
+					
 				case "PWL":
 					if(this_pwl.data.isBid_Start_or_not() == true) {
 						this_pwl.data.setWhichside(2);
@@ -484,6 +533,13 @@ public class IndexController
 			case "VCL":
 				this_vcl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;	
+			case "ADT10":
+				this_adt10.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;
+			case "ILT20":
+				this_ilt20.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;	
+				
 			case "PWL":
 				this_pwl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
@@ -493,7 +549,11 @@ public class IndexController
 			case "VCL_BIGSCREEN":
 				this_VCL_BIGSCREEN.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;
+			case "ILT20_BIGSCREEN":
+				this_ILT20_BIGSCREEN.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;
 			}
+			
 			return objectMapper.writeValueAsString(session_auction);
 		}
 	}
