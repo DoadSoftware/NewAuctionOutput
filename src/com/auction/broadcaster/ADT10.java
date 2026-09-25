@@ -27,6 +27,7 @@ import com.auction.model.Team;
 import com.auction.model.VariousText;
 import com.auction.service.AuctionService;
 import com.auction.model.Auction;
+import com.auction.model.DraftedPlayersSummary;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
 import com.auction.util.AuctionFunctions;
@@ -107,7 +108,7 @@ public class ADT10 extends Scene{
 	}
 	
 	public Object ProcessGraphicOption(String whatToProcess, Auction auction, Auction session_curr_bid, AuctionService auctionService,
-			PrintWriter print_writer, List<Scene> scenes, String valueToProcess) throws Exception {
+			PrintWriter print_writer, List<Scene> scenes, String valueToProcess, DraftedPlayersSummary session_draft) throws Exception {
 		System.out.println(whatToProcess.toUpperCase());
 		switch (whatToProcess.toUpperCase()) {
 		case "POPULATE-FF-PLAYERPROFILE": case "POPULATE-SQUAD": case "POPULATE-REMAINING_PURSE_ALL": case "POPULATE-SINGLE_PURSE": case "POPULATE-TOP_SOLD":
@@ -119,7 +120,8 @@ public class ADT10 extends Scene{
 		case "POPULATE-PLAYERPROFILE_LT": case "POPULATE-PLAYERPROFILE_LT_STATS": case "POPULATE-LOF_SQUAD": case "POPULATE-LOF_SQUAD_REMAIN":
 		case "POPULATE-L3-FLIPPER": case "POPULATE-ZONE_PLAYERS_STATS": case "POPULATE-ZONE_PLAYERS_FULL": case "POPULATE-TEAM_CURR_BID": case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION":
 		case "POPULATE-FF_FIVE_TOP_BUY_TEAM": case "POPULATE-ZONEWISE_PLAYERS_SOLD": case "POPULATE-FLIPPER_SQUAD": case "POPULATE-FF_SQUAD_TEAM":
-		case "POPULATE-FF_SQUAD_ROLE_TEAM":case "POPULATE-LOF_TEAM_BID_AUCTION": case "POPULATE-L3-FLIPPER_TEXT": case "POPULATE-PROFILE_FF": case "LOF_SLOT_CHANGEON":
+		case "POPULATE-FF_SQUAD_ROLE_TEAM":case "POPULATE-LOF_TEAM_BID_AUCTION": case "POPULATE-L3-FLIPPER_TEXT": case "POPULATE-PROFILE_FF": 
+		case "LOF_SLOT_CHANGEON": case "POPULATE-PLAYERPROFILE_DRAFT_FF":
 			
 			switch (session_selected_broadcaster.toUpperCase()) {
 			case "ADT10":
@@ -157,6 +159,18 @@ public class ADT10 extends Scene{
 							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
+				case "POPULATE-PLAYERPROFILE_DRAFT_FF":
+					if(!which_graphics_onscreen.isEmpty()) {
+						whichSideNotProfile = 2;
+					}else {
+						whichSideNotProfile = 1;
+					}
+					side2ValueToProcess = valueToProcess;
+					populatePlayerProfileDraftFF(false,print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]),
+							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster, session_draft);
+					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
+					break;
+					
 				case "POPULATE-PROFILE_FF":
 					if(!which_graphics_onscreen.isEmpty()) {
 						whichSideNotProfile = 2;
@@ -2962,6 +2976,15 @@ public class ADT10 extends Scene{
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
 					+ auctionService.getAllPlayer().get(playerId - 1).getAge() + "\0");
 		}
+	}
+	
+	public void populatePlayerProfileDraftFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, List<Statistics> stats, Auction auction, 
+			AuctionService auctionService, String session_selected_broadcaster, DraftedPlayersSummary session_draft) throws InterruptedException 
+	{
+		System.out.println("session-------------------------------------------------------"+session_draft.getData().getRoundWise().get(0).getPlayers().toString());
+//		for(int i = 0; i <=session_draft.getData().getRoundWise()-1; i++) {
+//			System.out.println(session_draft.getData().getRoundWise().get);
+//		}
 	}
 	
 	public void populatePlayerProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats, List<Statistics> stats, Auction auction, 
@@ -6031,13 +6054,13 @@ public class ADT10 extends Scene{
 			case "POPULATE-IDENT": case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-FF_RTM_AND_PURSE_REMAINING": case "POPULATE-FF_TOP_BUYS_AUCTION": 
 			case "POPULATE-FF_TOP_BUY_TEAM": case "POPULATE-REMAINING_PURSE_ALL": case "POPULATE-SQUAD": case "POPULATE-FF_ICONIC_PLAYERS":
 			case "POPULATE-ZONE_PLAYERS_STATS": case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION": case "POPULATE-FF_FIVE_TOP_BUY_TEAM":case "POPULATE-FF_SQUAD_TEAM":
-			case "POPULATE-FF_SQUAD_ROLE_TEAM": case "POPULATE-PROFILE_FF":
+			case "POPULATE-FF_SQUAD_ROLE_TEAM": case "POPULATE-PROFILE_FF": case "POPULATE-PLAYERPROFILE_DRAFT_FF":
 				previewCommand = "anim_Fullframe$In_Out 2.480 anim_Fullframe$In_Out$Essentials 2.480 anim_Fullframe$In_Out$Essentials$In 1.300 ";
 				switch(whatToProcess.toUpperCase()) {
 				case "POPULATE-IDENT":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Main$MatchId 2.480 anim_Fullframe$In_Out$Main$MatchId$In 2.340";
 					break;
-				case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
+				case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF": case "POPULATE-PLAYERPROFILE_DRAFT_FF":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
 							+ "anim_Fullframe$In_Out$Main$Profile 2.480 anim_Fullframe$In_Out$Main$Profile$In 2.180";
 					break;
@@ -6120,7 +6143,7 @@ public class ADT10 extends Scene{
 			case "POPULATE-IDENT":
 				previewCommand = previewCommand + "Change$MatchId 2.340 Change$MatchId$Change_Out 0.700 Change$MatchId$Change_In 2.340 ";
 				break;
-			case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
+			case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF": case "POPULATE-PLAYERPROFILE_DRAFT_FF":
 				if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
 					previewCommand = previewCommand + "Change$Profile 2.180 Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.180 ";
 				}

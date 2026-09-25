@@ -107,7 +107,14 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#cancel_match_setup_btn").hide();
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
-			processAuctionProcedures('PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS');
+			switch ($('#selected_broadcaster').val()){
+				case 'ADT10':
+					processAuctionProcedures('PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS');
+					break;
+				default:
+					processAuctionProcedures('PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS');
+					break;
+				}
 			break;
 		case 'F2': //FF REMAINING PURSE ALL
 			stopTeamRotation();
@@ -711,12 +718,12 @@ function initialiseForm(whatToProcess,dataToProcess)
 					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
 				}
 			}
-				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN'){
+				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN' && $('#selected_broadcaster').val().toUpperCase() != 'ADT10'){
 					const tbody = document.getElementById('zone_table_body');
 									
 					tbody.innerHTML = "";
 					
-					if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL' || $('#selected_broadcaster').val().toUpperCase() == 'ADT10'
+					if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL'
 					 || $('#selected_broadcaster').val().toUpperCase() == 'ILT20' || $('#selected_broadcaster').val().toUpperCase() == 'VCL_BIGSCREEN' 
 					 || $('#selected_broadcaster').val().toUpperCase() == 'KCL_BIGSCREEN' || $('#selected_broadcaster').val().toUpperCase() == 'ILT20_BIGSCREEN'
 					){
@@ -919,6 +926,9 @@ function processUserSelection(whichInput)
 		case 'playerprofile_graphic_btn':
 			processAuctionProcedures('PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS');
 			break;
+		case 'populate_ff_playerprofile_draft_btn':
+			processAuctionProcedures('PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS');
+			break;
 		case 'ff_playerprofile_graphic_btn':
 			processAuctionProcedures('FF_PLAYERPROFILE_GRAPHICS-OPTIONS');
 			break;
@@ -957,7 +967,7 @@ function processUserSelection(whichInput)
 	case 'populate_flipper_btn': case 'populate_zonePlayer_stats_btn': case 'populate_team_curr_bid_btn': case 'populate_ff_Top_Five_Sold_team_btn': case 'single_Sold_team_btn': 
 	case 'populate_zonewisePlayer_sold_btn':case "populate_profile_Change_stats_btn": case 'populate_flipper_squad_btn':case "populate_Squad_team_btn":case "populate_Squad_Role_team_btn":
 	case 'populate_Lof_Team_Bid_btn': case 'populate_profileff_btn': case 'populate_flipper_text_btn': case 'populate_squad_animation_btn': case 'populate_retain_players_squad_btn':
-	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn':
+	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn': case 'populate_ff_playerprofile_draft_btn':
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
@@ -993,6 +1003,9 @@ function processUserSelection(whichInput)
 			break;
 		case 'populate_playerprofile_btn':
 			processAuctionProcedures('POPULATE-FF-PLAYERPROFILE');
+			break;
+		case 'populate_ff_playerprofile_draft_btn':
+			processAuctionProcedures('POPULATE-PLAYERPROFILE_DRAFT_FF');
 			break;
 		case 'populate_ff_playerprofile_btn':
 			processAuctionProcedures('POPULATE-PLAYERPROFILE_FF');
@@ -1233,12 +1246,20 @@ function processAuctionProcedures(whatToProcess)
 			break;
 		}
 		break;
+		
+	case 'POPULATE-PLAYERPROFILE_DRAFT_FF':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+			case 'ADT10':
+				valueToProcess = $('#selectDraftRound option:selected').val();
+				break;
+			}
+		break
 	
 		
 	case 'POPULATE-PLAYERPROFILE_FF': case 'POPULATE-PROFILE_FF': case 'POPULATE-PLAYERPROFILE_FF_BIG':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'VCL': case 'ILT20': case 'ADT10': 
-		case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
+		case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20':  case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectShowProfileStats option:selected').val() 
 				+ ',' + $('#PlayerData option:selected').val();
 			break;
@@ -1580,6 +1601,11 @@ function processAuctionProcedures(whatToProcess)
 				addItemsToList('POPULATE-PROFILE',data);
 				match_data = data;
 				break;
+			case 'PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS':
+				addItemsToList('PLAYERPROFILE_DRAFT-OPTIONS',data);
+				match_data = data;
+				break;
+				
 			case 'PLAYERPROFILE_GRAPHICS-OPTIONS': 
 				addItemsToList('PLAYERPROFILE-OPTIONS',data);
 				addItemsToList('POPULATE-PROFILE',data);
@@ -1762,7 +1788,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-CRAWLER_TEAM_TOP_SOLD': case "POPULATE-SQUAD-PLAYER": case 'POPULATE-PLAYERPROFILE_FF': case 'POPULATE-PROFILE_FF': 
 			case 'POPULATE-PLAYERPROFILE_FF_BIG': case 'POPULATE-LOF_REMAINING_SLOT': case 'POPULATE-LOF_SQUAD_SIZE': case 'POPULATE-LOF_RTM_REMAINING': 
 			case 'POPULATE-LOF_SQUAD_SIZE_CATEGORY_WISE': case 'POPULATE-CRAWLE_SQUAD': case 'POPULATE-LOF_SQUAD_REMAIN': case 'POPULATE-L3-CRWLERFREETEXT': 
-			case 'POPULATE-L3-FLIPPER': case 'POPULATE-L3-FLIPPER_TEXT':
+			case 'POPULATE-L3-FLIPPER': case 'POPULATE-L3-FLIPPER_TEXT': case 'POPULATE-PLAYERPROFILE_DRAFT_FF':
 			
 			case 'POPULATE-FF_RTM_AND_PURSE_REMAINING': case 'POPULATE-FF_TOP_BUYS_AUCTION': case 'POPULATE-TEAM_CURR_BID': case 'POPULATE-FF_ICONIC_PLAYERS': 
 			case 'POPULATE-FF_FIVE_TOP_BUYS_AUCTION': case 'POPULATE-FF_SINGLEPURSE_TEAM': case "POPULATE-FF_SQUAD_TEAM": case 'POPULATE-LT_ICONIC_PLAYERS': 
@@ -1926,6 +1952,10 @@ function processAuctionProcedures(whatToProcess)
 						case 'POPULATE-PLAYERPROFILE_FF':
 							processAuctionProcedures('ANIMATE-IN-PLAYERPROFILE_FF');
 							break;
+						case 'POPULATE-PLAYERPROFILE_DRAFT_FF':
+							processAuctionProcedures('ANIMATE-IN-PLAYERPROFILE_DRAFT_FF');
+							break;
+							
 						case 'POPULATE-PLAYERPROFILE_FF_BIG':
 							processAuctionProcedures('ANIMATE-IN-PLAYERPROFILE_FF_BIG');
 							break;
@@ -2077,7 +2107,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		break;
 		
 	case'NAMESUPER-OPTIONS': case 'NAMESUPER_PLAYER-OPTIONS':  case'PLAYERPROFILE-OPTIONS': case 'SQUADCATEGORIES-OPTIONS': case 'SQUAD-OPTIONS': case 'SINGLE_PURSE-OPTIONS': 
-	case 'PLAYERPROFILE_MAIN-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS':
+	case 'PLAYERPROFILE_MAIN-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS': case 'PLAYERPROFILE_DRAFT-OPTIONS':
 	case 'TOP-SOLD_TEAM-OPTIONS': case 'GOOGLY-OPTIONS': case 'PROFILE_STATS-OPTIONS': case 'LOF_REMAINING_PURSE-OPTIONS': case 'LOF_TOP_SOLD_TEAM-OPTIONS': 
 	case'SQUAD_PLAYER-OPTIONS': case 'FF_PLAYERPROFILE-OPTIONS': case 'FF_TOP_SOLD_TEAM-OPTIONS': case 'LOF_SQUAD_SIZE_CATEGORY_WISE_-OPTIONS': 
 	case 'LT_PLAYERPROFILE-OPTIONS': case 'LT_PP_STATS-OPTIONS': case 'LOF_SQUAD-OPTIONS': case 'FLIPPER-OPTIONS': case 'FREETEXT-OPTIONS': case "ZONE-PLAYER-OPTIONS":
@@ -2657,6 +2687,35 @@ function addItemsToList(whatToProcess, dataToProcess)
 						break;
 				}
 				break;
+				
+				case 'PLAYERPROFILE_DRAFT-OPTIONS':
+					switch ($('#selected_broadcaster').val().toUpperCase()) {
+						case 'ADT10': 
+						select = document.createElement('select');
+						select.style = 'width:180px';
+						select.id = 'selectDraftRound';
+						select.name = select.id;
+						
+						select.setAttribute('onchange',"processUserSelection(this)");
+						option = document.createElement('option');
+						option.value = '';
+						option.text = 'Select Round';
+
+						select.appendChild(option);
+						if (dataToProcess && dataToProcess.data && dataToProcess.data.roundWise) {
+						    dataToProcess.data.roundWise.forEach(function(round) {
+						        option = document.createElement('option');
+						        option.value = round.roundNo;
+						        option.text = round.roundNo + ' - ' + round.roundName;
+						        select.appendChild(option);
+						    });
+						}
+						row.insertCell(cellCount).appendChild(select);
+						$(select).select2();
+						cellCount = cellCount + 1;
+				          break;
+		                  	} 
+					break
 			case 'PLAYERPROFILE_MAIN-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
 					case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL': case 'UTT_BIGSCREEN':  case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY': 
@@ -3323,6 +3382,10 @@ function addItemsToList(whatToProcess, dataToProcess)
 			case 'PLAYERPROFILE-OPTIONS': case 'PLAYERPROFILE_MAIN-OPTIONS':
 			    option.name = 'populate_playerprofile_btn';
 			    option.value = 'Populate Playerprofile';
+				break;
+			case 'PLAYERPROFILE_DRAFT-OPTIONS':
+				option.name = 'populate_ff_playerprofile_draft_btn';
+				option.value = 'Populate Playerprofile Draft FF';
 				break;
 			case 'FF_PLAYERPROFILE-OPTIONS':
 				option.name = 'populate_ff_playerprofile_btn';

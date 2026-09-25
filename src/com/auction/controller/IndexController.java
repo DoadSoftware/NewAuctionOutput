@@ -44,6 +44,7 @@ import com.auction.containers.Configurations;
 import com.auction.containers.Data;
 import com.auction.containers.Scene;
 import com.auction.model.Auction;
+import com.auction.model.DraftedPlayersSummary;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
 import com.auction.model.Player;
@@ -62,6 +63,7 @@ public class IndexController
 	public static Configurations session_Configurations;
 	public static Auction session_auction;
 	public static Auction session_curr_bid;
+	public static DraftedPlayersSummary session_Draft;
 	public static Socket session_socket;
 	public static Doad this_doad;
 	public static ISPL this_ispl;
@@ -334,6 +336,10 @@ public class IndexController
 	{
 		
 		switch (whatToProcess.toUpperCase()) {
+		case "PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS":
+			session_Draft = new DraftedPlayersSummary();
+			session_Draft = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.DRAFTED_PLAYERS_SUMMARY), DraftedPlayersSummary.class);
+			return objectMapper.writeValueAsString(session_Draft);
 		case "GET-CONFIG-DATA":
 			session_Configurations = (Configurations)JAXBContext.newInstance(Configurations.class).createUnmarshaller().unmarshal(
 					new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.CONFIGURATIONS_DIRECTORY + valueToProcess));
@@ -534,7 +540,7 @@ public class IndexController
 				this_vcl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;	
 			case "ADT10":
-				this_adt10.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				this_adt10.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess, session_Draft);
 				break;
 			case "ILT20":
 				this_ilt20.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
@@ -571,7 +577,8 @@ public class IndexController
 			return (List<T>) session_split;    
 		case "PLAYERPROFILE_GRAPHICS-OPTIONS": case "FF_PLAYERPROFILE_GRAPHICS-OPTIONS": case "LT_PLAYERPROFILE_GRAPHICS-OPTIONS":
 		case "PROFILE_GRAPHICS-OPTIONS": case "PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS": case "FF_BIG_PLAYERPROFILE_GRAPHICS-OPTIONS":
-		    return (List<T>) session_player;
+			return (List<T>) session_player;
+		    
 		case "SQUAD_GRAPHICS-OPTIONS": case "SQUAD_CATEGORY_GRAPHICS-OPTIONS": case "SINGLE_PURSE_GRAPHICS-OPTIONS": case "TOP-SOLD_TEAM_GRAPHICS-OPTIONS": case "GOOGLY_GRAPHICS-OPTIONS":
 		case "LOF_TOP_SOLD_TEAM_GRAPHICS-OPTIONS": case "CRAWL_TOP_SOLD_TEAM_GRAPHICS-OPTIONS": case "SQUAD_PLAYER_GRAPHICS-OPTIONS": case "FF_TOP_SOLD_TEAM_GRAPHICS-OPTIONS":
 		case "LOF_SQUAD_SIZE_CATEGORY_WISE_GRAPHICS-OPTIONS": case "LOF_SQUAD_GRAPHICS-OPTIONS": case "TEAM_CURRENT_BID_GRAPHICS-OPTIONS":
