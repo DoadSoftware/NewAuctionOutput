@@ -5592,7 +5592,7 @@ public class RALLY extends Scene{
 
         String time = currentTime.format(formatter);
         
-        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET INDORE, MADHYA PRADESH\0");
+        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET INDORE, MP\0");
         
 		print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$Time*GEOM*CLOCK*DEPEND SET DEPEND_LOCALTIME\0");
 		
