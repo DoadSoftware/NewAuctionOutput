@@ -109,7 +109,7 @@ public class ADT10 extends Scene{
 	
 	public Object ProcessGraphicOption(String whatToProcess, Auction auction, Auction session_curr_bid, AuctionService auctionService,
 			PrintWriter print_writer, List<Scene> scenes, String valueToProcess, DraftedPlayersSummary session_draft) throws Exception {
-		System.out.println(whatToProcess.toUpperCase());
+		System.out.println("============" +whatToProcess.toUpperCase());
 		switch (whatToProcess.toUpperCase()) {
 		case "POPULATE-FF-PLAYERPROFILE": case "POPULATE-SQUAD": case "POPULATE-REMAINING_PURSE_ALL": case "POPULATE-SINGLE_PURSE": case "POPULATE-TOP_SOLD":
 		case "POPULATE-L3-NAMESUPER": case "POPULATE-TOP_SOLD_TEAM": case "POPULATE-IDENT": case "POPULATE-RTM_AVAILABLE": case "POPULATE-RTM_ENABLED":
@@ -121,10 +121,12 @@ public class ADT10 extends Scene{
 		case "POPULATE-L3-FLIPPER": case "POPULATE-ZONE_PLAYERS_STATS": case "POPULATE-ZONE_PLAYERS_FULL": case "POPULATE-TEAM_CURR_BID": case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION":
 		case "POPULATE-FF_FIVE_TOP_BUY_TEAM": case "POPULATE-ZONEWISE_PLAYERS_SOLD": case "POPULATE-FLIPPER_SQUAD": case "POPULATE-FF_SQUAD_TEAM":
 		case "POPULATE-FF_SQUAD_ROLE_TEAM":case "POPULATE-LOF_TEAM_BID_AUCTION": case "POPULATE-L3-FLIPPER_TEXT": case "POPULATE-PROFILE_FF": 
-		case "LOF_SLOT_CHANGEON": case "POPULATE-PLAYERPROFILE_DRAFT_FF":
+		case "LOF_SLOT_CHANGEON": case "POPULATE-PLAYERPROFILE_DRAFT_FF": case "ROUNDSUMMARY_DRAFT-OPTIONS":
+		
 			
 			switch (session_selected_broadcaster.toUpperCase()) {
 			case "ADT10":
+				System.out.println("COMING HERE");
 				if(which_graphics_onscreen != "") {
 					switch(which_graphics_onscreen) {
 					case "PLAYERPROFILE": 
@@ -170,7 +172,19 @@ public class ADT10 extends Scene{
 							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster, session_draft);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
-					
+				case "ROUNDSUMMARY_DRAFT-OPTIONS":	
+					if(!which_graphics_onscreen.isEmpty()) {
+						whichSideNotProfile = 2;
+					}else {
+						whichSideNotProfile = 1;
+					}
+					System.out.println("COming insdie f6");
+					side2ValueToProcess = valueToProcess;
+					System.out.println( "valueToProcess-------"+valueToProcess);
+					populateRoundSummary(false,print_writer, whichSideNotProfile,Integer.valueOf(valueToProcess) ,
+							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster, session_draft);
+				//	processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
+					break;
 				case "POPULATE-PROFILE_FF":
 					if(!which_graphics_onscreen.isEmpty()) {
 						whichSideNotProfile = 2;
@@ -2978,6 +2992,21 @@ public class ADT10 extends Scene{
 		}
 	}
 	
+	public void populateRoundSummary(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, List<Statistics> stats, Auction auction, 
+			AuctionService auctionService, String session_selected_broadcaster, DraftedPlayersSummary session_draft) throws InterruptedException 
+	{	
+		for(int i=0;i<session_draft.getData().getRoundWise().size()-1;i++) {
+			if(i == playerId) {
+				System.out.println("session-------------------------------------------------------"+session_draft.getData().getRoundWise().get(i-1).getPlayers().toString());
+					
+			}
+				}
+		//System.out.println("COming insdie f6");
+	//	System.out.println("session-------------------------------------------------------"+session_draft.getData().getRoundWise().get(0).getPlayers().toString());
+//		for(int i = 0; i <=session_draft.getData().getRoundWise()-1; i++) {
+//			System.out.println(session_draft.getData().getRoundWise().get);
+//		}
+	}
 	public void populatePlayerProfileDraftFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, List<Statistics> stats, Auction auction, 
 			AuctionService auctionService, String session_selected_broadcaster, DraftedPlayersSummary session_draft) throws InterruptedException 
 	{
@@ -4866,7 +4895,7 @@ public class ADT10 extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side"+whichSide+"$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
 		for(NameSuper ns : auctionService.getNameSupers()) {
 			if(ns.getNamesuperId() == nameSuperId) {
-				
+				System.out.println("SYstem print");
 				if(ns.getSponsor() != null) {
 					
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + whichSide + "$select_LogoBase*FUNCTION*Omo*vis_con SET 1\0");

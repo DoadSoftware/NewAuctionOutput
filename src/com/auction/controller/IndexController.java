@@ -336,7 +336,7 @@ public class IndexController
 	{
 		
 		switch (whatToProcess.toUpperCase()) {
-		case "PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS":
+		case "PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS": case "ROUNDSUMARRY_DRAFT_GRAPHICS-OPTIONS":
 			session_Draft = new DraftedPlayersSummary();
 			session_Draft = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.DRAFTED_PLAYERS_SUMMARY), DraftedPlayersSummary.class);
 			return objectMapper.writeValueAsString(session_Draft);
@@ -540,6 +540,7 @@ public class IndexController
 				this_vcl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;	
 			case "ADT10":
+				System.out.println("indie case");
 				this_adt10.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess, session_Draft);
 				break;
 			case "ILT20":
