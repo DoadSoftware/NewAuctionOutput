@@ -128,10 +128,10 @@ public class Scene {
 			}
 			break;
 		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "VCL":  case "KCL": case "VCL_BIGSCREEN":  case "KCL_BIGSCREEN": case "PWL":
-		case "PSL":	case "UTT_BIGSCREEN": case "ISPL_VIZ":
+		case "PSL":	case "UTT_BIGSCREEN": case "ISPL_VIZ": case "ILT20":
 			switch (whatToProcess) {
 			case "OVERLAYS":
-				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/gfx_Overlays \0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*SCENE_DATA INITIALIZE \0");
 //				print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE SHOW 0.0 \0");
 				break;
