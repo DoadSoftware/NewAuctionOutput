@@ -1,6 +1,5 @@
 package com.auction.broadcaster;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -14,9 +13,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Configuration;
-
-import com.auction.containers.Configurations;
 import com.auction.containers.Data;
 import com.auction.containers.Scene;
 import com.auction.model.Player;
@@ -24,7 +20,6 @@ import com.auction.model.PlayerCount;
 import com.auction.model.Statistics;
 import com.auction.model.StatsType;
 import com.auction.model.Team;
-import com.auction.model.VariousText;
 import com.auction.service.AuctionService;
 import com.auction.model.Auction;
 import com.auction.model.Flipper;
