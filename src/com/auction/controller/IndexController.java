@@ -333,6 +333,8 @@ public class IndexController
 	{
 		
 		switch (whatToProcess.toUpperCase()) {
+		case "RTM_AVAILABLE_GRAPHIC-OPTIONS":
+			return objectMapper.writeValueAsString(session_team);
 		case "PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS": case "ROUNDSUMARRY_DRAFT_GRAPHICS-OPTIONS":
 			session_Draft = new DraftedPlayersSummary();
 			session_Draft = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.DRAFTED_PLAYERS_SUMMARY), DraftedPlayersSummary.class);

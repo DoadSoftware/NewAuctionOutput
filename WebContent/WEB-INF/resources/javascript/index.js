@@ -300,7 +300,18 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;	
 			
 		case 'F8': //POP UP RTM AVAILABLE
-			processAuctionProcedures('POPULATE-RTM_AVAILABLE');
+			switch ($('#selected_broadcaster').val()){
+			case 'ILT20':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('RTM_AVAILABLE_GRAPHIC-OPTIONS');
+				break;
+			default://ISPL
+				processAuctionProcedures('POPULATE-RTM_AVAILABLE');
+				break;
+			}
 			break;
 		case '8': //POP UP RTM ENABLED
 			switch ($('#selected_broadcaster').val()){
@@ -996,9 +1007,13 @@ function processUserSelection(whichInput)
 	case 'populate_zonewisePlayer_sold_btn':case "populate_profile_Change_stats_btn": case 'populate_flipper_squad_btn':case "populate_Squad_team_btn":case "populate_Squad_Role_team_btn":
 	case 'populate_Lof_Team_Bid_btn': case 'populate_profileff_btn': case 'populate_flipper_text_btn': case 'populate_squad_animation_btn': case 'populate_retain_players_squad_btn':
 	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn': case 'populate_ff_playerprofile_draft_btn': case 'populate_roundsummary_draft_btn': case 'populate_pick_order_btn':
+	case 'populate_rtm_available_btn':	
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
+		case 'populate_rtm_available_btn':
+			processAuctionProcedures('POPULATE-TEAM_RTM_AVAILABLE');
+			break;
 		case 'populate_pick_order_btn':
 			processAuctionProcedures('POPULATE-PICKORDER');
 			break;
@@ -1207,7 +1222,10 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-PICKORDER':
 		valueToProcess = $('#text1').val();
-		break;	
+		break;
+	case 'POPULATE-TEAM_RTM_AVAILABLE':
+		valueToProcess = $('#selectTeamName option:selected').val();
+		break;		
 	case 'POPULATE-L3-NAMESUPER':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'ISPL_VIZ':
@@ -1783,6 +1801,10 @@ function processAuctionProcedures(whatToProcess)
 				addItemsToList('POPULATE-TEAM',data);
 				match_data = data;
 				break;
+			case 'RTM_AVAILABLE_GRAPHIC-OPTIONS':
+				addItemsToList('RTM_TEAM-OPTIONS',data);
+				match_data = data;
+				break;
 			case 'TEAM_CURRENT_BID_GRAPHICS-OPTIONS':
 				addItemsToList('TEAM_CURRENT_BID-OPTIONS',null);
 				addItemsToList('POPULATE-TEAM',data);
@@ -1856,7 +1878,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-RIGHT_SUPER': case 'POPULATE-LOCATION': case 'POPULATE-WATERMARK': case 'POPULATE-L3-SPLIT': case 'POPULATE-L3-SPLITPIP':
 			case 'POPULATE-L3-NAMESUPERSS':	case 'POPULATE-BREAKING':
 				
-			case 'POPULATE-PICKORDER':
+			case 'POPULATE-PICKORDER': case 'POPULATE-TEAM_RTM_AVAILABLE':
 			
 				if(whatToProcess == 'POPULATE-RTM_ENABLED' || whatToProcess == 'POPULATE-CURR_BID' || whatToProcess == 'POPULATE-RTM_PLAYER')	{
 					switch(whatToProcess){
@@ -1898,6 +1920,9 @@ function processAuctionProcedures(whatToProcess)
 						$("#auction_div").show();
 						
 			        	switch(whatToProcess) {
+						case 'POPULATE-TEAM_RTM_AVAILABLE':
+							processAuctionProcedures('ANIMATE-IN-TEAM_RTM_AVAILABLE');
+							break;
 						case 'POPULATE-PICKORDER':
 							processAuctionProcedures('ANIMATE-IN-PICKORDER');
 							break;
@@ -2210,7 +2235,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		
 	case'NAMESUPER-OPTIONS': case 'NAMESUPER_PLAYER-OPTIONS':  case'PLAYERPROFILE-OPTIONS': case 'SQUADCATEGORIES-OPTIONS': case 'SQUAD-OPTIONS': case 'SINGLE_PURSE-OPTIONS': 
 	case 'PLAYERPROFILE_MAIN-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS': case 'PLAYERPROFILE_DRAFT-OPTIONS':
-	case 'ROUNDSUMMARY_DRAFT-OPTIONS':
+	case 'ROUNDSUMMARY_DRAFT-OPTIONS': case 'RTM_TEAM-OPTIONS':
 	case 'TOP-SOLD_TEAM-OPTIONS': case 'GOOGLY-OPTIONS': case 'PROFILE_STATS-OPTIONS': case 'LOF_REMAINING_PURSE-OPTIONS': case 'LOF_TOP_SOLD_TEAM-OPTIONS': 
 	case'SQUAD_PLAYER-OPTIONS': case 'FF_PLAYERPROFILE-OPTIONS': case 'FF_TOP_SOLD_TEAM-OPTIONS': case 'LOF_SQUAD_SIZE_CATEGORY_WISE_-OPTIONS': 
 	case 'LT_PLAYERPROFILE-OPTIONS': case 'LT_PP_STATS-OPTIONS': case 'LOF_SQUAD-OPTIONS': case 'FLIPPER-OPTIONS': case 'FREETEXT-OPTIONS': case "ZONE-PLAYER-OPTIONS":
@@ -2249,6 +2274,24 @@ function addItemsToList(whatToProcess, dataToProcess)
 			row = tbody.insertRow(tbody.rows.length);
 			
 			switch(whatToProcess){
+				case 'RTM_TEAM-OPTIONS':
+					select = document.createElement('select');
+					select.id = 'selectTeamName';
+					select.name = select.id;
+					select.style.width = 'auto';
+					select.style.height = '28px';
+					
+					dataToProcess.forEach(function(team){
+						option = document.createElement('option');
+						option.value = team.teamId;
+						option.text = team.teamName1;
+						select.appendChild(option);
+					});
+					
+					select.setAttribute('onchange',"processUserSelection(this)");
+					row.insertCell(cellCount).appendChild(select);
+					cellCount = cellCount + 1;
+					break;
 				case 'PICKORDER-OPTIONS':
 					select = document.createElement('input');
 					select.type = "text";
@@ -3626,6 +3669,10 @@ function addItemsToList(whatToProcess, dataToProcess)
 				break;
 			case 'PICKORDER-OPTIONS':
 				option.name = 'populate_pick_order_btn';
+			    option.value = 'Populate';
+				break;
+			case 'RTM_TEAM-OPTIONS':
+				option.name = 'populate_rtm_available_btn';
 			    option.value = 'Populate';
 				break;			
 			case "LOF_TEAM_BID_OPTIONS":
