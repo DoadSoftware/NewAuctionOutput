@@ -200,7 +200,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			
 		case 'F5': //FF SQUAD SIZE, RTM AVAILABLE, PURSE REM
 			switch ($('#selected_broadcaster').val()){
-			case 'PSL':
+			case 'ADT10':
+				processAuctionProcedures('POPULATE-FF_WINDOW');
 				break;
 			default:
 				processAuctionProcedures('POPULATE-FF_RTM_AND_PURSE_REMAINING');
@@ -1325,8 +1326,13 @@ function processAuctionProcedures(whatToProcess)
 				+ ',' + $('#PlayerData option:selected').val();
 			break;
 		case 'ADT10':
-			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectTeamData option:selected').val() 
-							+ ',' + $('#selectTeamName option:selected').val();
+			if(undefined == $('#selectTeamName option:selected').val()){
+				valueToProcess = $('#selectPlayerName option:selected').val()  + ',' + $('#selectTeamData option:selected').val() 
+											+ ',' + 0 + ',' + $('#selectl3Profile option:selected').val();
+			}else{
+				valueToProcess = $('#selectPlayerName option:selected').val()  + ',' + $('#selectTeamData option:selected').val() 
+											+ ',' + $('#selectTeamName option:selected').val()+ ',' + $('#selectl3Profile option:selected').val();
+			}
 			break;	
 		}
 		break;
@@ -1517,6 +1523,7 @@ function processAuctionProcedures(whatToProcess)
 	case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION":case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
 		valueToProcess = $('#selectImage option:selected').val();
 		break;
+	
 	case "POPULATE-LOF_TEAM_BID_AUCTION":
 			valueToProcess = selectedArray.join(",");
 		break;
@@ -1870,7 +1877,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-FF_RTM_AND_PURSE_REMAINING': case 'POPULATE-FF_TOP_BUYS_AUCTION': case 'POPULATE-TEAM_CURR_BID': case 'POPULATE-FF_ICONIC_PLAYERS': 
 			case 'POPULATE-FF_FIVE_TOP_BUYS_AUCTION': case 'POPULATE-FF_SINGLEPURSE_TEAM': case "POPULATE-FF_SQUAD_TEAM": case 'POPULATE-LT_ICONIC_PLAYERS': 
 			case 'POPULATE-PLAYERPROFILE_LT': case 'POPULATE-PLAYERPROFILE_LT_STATS': case 'POPULATE-ZONEWISE_PLAYERS_SOLD': case "POPULATE-LOF_TEAM_BID_AUCTION": 
-			case 'POPULATE-ZONE_PLAYERS_FULL':case 'POPULATE-LOF_CATRGORY':
+			case 'POPULATE-ZONE_PLAYERS_FULL':case 'POPULATE-LOF_CATRGORY': case 'POPULATE-FF_WINDOW':
 			
 			case 'POPULATE-CRAWL-PURSE_REMAINING': case 'POPULATE-CRAWL-SQUAD_SIZE': case'POPULATE-CRAWL_TOP_SOLD':
 			case 'POPULATE-PURSE_SIZE_ALL': case 'POPULATE-PURSE_SLOT_ALL':
@@ -2058,6 +2065,9 @@ function processAuctionProcedures(whatToProcess)
 							break;
 						case 'POPULATE-FF_RTM_AND_PURSE_REMAINING':
 							processAuctionProcedures('ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING');
+							break;
+						case 'POPULATE-FF_WINDOW':
+							processAuctionProcedures('ANIMATE-IN-FF_WINDOW');
 							break;
 						case 'POPULATE-FF_TOP_BUYS_AUCTION':
 							processAuctionProcedures('ANIMATE-IN-FF_TOP_BUYS_AUCTION');
@@ -3028,6 +3038,40 @@ function addItemsToList(whatToProcess, dataToProcess)
 								select.setAttribute('onchange',"processUserSelection(this)");
 								row.insertCell(cellCount).appendChild(select);
 								cellCount = cellCount + 1;
+								
+								select = document.createElement('select');
+								select.id = 'selectl3Profile';
+								select.name = select.id;
+
+								option = document.createElement('option');
+								option.value = 'T20s';
+								option.text = 'T20';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'FC';
+								option.text = 'FC';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'LIST_A';
+								option.text = 'LIST A';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'ADT10';
+								option.text = 'ADT10';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'u19_ODI';
+								option.text = 'u19 ODI';
+								select.appendChild(option);
+
+								select.setAttribute('onchange', "processUserSelection(this)");
+
+								row.insertCell(cellCount).appendChild(select);
+								cellCount = cellCount + 1
 								break;
 							}
 						}
