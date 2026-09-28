@@ -1,6 +1,7 @@
 com\auction\broadcaster\Doad.class
 com\auction\broadcaster\UTT_VIZ.class
 com\auction\controller\IndexController$1.class
+com\auction\containers\PickOrderData.class
 com\auction\broadcaster\RALLY.class
 com\auction\broadcaster\ILT20.class
 com\auction\broadcaster\VCL.class
