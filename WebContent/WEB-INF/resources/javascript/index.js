@@ -608,7 +608,14 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#cancel_match_setup_btn").hide();
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
-			processAuctionProcedures('LT_PLAYERPROFILE_GRAPHICS-OPTIONS');
+			switch($('#selected_broadcaster').val()){
+				case 'ADT10':
+					processAuctionProcedures('NAMESUPER_PLAYER_GRAPHICS-OPTIONS');
+					break;
+				default:
+					processAuctionProcedures('LT_PLAYERPROFILE_GRAPHICS-OPTIONS');
+					break;
+			}
 			break;
 		case 'b': //LT PLAYER PROFILE STATS
 			switch ($('#selected_broadcaster').val()){
@@ -1328,10 +1335,10 @@ function processAuctionProcedures(whatToProcess)
 		case 'ADT10':
 			if(undefined == $('#selectTeamName option:selected').val()){
 				valueToProcess = $('#selectPlayerName option:selected').val()  + ',' + $('#selectTeamData option:selected').val() 
-											+ ',' + 0 + ',' + $('#selectl3Profile option:selected').val();
+											+ ',' + 0 + ',' + $('#selectl3Profile option:selected').val() + ',' + $('#selectCategory option:selected').val();
 			}else{
 				valueToProcess = $('#selectPlayerName option:selected').val()  + ',' + $('#selectTeamData option:selected').val() 
-											+ ',' + $('#selectTeamName option:selected').val()+ ',' + $('#selectl3Profile option:selected').val();
+											+ ',' + $('#selectTeamName option:selected').val()+ ',' + $('#selectl3Profile option:selected').val() + ',' + $('#selectCategory option:selected').val();
 			}
 			break;	
 		}
@@ -1363,6 +1370,13 @@ function processAuctionProcedures(whatToProcess)
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ":  case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'VCL': case 'ILT20': case 'ADT10': 
 		case 'MUMBAI_T20_BIGSCREEN': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
 			valueToProcess = $('#selectShowData option:selected').val();
+			break;
+		}
+		break;
+	case 'POPULATE-L3-NAMESUPER-PLAYER':
+		switch ($('#selected_broadcaster').val().toUpperCase()) {
+		case 'ADT10':
+			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectTeamData option:selected').val() + ',' + $('#selectShowData option:selected').val();
 			break;
 		}
 		break;
@@ -1667,9 +1681,13 @@ function processAuctionProcedures(whatToProcess)
 				break;
 			case 'NAMESUPER_PLAYER_GRAPHICS-OPTIONS':
 				addItemsToList('NAMESUPER_PLAYER-OPTIONS',data);
-				addItemsToList('POPULATE-PLAYER',data);
+				processAuctionProcedures('NAMESUPER_TEAMSDATA_GRAPHICS-OPTIONS');
 				match_data = data;
 				break;
+			case 'NAMESUPER_TEAMSDATA_GRAPHICS-OPTIONS':
+				addItemsToList('NAMESUPER_TEAMSDATA',data);
+				match_data = data;
+				break;	
 			case 'PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS':
 				addItemsToList('PLAYERPROFILE_MAIN-OPTIONS',data);
 				addItemsToList('POPULATE-PROFILE',data);
@@ -1877,7 +1895,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-FF_RTM_AND_PURSE_REMAINING': case 'POPULATE-FF_TOP_BUYS_AUCTION': case 'POPULATE-TEAM_CURR_BID': case 'POPULATE-FF_ICONIC_PLAYERS': 
 			case 'POPULATE-FF_FIVE_TOP_BUYS_AUCTION': case 'POPULATE-FF_SINGLEPURSE_TEAM': case "POPULATE-FF_SQUAD_TEAM": case 'POPULATE-LT_ICONIC_PLAYERS': 
 			case 'POPULATE-PLAYERPROFILE_LT': case 'POPULATE-PLAYERPROFILE_LT_STATS': case 'POPULATE-ZONEWISE_PLAYERS_SOLD': case "POPULATE-LOF_TEAM_BID_AUCTION": 
-			case 'POPULATE-ZONE_PLAYERS_FULL':case 'POPULATE-LOF_CATRGORY': case 'POPULATE-FF_WINDOW':
+			case 'POPULATE-ZONE_PLAYERS_FULL':case 'POPULATE-LOF_CATRGORY': case 'POPULATE-FF_WINDOW': case 'POPULATE-L3-NAMESUPER-PLAYER':
 			
 			case 'POPULATE-CRAWL-PURSE_REMAINING': case 'POPULATE-CRAWL-SQUAD_SIZE': case'POPULATE-CRAWL_TOP_SOLD':
 			case 'POPULATE-PURSE_SIZE_ALL': case 'POPULATE-PURSE_SLOT_ALL':
@@ -2101,6 +2119,9 @@ function processAuctionProcedures(whatToProcess)
 						case 'POPULATE-ZONE_PLAYERS_FULL':
 							processAuctionProcedures('ANIMATE-IN-ZONE-PLAYER_FULL');
 							break;
+						case 'POPULATE-L3-NAMESUPER-PLAYER':
+							processAuctionProcedures('ANIMATE-L3-NAMESUPER-PLAYER');
+							break;
 						case 'POPULATE-TEAM_CURR_BID':
 							processAuctionProcedures('ANIMATE-IN-TEAM_CURR_BID');
 							break;
@@ -2219,7 +2240,16 @@ function addItemsToList(whatToProcess, dataToProcess)
 		});
 		
 		break;*/
-		
+	case 'NAMESUPER_TEAMSDATA':
+		$('#selectTeamData').empty();
+				dataToProcess.forEach(function(tm,index,arr1){
+					$('#selectTeamData').append(
+						$(document.createElement('option')).prop({
+						value: tm.teamId,
+						text: tm.teamName1
+					}))
+				});
+		break;
 	case 'POPULATE-PLAYER':
 		$('#selectPlayer').empty();
 		if(dataToProcess.homeTeamId ==  $('#selectTeam option:selected').val()){
@@ -2789,6 +2819,51 @@ function addItemsToList(whatToProcess, dataToProcess)
 				
 			case 'NAMESUPER_PLAYER-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
+					case 'ADT10':
+						select = document.createElement('select');
+						select.id = 'selectPlayerName';
+						select.name = select.id;
+						
+						dataToProcess.forEach(function(tm) {
+					        option = document.createElement('option');
+					        option.value = tm.playerId;
+					        option.text = tm.full_name;
+					        select.appendChild(option);
+					    });
+						
+						select.setAttribute('onchange',"processUserSelection(this)");
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						
+						select = document.createElement('select');
+						select.style = 'width:150px';
+						select.id = 'selectTeamData';
+						select.name = select.id;
+						
+						select.setAttribute('onchange',"processUserSelection(this)");
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+											
+						select = document.createElement('select');
+						select.style = 'width:150px';
+						select.id = 'selectShowData';
+						select.name = select.id;
+						
+						option = document.createElement('option');
+						option.value = 'With_Photo';
+						option.text = 'With Photo';
+						select.appendChild(option);
+						
+						option = document.createElement('option');
+						option.value = 'WithOut_Photo';
+						option.text = 'WithOut Photo';
+						select.appendChild(option);
+						
+						select.setAttribute('onchange',"processUserSelection(this)");
+						row.insertCell(cellCount).appendChild(select);
+						cellCount = cellCount + 1;
+						break;
+						
 					case 'DOAD_IN_HOUSE_EVEREST': case 'DOAD_IN_HOUSE_VIZ':
 						select = document.createElement('select');
 						select.id = 'selectTeam';
@@ -2829,7 +2904,6 @@ function addItemsToList(whatToProcess, dataToProcess)
 						
 						row.insertCell(cellCount).appendChild(select);
 						cellCount = cellCount + 1;
-						
 						break;
 				}
 				break;
@@ -3072,6 +3146,54 @@ function addItemsToList(whatToProcess, dataToProcess)
 
 								row.insertCell(cellCount).appendChild(select);
 								cellCount = cellCount + 1
+								
+								select = document.createElement('select');
+								select.id = 'selectCategory';
+								select.name = select.id;
+								
+								option = document.createElement('option');
+								option.value = 'ICON';
+								option.text = 'ICON';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'PLATINUM';
+								option.text = 'PLATINUM';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'UAE_STAR';
+								option.text = 'UAE STAR';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'CATEGORY_A';
+								option.text = 'CATEGORY A';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'CATEGORY_B';
+								option.text = 'CATEGORY B';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'CATEGORY_C';
+								option.text = 'CATEGORY C';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'UAE_EMERGING_U21';
+								option.text = 'UAE EMERGING - U21';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'ASSOCIATE_HERO';
+								option.text = 'ASSOCIATE HERO';
+								select.appendChild(option);
+
+								select.setAttribute('onchange', "processUserSelection(this)");
+								row.insertCell(cellCount).appendChild(select);
+								cellCount = cellCount + 1;
 								break;
 							}
 						}
