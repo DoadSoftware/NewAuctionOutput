@@ -28,7 +28,7 @@ public class ILT20_BIGSCREEN extends Scene{
 	public String session_selected_broadcaster = "ILT20_BIGSCREEN";
 	public String session_photo_option = "WITH_PHOTO";
 	public Data data = new Data();
-	public String which_graphics_onscreen = "",which_data="", rtm_googly_on_screen = "",which_stat = "";
+	public String which_graphics_onscreen = "",which_data="", rtm_googly_on_screen = "",which_stat = "",which_Datas = "";
 	public int current_layer = 2, whichSide = 1, whichSideNotProfile=1, rowHighlight = 1,prevRowHighlight = 1, rtmGooglyWhichSide = 1;
 	public int player_id = 0,team_id=0,player_number=0;
 	public int zoneSize = 0, current_index = 0,side2val = 0;
@@ -82,12 +82,35 @@ public class ILT20_BIGSCREEN extends Scene{
 	
 	public Data updateData(Auction auction, Auction session_curr_bid,AuctionService auctionService, PrintWriter print_writer) throws NumberFormatException, Exception
 	{
+		System.out.println("update_gfx === " + update_gfx);
 		if(update_gfx == true) {
+			System.out.println("which_graphics_onscreen === " + which_graphics_onscreen);
 			if(which_graphics_onscreen.equalsIgnoreCase("IDENT")) {
 				populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-				populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
-						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+//				populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
+//						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+				
+				if(data.isData_on_screen()) {
+					if(data.isPlayer_sold_or_unsold() == false) {
+						populatePlayerProfileFF(true,print_writer, 1, data.getPlayer_id(), side2ValueToProcess.split(",")[1],side2ValueToProcess.split(",")[2], 
+								auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+//						populatePlayerProfile(true, print_writer, 2, data.getPlayer_id(),auctionService.getAllStats(), auction, 
+//								session_curr_bid, auctionService, session_selected_broadcaster);
+					}
+					
+					if(data.getPreviousBid() < session_curr_bid.getCurrentPlayers().getSoldForPoints() || 
+							data.getPreviousBid() > session_curr_bid.getCurrentPlayers().getSoldForPoints()) {
+						data.setPreviousBid(session_curr_bid.getCurrentPlayers().getSoldForPoints());
+						
+						BidChangeOn(print_writer, session_curr_bid, data.getWhichside());
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Current_PriceValue START \0");
+						TimeUnit.MILLISECONDS.sleep(1000);
+						BidChangeOn(print_writer, session_curr_bid, 1);
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Current_PriceValue SHOW 0.0 \0");
+					}
+				}
+				
 			}else if(which_graphics_onscreen.equalsIgnoreCase("FF_TOP_BUYS_AUCTION")) {
 				populateFFTopBuysAuction(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("FF_FIVE_TOP_BUYS_AUCTION")) {
@@ -158,8 +181,9 @@ public class ILT20_BIGSCREEN extends Scene{
 					}else {
 						whichSideNotProfile = 1;
 					}
+					data.setPlayer_id(Integer.valueOf(valueToProcess.split(",")[0]));
 					side2ValueToProcess = valueToProcess;
-					populatePlayerProfileFF(false,print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]), valueToProcess.split(",")[1], 
+					populatePlayerProfileFF(false,print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]), valueToProcess.split(",")[1],valueToProcess.split(",")[2], 
 							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
@@ -376,7 +400,15 @@ public class ILT20_BIGSCREEN extends Scene{
 			switch (session_selected_broadcaster.toUpperCase()) {
 			case "ILT20_BIGSCREEN":
 				switch (whatToProcess.toUpperCase()) {
-				
+				case "ANIMATE-IN-CURR_BID":
+					populateCurrentBid(print_writer, 1);
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Current_Price START \0");
+					
+					data.setBid_Start_or_not(true);
+					data.setBid_result("BID");
+					//TimeUnit.MILLISECONDS.sleep(2500);
+					//populateCurrentBid(print_writer, 1);
+					break;
 				case "ANIMATE-IN-TOP_SOLD":
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*In START \0");
 					which_graphics_onscreen = "TOP_SOLD";
@@ -480,6 +512,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					}else {
 						System.out.println("which_graphics_onscreen = " + which_graphics_onscreen + "      whatToProcess = " + whatToProcess);
 						ChangeOn(print_writer, which_graphics_onscreen, whatToProcess);
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
 						switch (whatToProcess.toUpperCase()) {
 						case "ANIMATE-IN-IDENT":
 							populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
@@ -488,8 +521,23 @@ public class ILT20_BIGSCREEN extends Scene{
 							populateSingleTeam(print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), auction, auctionService, valueToProcess);
 							break;
 						case "ANIMATE-IN-PLAYERPROFILE_FF":
-							populatePlayerProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
+							
+							if(data.isPlayer_sold_or_unsold() == false) {
+								data.setBid_result("GAVEL");
+							}else {
+								print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Move_For_FinalStatus START \0");
+								if(data.getBid_result().equalsIgnoreCase(AuctionUtil.UNSOLD)) {
+									print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*ChangeForUnsold START \0");
+								}
+							}
+							isProfileStatsOnScreen = true;
+							data.setData_on_screen(true);
+							
+							populatePlayerProfileFF(false,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1],side2ValueToProcess.split(",")[2], 
 									auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+							
+							
+							TimeUnit.MILLISECONDS.sleep(1500);
 							break;
 						case "ANIMATE-IN-PROFILE_FF":
 							populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
@@ -579,6 +627,11 @@ public class ILT20_BIGSCREEN extends Scene{
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*EndFlare SHOW 0.0 \0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Audio SHOW 0.0 \0");
 					
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Sold SHOW 0\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Unsold SHOW 0\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Current_Price SHOW 0\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*FadeForOutcome SHOW 0\0");
+					
 					rtm_googly_on_screen = "";
 		            which_graphics_onscreen = "";
 		            side2ValueToProcess ="";
@@ -594,7 +647,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					TimeUnit.MILLISECONDS.sleep(1000);
 					
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
 					
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START\0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START\0");
@@ -678,6 +731,14 @@ public class ILT20_BIGSCREEN extends Scene{
 							break;
 						case "PLAYERPROFILE_FF":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Out START\0");
+							
+							if(data.isBid_Start_or_not()) {
+								print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Current_Price CONTINUE\0");
+							}
+							data.setBid_Start_or_not(false);
+							data.setPlayer_sold_or_unsold(false);
+							data.setData_on_screen(false);
+							data.setBid_result("");
 							break;
 						case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuys$Change_Out START\0");
@@ -735,6 +796,11 @@ public class ILT20_BIGSCREEN extends Scene{
 							break;
 						case "PLAYERPROFILE_FF":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Profile SHOW 0\0");
+							
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Sold SHOW 0\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Unsold SHOW 0\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Current_Price SHOW 0\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*FadeForOutcome SHOW 0\0");
 							break;
 						case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$TopBuys SHOW 0\0");
@@ -1341,9 +1407,8 @@ public class ILT20_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$SinglePurse$Change_In START\0");
 			break;	
 		case "ANIMATE-IN-PLAYERPROFILE_FF": case "ANIMATE-IN-PROFILE_FF":
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
 			if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Inn  START\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_In  START\0");
 			}
 			break;
 		case "ANIMATE-IN-FF_TOP_BUYS_AUCTION": case "ANIMATE-IN-FF_TOP_BUY_TEAM":
@@ -1404,6 +1469,8 @@ public class ILT20_BIGSCREEN extends Scene{
 					break;
 				case "ANIMATE-IN-PLAYERPROFILE_FF": case "ANIMATE-IN-PROFILE_FF":
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Profile SHOW 2.480\0");
+					
+					TimeUnit.MILLISECONDS.sleep(500);
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0.0\0");
 					break;
 				case "ANIMATE-IN-REMAINING_PURSE_ALL":case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
@@ -1547,7 +1614,7 @@ public class ILT20_BIGSCREEN extends Scene{
 			
 			data.setPlayer_sold_or_unsold(false);
 			
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0\0");
+//			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0\0");
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Logo SHOW 0\0");
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionStaus SHOW 0\0");
 			
@@ -1555,8 +1622,8 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-				 "CATEGORY: " 	+ " " + auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
+//		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+//				 "CATEGORY: " 	+ " " + auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
 		
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
@@ -1609,9 +1676,23 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Side1$"
 				+ "Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Side1$"
-				+ "Select_Value$txt_Value*GEOM*TEXT SET " +  
-				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000")).replace(".00", "")+ " L"+"\0");
+		
+		if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("10")) {
+			data.setPreviousBid(10000);
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Side1$"
+					+ "Select_Value$txt_Value*GEOM*TEXT SET " +  
+					AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000")).replace(".00", "")+ " L"+"\0");
+			
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 10 K" + " \0");
+		}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("40")) {
+			data.setPreviousBid(40000);
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 40 K" + " \0");
+		}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("80")) {
+			data.setPreviousBid(80000);
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 80 K" + " \0");
+		}
+		
+		
 		
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$"
 //				+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 0\0");
@@ -1774,158 +1855,164 @@ public class ILT20_BIGSCREEN extends Scene{
 		}
 	}
 	
-	public void populatePlayerProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats, List<Statistics> stats, Auction auction, 
+	public void populatePlayerProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats,String showData, List<Statistics> stats, Auction auction, 
 			AuctionService auctionService, String session_selected_broadcaster) throws InterruptedException 
 	{
 		if(is_this_updating == false) {
 			
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
-				update_gfx = false;
+				update_gfx = true;
 			}
 			data.setPlayer_sold_or_unsold(false);
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0\0");
+//			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0\0");
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Logo SHOW 0\0");
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionStaus SHOW 0\0");
 			
-		}
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-		
-		if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_FirstName*GEOM*TEXT SET " 
-					+ auctionService.getAllPlayer().get(playerId - 1).getFirstname() + "\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_LastName*GEOM*TEXT SET " 
-					+ auctionService.getAllPlayer().get(playerId - 1).getSurname() + "\0");
-		}else {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_FirstName*GEOM*TEXT SET " + "" + "\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_LastName*GEOM*TEXT SET " 
-					+ auctionService.getAllPlayer().get(playerId - 1).getFirstname() + "\0");
-		}
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Flag_Icon$img_Flag"
-				+ "*TEXTURE*IMAGE SET " + flag_path + auctionService.getAllPlayer().get(playerId - 1).getNationality() + "\0");
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Flag_Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + 
-				styleIcons(auctionService.getAllPlayer().get(playerId - 1)) + "\0");
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Player$img_Player"
-				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$BasePriceGrp$"
-				+ "txt_BasePriceHead*GEOM*TEXT SET BASE PRICE\0");
-		
-		if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("10")) {
+			if(showData.equalsIgnoreCase("WITH_STAT")) {
+				which_Datas = "$WithStat";
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$select_Stat"
+						+ "*FUNCTION*Omo*vis_con SET 1\0");
+				
+				switch (show_stats) {
+				case "DT20": case "ILT20":
+//					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Career$txt_Career*GEOM*TEXT SET " 
+//							+ (show_stats.equalsIgnoreCase("T20s") ? "T20 CAREER" : "ILT20") + "\0");
+					
+					statsType = auctionService.getStatsTypes().stream().filter(stype -> stype.getStats_short_name().equalsIgnoreCase(show_stats)).findAny().orElse(null);
+					stat = auctionService.getAllStats().stream().filter(st -> st.getPlayer_id() == playerId && statsType.getStats_id() == st.getStats_type_id()).findAny().orElse(null);
+					
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$1$txt_StatHead*GEOM*TEXT SET MATCHES\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$1$txt_StatValue*GEOM*TEXT SET " 
+							+ (stat.getMatches().equalsIgnoreCase("0") ? "-" : stat.getMatches()) + "\0");
+					
+					switch (auctionService.getAllPlayer().get(playerId - 1).getRole().toUpperCase()) {
+					case "BATSMAN": case "BAT/KEEPER": case "WICKET-KEEPER":
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatHead*GEOM*TEXT SET RUNS\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
+						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatHead*GEOM*TEXT SET STRIKE RATE\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getStrikeRate().equalsIgnoreCase("0") ? "-" : stat.getStrikeRate()) + "\0");
+						break;
+
+					case "BOWLER":
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatHead*GEOM*TEXT SET WICKETS\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
+						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatHead*GEOM*TEXT SET ECONOMY\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getEconomy().equalsIgnoreCase("0") ? "-" : stat.getEconomy()) + "\0");
+						break;
+					case "ALL-ROUNDER":
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatHead*GEOM*TEXT SET RUNS\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$2$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
+						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatHead*GEOM*TEXT SET WICKETS\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$StatGrp$3$txt_StatValue*GEOM*TEXT SET " 
+								+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
+					}
+					break;
+				}
+				
+			}else {
+				which_Datas = "$WithoutStat";
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$select_Stat"
+						+ "*FUNCTION*Omo*vis_con SET 0\0");
+			}
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
+			
+			if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_FirstName*GEOM*TEXT SET " 
+						+ auctionService.getAllPlayer().get(playerId - 1).getFirstname() + "\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_LastName*GEOM*TEXT SET " 
+						+ auctionService.getAllPlayer().get(playerId - 1).getSurname() + "\0");
+			}else {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_FirstName*GEOM*TEXT SET " + "" + "\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_LastName*GEOM*TEXT SET " 
+						+ auctionService.getAllPlayer().get(playerId - 1).getFirstname() + "\0");
+			}
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Flag_Icon$img_Flag"
+					+ "*TEXTURE*IMAGE SET " + flag_path + auctionService.getAllPlayer().get(playerId - 1).getNationality() + "\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Flag_Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + 
+					styleIcons(auctionService.getAllPlayer().get(playerId - 1)) + "\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Player$img_Player"
+					+ "*TEXTURE*IMAGE SET "+ photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Player$img_Player"
+					+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
+			
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$BasePriceGrp$"
-					+ "txt_BasePriceValue*GEOM*TEXT SET $10K\0");
-		}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("40")) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$BasePriceGrp$"
-					+ "txt_BasePriceValue*GEOM*TEXT SET $40K\0");
-		}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("80")) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome$BasePriceGrp$"
-					+ "txt_BasePriceValue*GEOM*TEXT SET $80K\0");
+					+ "txt_BasePriceHead*GEOM*TEXT SET BASE PRICE\0");
+			
+			if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("10")) {
+				data.setPreviousBid(10000);
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$BasePriceGrp$"
+						+ "txt_BasePriceValue*GEOM*TEXT SET $10K\0");
+			}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("40")) {
+				data.setPreviousBid(40000);
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$BasePriceGrp$"
+						+ "txt_BasePriceValue*GEOM*TEXT SET $40K\0");
+			}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("80")) {
+				data.setPreviousBid(80000);
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$BasePriceGrp$"
+						+ "txt_BasePriceValue*GEOM*TEXT SET $80K\0");
+			}
 		}
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$"
-				+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 0\0");
 		
 		if(auction.getPlayers() != null) {
 			for(Player auc : auction.getPlayers()) {
 				if(auc.getPlayerId() == playerId) {
-					switch(auc.getSoldOrUnsold()) {
-					case AuctionUtil.SOLD: case AuctionUtil.RTM:
-						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*FadeForOutcome START \0");
-						TimeUnit.MILLISECONDS.sleep(1000);
-						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Sold START \0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
-//								+ "Select_Value*FUNCTION*Omo*vis_con SET 0\0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$"
-//								+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 1\0");
-						
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
-//								+ "Select_Value$txt_Title*GEOM*TEXT SET " +(auc.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD)
-//										? "SOLD" : "SOLD-RTM") + "\0");
-						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Sold$"
-								+ "Text$txt_SoldPrice*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints())+" K"+"\0");
-						
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
-//								+ "img_Base2*TEXTURE*IMAGE SET "+base_path_2+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
-//								+ "img_Base1*TEXTURE*IMAGE SET "+base_path_1+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
-//								+ "img_Text1*TEXTURE*IMAGE SET "+text_path_1+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Sold$TeamBadge$"
-								+ "img_Badges*TEXTURE*IMAGE SET "+logo_path + auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
-						break;
-					case AuctionUtil.UNSOLD:
-						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*FadeForOutcome START \0");
-						TimeUnit.MILLISECONDS.sleep(1000);
-						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Unsold START \0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
-//								+ "Select_Value*FUNCTION*Omo*vis_con SET 1\0");
-						break;
+					if(data.isPlayer_sold_or_unsold() == false) {
+						switch(auc.getSoldOrUnsold()) {
+						case AuctionUtil.SOLD: case AuctionUtil.RTM:
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*FadeForOutcome START \0");
+							TimeUnit.MILLISECONDS.sleep(1000);
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Sold START \0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
+//									+ "Select_Value*FUNCTION*Omo*vis_con SET 0\0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$"
+//									+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 1\0");
+							
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
+//									+ "Select_Value$txt_Title*GEOM*TEXT SET " +(auc.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD)
+//											? "SOLD" : "SOLD-RTM") + "\0");
+							
+							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Sold$"
+									+ "Text$txt_SoldPrice*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints())+" K"+"\0");
+							
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
+//									+ "img_Base2*TEXTURE*IMAGE SET "+base_path_2+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
+//									+ "img_Base1*TEXTURE*IMAGE SET "+base_path_1+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
+//									+ "img_Text1*TEXTURE*IMAGE SET "+text_path_1+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
+							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Sold$TeamBadge$"
+									+ "img_Badges*TEXTURE*IMAGE SET "+logo_path + auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
+							
+							data.setPlayer_sold_or_unsold(true);
+							break;
+						case AuctionUtil.UNSOLD:
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*FadeForOutcome START \0");
+							TimeUnit.MILLISECONDS.sleep(1000);
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Unsold START \0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$BasePrice$"
+//									+ "Select_Value*FUNCTION*Omo*vis_con SET 1\0");
+							
+							data.setPlayer_sold_or_unsold(true);
+							break;
+						}
 					}
 					break;
 				}
 			}
-		}
-		
-		
-		
-		switch (show_stats) {
-		case "T20": case "ILT20":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Career$txt_Career*GEOM*TEXT SET " 
-					+ (show_stats.equalsIgnoreCase("T20") ? "T20 CAREER" : "ILT20") + "\0");
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$1*ACTIVE SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3*ACTIVE SET 1\0");
-			
-			statsType = auctionService.getStatsTypes().stream().filter(stype -> stype.getStats_short_name().equalsIgnoreCase(show_stats)).findAny().orElse(null);
-			stat = auctionService.getAllStats().stream().filter(st -> st.getPlayer_id() == playerId && statsType.getStats_id() == st.getStats_type_id()).findAny().orElse(null);
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$1$txt_StatHead*GEOM*TEXT SET MATCHES\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$1$txt_StatValue*GEOM*TEXT SET " 
-					+ (stat.getMatches().equalsIgnoreCase("0") ? "-" : stat.getMatches()) + "\0");
-			
-			switch (auctionService.getAllPlayer().get(playerId - 1).getRole().toUpperCase()) {
-			case "BATSMAN": case "BAT/KEEPER": case "WICKET-KEEPER":
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatHead*GEOM*TEXT SET RUNS\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
-				
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatHead*GEOM*TEXT SET STRIKE RATE\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getStrikeRate().equalsIgnoreCase("0") ? "-" : stat.getStrikeRate()) + "\0");
-				break;
-
-			case "BOWLER":
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatHead*GEOM*TEXT SET WICKETS\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
-				
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatHead*GEOM*TEXT SET ECONOMY\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getEconomy().equalsIgnoreCase("0") ? "-" : stat.getEconomy()) + "\0");
-				break;
-			case "ALL-ROUNDER":
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatHead*GEOM*TEXT SET RUNS\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
-				
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatHead*GEOM*TEXT SET WICKETS\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3$txt_StatValue*GEOM*TEXT SET " 
-						+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
-			}
-			break;
-		default:
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Career$txt_Career*GEOM*TEXT SET \0");
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$1*ACTIVE SET 0\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$3*ACTIVE SET 0\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatHead*GEOM*TEXT SET AGE\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-					+ auctionService.getAllPlayer().get(playerId - 1).getAge() + "\0");
-			break;
 		}
 	}
 	
@@ -3891,6 +3978,29 @@ public class ILT20_BIGSCREEN extends Scene{
 	public void processAnimation(PrintWriter print_writer, String animationName,String animationCommand, String which_broadcaster,int which_layer)
 	{
 		print_writer.println("-1 RENDERER*STAGE*DIRECTOR*In START \0");
+	}
+	
+	public void populateCurrentBid(PrintWriter print_writer,int which_side) {
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side1$txt_CurrentPrice_Value"
+				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side2$txt_CurrentPrice_Value"
+				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$txt_CurrentPrice_Head"
+				+ "*GEOM*TEXT SET CURRENT BID\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$txt_PriceUnit"
+				+ "*GEOM*TEXT SET K\0");
+		
+//		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$RightDataGrp$Side" + which_side + "$CurrentBid$ValueGrp$Value"
+//				+ "$Side2$txt_CurrentBid*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+	}
+	
+	public void BidChangeOn(PrintWriter print_writer, Auction session_curr_bid, int which_side) {
+		if(data.isBid_Start_or_not()) {
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side" + which_side + "$txt_CurrentPrice_Value"
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+		}
 	}
 	
 	public void resetData(PrintWriter print_writer) {

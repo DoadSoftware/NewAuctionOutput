@@ -3352,6 +3352,46 @@ function addItemsToList(whatToProcess, dataToProcess)
 								row.insertCell(cellCount).appendChild(select);
 								cellCount = cellCount + 1;
 								break;
+							case 'ILT20_BIGSCREEN':
+								select = document.createElement('select');
+								select.id = 'selectShowProfileStats';
+								select.name = select.id;
+
+								option = document.createElement('option');
+								option.value = 'ILT20';
+								option.text = 'ILT20';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'DT20';
+								option.text = 'T20';
+								select.appendChild(option);
+								
+								select.setAttribute('onchange', "processUserSelection(this)");
+
+								row.insertCell(cellCount).appendChild(select);
+								cellCount = cellCount + 1
+								
+								
+								select = document.createElement('select');
+								select.id = 'PlayerData';
+								select.name = select.id;
+
+								option = document.createElement('option');
+								option.value = 'WITH_STAT';
+								option.text = 'WITH STAT';
+								select.appendChild(option);
+
+								option = document.createElement('option');
+								option.value = 'WITHOUT_STAT';
+								option.text = 'WITHOUT STAT';
+								select.appendChild(option);
+								
+								select.setAttribute('onchange', "processUserSelection(this)");
+
+								row.insertCell(cellCount).appendChild(select);
+								cellCount = cellCount + 1
+								break;	
 							}
 						}
 						/*else if(whatToProcess == 'PLAYERPROFILE-OPTIONS' && $('#selected_broadcaster').val().toUpperCase()==='MUMBAI_T20_VIZ'){

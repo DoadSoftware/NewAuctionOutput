@@ -398,12 +398,6 @@ public class IndexController
 						}
 						this_VCL_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 						break;
-					case "ILT20_BIGSCREEN":
-						if(this_ILT20_BIGSCREEN.data.isBid_Start_or_not() == true) {
-							this_ILT20_BIGSCREEN.data.setWhichside(2);
-						}
-						this_ILT20_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
-						break;
 					}
 				}
 			}
@@ -474,6 +468,13 @@ public class IndexController
 					}
 					this_ilt20.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 					break;
+					
+				case "ILT20_BIGSCREEN":
+					if(this_ILT20_BIGSCREEN.data.isBid_Start_or_not() == true) {
+						this_ILT20_BIGSCREEN.data.setWhichside(2);
+					}
+					this_ILT20_BIGSCREEN.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;	
 					
 				case "PWL":
 					if(this_pwl.data.isBid_Start_or_not() == true) {
