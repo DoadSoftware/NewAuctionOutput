@@ -273,7 +273,6 @@ public class IndexController
 					 //this_vcl.session_photo_option = session_photo_option;
 					this_vcl.resetData(print_writer);
 					break;	
-					
 				case "ADT10":
 					this_adt10.resetData(print_writer);
 					break;	
@@ -288,6 +287,9 @@ public class IndexController
 					break;
 				case "ILT20_BIGSCREEN":
 					this_ILT20_BIGSCREEN.resetData(print_writer);
+					break;
+				case "ILT20":
+					this_ilt20.resetData(print_writer);
 					break;
 				case "PSL":
 					this_psl.resetData(print_writer);

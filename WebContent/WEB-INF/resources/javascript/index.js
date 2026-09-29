@@ -82,8 +82,15 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 			
 		case "0"://187
-			if(confirm('It will Also Delete Your Preview from Directory...\r\n \r\nAre You Sure To Animate Out? ') == true){
+			switch ($('#selected_broadcaster').val()){
+			case 'ILT20':
 				processAuctionProcedures('ANIMATE-OUT-RTM_GOOGLY');	
+				break;
+			default:
+				if(confirm('It will Also Delete Your Preview from Directory...\r\n \r\nAre You Sure To Animate Out? ') == true){
+					processAuctionProcedures('ANIMATE-OUT-RTM_GOOGLY');	
+				}
+				break;
 			}
 			break;
 		case "o"://187
@@ -109,13 +116,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
 			switch ($('#selected_broadcaster').val()){
-				case 'ADT10':
-					processAuctionProcedures('PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS');
-					break;
-				default:
-					processAuctionProcedures('PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS');
-					break;
-				}
+			case 'ADT10':
+				processAuctionProcedures('PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS');
+				break;
+			default:
+				processAuctionProcedures('PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS');
+				break;
+			}
 			break;
 		case 'F6': //FF TOP BUY AUCTION
 		$("#captions_div").hide();
@@ -301,18 +308,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;	
 			
 		case 'F8': //POP UP RTM AVAILABLE
-			switch ($('#selected_broadcaster').val()){
-			case 'ILT20':
-				$("#captions_div").hide();
-				$("#cancel_match_setup_btn").hide();
-				$("#expiry_message").hide();
-				$("#auction_div").hide();
-				processAuctionProcedures('RTM_AVAILABLE_GRAPHIC-OPTIONS');
-				break;
-			default://ISPL
-				processAuctionProcedures('POPULATE-RTM_AVAILABLE');
-				break;
-			}
+			processAuctionProcedures('POPULATE-RTM_AVAILABLE');
 			break;
 		case '8': //POP UP RTM ENABLED
 			switch ($('#selected_broadcaster').val()){
@@ -518,7 +514,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			
 		case 'j': //LOF SQUAD SIZE CATEGORY WISE HAVING SUB CATEGORY
 			switch ($('#selected_broadcaster').val()){
-			case 'PSL':
+			case 'PSL': case 'ILT20':
 				break;
 			default://ISPL
 				$("#captions_div").hide();
@@ -531,7 +527,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 'k': //LOF SQUAD SIZE CATEGORY WISE
 			switch ($('#selected_broadcaster').val()){
-			case 'PSL':
+			case 'PSL': case 'ILT20':
 				break;
 			default://ISPL
 				$("#captions_div").hide();
@@ -765,15 +761,14 @@ function initialiseForm(whatToProcess,dataToProcess)
 					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
 				}
 			}
-				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN' && $('#selected_broadcaster').val().toUpperCase() != 'ADT10'){
+				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN' && $('#selected_broadcaster').val().toUpperCase() != 'ADT10' && 
+					$('#selected_broadcaster').val().toUpperCase() != 'ILT20' && $('#selected_broadcaster').val().toUpperCase() != 'ILT20_BIGSCREEN'){
 					const tbody = document.getElementById('zone_table_body');
 									
 					tbody.innerHTML = "";
 					
-					if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL'
-					 || $('#selected_broadcaster').val().toUpperCase() == 'ILT20' || $('#selected_broadcaster').val().toUpperCase() == 'VCL_BIGSCREEN' 
-					 || $('#selected_broadcaster').val().toUpperCase() == 'KCL_BIGSCREEN' || $('#selected_broadcaster').val().toUpperCase() == 'ILT20_BIGSCREEN'
-					){
+					if($('#selected_broadcaster').val().toUpperCase() == 'KCL' || $('#selected_broadcaster').val().toUpperCase() == 'VCL'  
+					 || $('#selected_broadcaster').val().toUpperCase() == 'KCL_BIGSCREEN'){
 						for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
 
 						    const row = tbody.insertRow();
@@ -1026,9 +1021,6 @@ function processUserSelection(whichInput)
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
-		case 'populate_rtm_available_btn':
-			processAuctionProcedures('POPULATE-TEAM_RTM_AVAILABLE');
-			break;
 		case 'populate_pick_order_btn':
 			processAuctionProcedures('POPULATE-PICKORDER');
 			break;
@@ -1839,10 +1831,6 @@ function processAuctionProcedures(whatToProcess)
 				addItemsToList('POPULATE-TEAM',data);
 				match_data = data;
 				break;
-			case 'RTM_AVAILABLE_GRAPHIC-OPTIONS':
-				addItemsToList('RTM_TEAM-OPTIONS',data);
-				match_data = data;
-				break;
 			case 'TEAM_CURRENT_BID_GRAPHICS-OPTIONS':
 				addItemsToList('TEAM_CURRENT_BID-OPTIONS',null);
 				addItemsToList('POPULATE-TEAM',data);
@@ -1958,9 +1946,6 @@ function processAuctionProcedures(whatToProcess)
 						$("#auction_div").show();
 						
 			        	switch(whatToProcess) {
-						case 'POPULATE-TEAM_RTM_AVAILABLE':
-							processAuctionProcedures('ANIMATE-IN-TEAM_RTM_AVAILABLE');
-							break;
 						case 'POPULATE-PICKORDER':
 							processAuctionProcedures('ANIMATE-IN-PICKORDER');
 							break;
@@ -2222,15 +2207,40 @@ function addItemsToList(whatToProcess, dataToProcess)
 		}
 		break;	
 	case 'POPULATE-PROFILE' :
-		$('#selectPlayerName').empty();
-		dataToProcess.forEach(function(plyr,index,arr1){
-			$('#selectPlayerName').append(
-				$(document.createElement('option')).prop({
-				value: plyr.playerId,
-				text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
-			}))
-		});
+		$('#selectPlayerName').empty();	
+	
+		switch ($('#selected_broadcaster').val()){
+		case 'ADT10':
+			dataToProcess.forEach(function(plyr,index,arr1){
+				$('#selectPlayerName').append(
+					$(document.createElement('option')).prop({
+					value: plyr.playerId,
+					text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+				}))
+			});
+			break;
+		default:
+			session_auction.playersList.forEach(function(plyr,index,arr1){
+				if(plyr.playerId == session_auction.players[session_auction.players.length- 1].playerId){
+					$('#selectPlayerName').append(
+						$(document.createElement('option')).prop({
+						value: plyr.playerId,
+						text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+					}))
+				}
+			});
 			
+			dataToProcess.forEach(function(plyr,index,arr1){
+				if(plyr.playerId != session_auction.players[session_auction.players.length - 1].playerId){
+					$('#selectPlayerName').append(
+						$(document.createElement('option')).prop({
+						value: plyr.playerId,
+						text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+					}))
+				}
+			});
+			break;
+		}	
 		break;
 	/*case 'POPULATE-PROFILE' :
 		$('#selectPlayerName').empty();
@@ -2266,6 +2276,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					}))
 				});
 		break;
+
 	case 'POPULATE-PLAYER':
 		$('#selectPlayer').empty();
 		if(dataToProcess.homeTeamId ==  $('#selectTeam option:selected').val()){
@@ -2291,7 +2302,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		
 	case'NAMESUPER-OPTIONS': case 'NAMESUPER_PLAYER-OPTIONS':  case'PLAYERPROFILE-OPTIONS': case 'SQUADCATEGORIES-OPTIONS': case 'SQUAD-OPTIONS': case 'SINGLE_PURSE-OPTIONS': 
 	case 'PLAYERPROFILE_MAIN-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS': case 'PLAYERPROFILE_DRAFT-OPTIONS':
-	case 'ROUNDSUMMARY_DRAFT-OPTIONS': case 'RTM_TEAM-OPTIONS':
+	case 'ROUNDSUMMARY_DRAFT-OPTIONS':
 	case 'TOP-SOLD_TEAM-OPTIONS': case 'GOOGLY-OPTIONS': case 'PROFILE_STATS-OPTIONS': case 'LOF_REMAINING_PURSE-OPTIONS': case 'LOF_TOP_SOLD_TEAM-OPTIONS': 
 	case'SQUAD_PLAYER-OPTIONS': case 'FF_PLAYERPROFILE-OPTIONS': case 'FF_TOP_SOLD_TEAM-OPTIONS': case 'LOF_SQUAD_SIZE_CATEGORY_WISE_-OPTIONS': 
 	case 'LT_PLAYERPROFILE-OPTIONS': case 'LT_PP_STATS-OPTIONS': case 'LOF_SQUAD-OPTIONS': case 'FLIPPER-OPTIONS': case 'FREETEXT-OPTIONS': case "ZONE-PLAYER-OPTIONS":
@@ -2330,24 +2341,6 @@ function addItemsToList(whatToProcess, dataToProcess)
 			row = tbody.insertRow(tbody.rows.length);
 			
 			switch(whatToProcess){
-				case 'RTM_TEAM-OPTIONS':
-					select = document.createElement('select');
-					select.id = 'selectTeamName';
-					select.name = select.id;
-					select.style.width = 'auto';
-					select.style.height = '28px';
-					
-					dataToProcess.forEach(function(team){
-						option = document.createElement('option');
-						option.value = team.teamId;
-						option.text = team.teamName1;
-						select.appendChild(option);
-					});
-					
-					select.setAttribute('onchange',"processUserSelection(this)");
-					row.insertCell(cellCount).appendChild(select);
-					cellCount = cellCount + 1;
-					break;
 				case 'PICKORDER-OPTIONS':
 					select = document.createElement('input');
 					select.type = "text";
@@ -3682,7 +3675,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 			
 			    // Determine which options to show based on broadcaster
 			    const broadcaster = $('#selected_broadcaster').val().toUpperCase();
-			    if (broadcaster === 'UTT_VIZ'|| broadcaster === 'VCL' || broadcaster === 'ILT20' || broadcaster === 'KCL' || broadcaster === 'VCL_BIGSCREEN' || broadcaster === 'ILT20_BIGSCREEN' 
+			    if (broadcaster === 'UTT_VIZ'|| broadcaster === 'VCL' || broadcaster === 'KCL' || broadcaster === 'VCL_BIGSCREEN'
 					|| broadcaster === 'KCL_BIGSCREEN'  || broadcaster === 'PWL') {
 			        ['category','rank', 'style', 'bio'].forEach(value => {
 			            const option = document.createElement('option');
@@ -3690,7 +3683,15 @@ function addItemsToList(whatToProcess, dataToProcess)
 			            option.text = value.charAt(0).toUpperCase() + value.slice(1);
 			            select.appendChild(option);
 			        });
-			    }else if(broadcaster === 'UTT_BIGSCREEN'){
+			    }
+				else if(broadcaster === 'ILT20' || broadcaster === 'ILT20_BIGSCREEN' ){
+					['category','style', 'prevteam'].forEach(value => {
+			            const option = document.createElement('option');
+			            option.value = value;
+			            option.text = value.charAt(0).toUpperCase() + value.slice(1);
+			            select.appendChild(option);
+			        });
+				}else if(broadcaster === 'UTT_BIGSCREEN'){
 					['category','rank&style'].forEach(value => {
 			            const option = document.createElement('option');
 			            option.value = value;

@@ -107,7 +107,7 @@ public class ILT20 extends Scene{
 		
 		switch (whatToProcess.toUpperCase()) {
 		case "POPULATE-FF-PLAYERPROFILE": case "POPULATE-SQUAD": case "POPULATE-REMAINING_PURSE_ALL": case "POPULATE-SINGLE_PURSE": case "POPULATE-TOP_SOLD":
-		case "POPULATE-L3-NAMESUPER": case "POPULATE-TOP_SOLD_TEAM": case "POPULATE-IDENT": case "POPULATE-TEAM_RTM_AVAILABLE": case "POPULATE-RTM_ENABLED":
+		case "POPULATE-L3-NAMESUPER": case "POPULATE-TOP_SOLD_TEAM": case "POPULATE-IDENT": case "POPULATE-RTM_AVAILABLE": case "POPULATE-RTM_ENABLED":
 		case "POPULATE-GOOGLY_POWER": case "POPULATE-PROFILE_STATS": case "POPULATE-LOF_REMAINING_PURSE": case "POPULATE-LOF_TOP_SOLD":
 		case "POPULATE-LOF_TEAM_TOP_SOLD": case "POPULATE-SQUAD-PLAYER": case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-LOF_REMAINING_SLOT":
 		case "POPULATE-LOF_SQUAD_SIZE": case "POPULATE-LOF_RTM_REMAINING": case "POPULATE-FF_RTM_AND_PURSE_REMAINING": case "POPULATE-FF_TOP_BUYS_AUCTION":
@@ -212,14 +212,13 @@ public class ILT20 extends Scene{
 							session_selected_broadcaster);
 					processPreviewLowerThirds(print_writer, whatToProcess, whichSideNotProfile);
 					break;
-				case "POPULATE-TEAM_RTM_AVAILABLE":
+				case "POPULATE-RTM_AVAILABLE":
 					if(rtm_googly_on_screen.equalsIgnoreCase("RTM")) {
 						rtmGooglyWhichSide = 2;
 					}else {
 						rtmGooglyWhichSide = 1;
 					}
-					side2ValueToProcess = valueToProcess;
-					populateRTMAvailable(print_writer, rtmGooglyWhichSide,Integer.valueOf(valueToProcess), auction, auctionService);
+					populateRTMAvailable(print_writer, rtmGooglyWhichSide, auction, auctionService);
 					processPreview(print_writer, whatToProcess, rtmGooglyWhichSide);
 					break;
 				case "POPULATE-RTM_ENABLED":
@@ -538,7 +537,7 @@ public class ILT20 extends Scene{
 		case "ANIMATE-IN-RTM_AVAILABLE": case "ANIMATE-IN-RTM_ENABLED": case "ANIMATE-IN-GOOGLY_POWER": case "ANIMATE-IN-PROFILE_STATS": case "ANIMATE-OUT-PLAYER_STAT":
 		case "ANIMATE-IN-LOF_REMAINING_PURSE": case "ANIMATE-IN-LOF_TOP_SOLD": case "ANIMATE-IN-LOF_TEAM_TOP_SOLD": case "ANIMATE-IN-SQUAD-PLAYER": 
 		case "ANIMATE-IN-PLAYERPROFILE_FF": case "ANIMATE-IN-LOF_REMAINING_SLOT": case "ANIMATE-IN-LOF_SQUAD_SIZE": case "ANIMATE-IN-LOF_RTM_REMAINING":
-		case "ANIMATE-IN-FLIPPER": case "ANIMATE-IN-TEAM_CURR_BID": case "ANIMATE-IN-ZONEWISE_PLAYERS_SOLD": case "ANIMATE-IN-TEAM_RTM_AVAILABLE":
+		case "ANIMATE-IN-FLIPPER": case "ANIMATE-IN-TEAM_CURR_BID": case "ANIMATE-IN-ZONEWISE_PLAYERS_SOLD":
 		
 		case "ANIMATE-IN-LOF_SQUAD": case "ANIMATE-IN-LOF_SQUAD_REMAIN": case "ANIMATE-IN-CRAWL_SQUAD": case "ANIMATE-IN-FREEETEXTCRAWLER":
 			
@@ -793,13 +792,13 @@ public class ILT20 extends Scene{
 					}
 					break;
 					
-				case "ANIMATE-IN-TEAM_RTM_AVAILABLE":
+				case "ANIMATE-IN-RTM_AVAILABLE":
 					if(rtm_googly_on_screen.equalsIgnoreCase("RTM")) {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_RTM$Text$Change_Out START\0");
 						TimeUnit.MILLISECONDS.sleep(250);
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_RTM$Text$Change_In START\0");
 						TimeUnit.MILLISECONDS.sleep(500);
-						populateRTMAvailable(print_writer, 1,Integer.valueOf(side2ValueToProcess), session_curr_bid, auctionService);
+						populateRTMAvailable(print_writer, 1, session_curr_bid, auctionService);
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_RTM SHOW 0\0");
 					}else {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_RTM$In_Out START \0");
@@ -956,40 +955,7 @@ public class ILT20 extends Scene{
 
 				
 				case "CLEAR-ALL":
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug SHOW 0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change SHOW 0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Move_For_FinalStatus SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Bid_Value SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*ChangeForUnsold SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Sold_Wipe SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*ChangeForSold SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Name SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*MoveForStats_RTM SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_RTM SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_RTM SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Googly SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LOF SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_LOF SHOW 0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*CtegoryHighlight SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*MoveForCatHighlight SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LowerThird SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_LowerThird SHOW 0\0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_IconLowerThird SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Flipper SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Flipper SHOW 0\0");
-					
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Crawl SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Crawl SHOW 0.0 \0");
-					
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe SHOW 0.0 \0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Change SHOW 0.0 \0");
-					
+					resetData(print_writer);
 					
 					rtm_googly_on_screen = "";
 		            which_graphics_onscreen = "";
@@ -1831,7 +1797,7 @@ public class ILT20 extends Scene{
 //		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$CurrentPrice$Value$Side" + which_side + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$CurrentPrice$Value$Side" + which_side + "$txt_CurrentBid"
 				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$CurrentPrice$Value$txt_Thousand*GEOM*TEXT SET K\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$CurrentPrice$txt_Thousand*GEOM*TEXT SET K\0");
 		
 //		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$RightDataGrp$Side" + which_side + "$CurrentBid$ValueGrp$Value"
 //				+ "$Side2$txt_CurrentBid*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
@@ -1965,7 +1931,7 @@ public class ILT20 extends Scene{
 		
 		if(is_this_updating == false) {
 			
-			populateProfileStats(print_writer, "CATEGORY", which_side, auction, auctionService);
+			populateProfileStats(print_writer, "STYLE", which_side, auction, auctionService);
 			
 			if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$NameAll$NormalName$txt_FirstName*GEOM*TEXT SET " + 
@@ -1994,21 +1960,26 @@ public class ILT20 extends Scene{
 						styleIcons(auctionService.getAllPlayer().get(playerId - 1)) + " \0");
 			}
 			
-			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$CountryFlag$img_Flag*TEXTURE*IMAGE SET " + 
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$CountryFlag$img_Flag*TEXTURE*IMAGE SET " + flag_path + 
 					auctionService.getAllPlayer().get(playerId - 1).getNationality() + " \0");
+			
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$RoleIcon$Normal$img_Icon*TEXTURE*IMAGE SET " + icon_path + 
+					styleIcons(auctionService.getAllPlayer().get(playerId - 1)) + "\0");
+			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$RoleIcon$Sold$img_Icon*TEXTURE*IMAGE SET " + icon_path + 
+					styleIcons(auctionService.getAllPlayer().get(playerId - 1)) + "\0");
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$PlayerImage$img_Image*TEXTURE*IMAGE SET " + photo_path +
 					auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + " \0");
 			
 			if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("10")) {
 				data.setPreviousBid(10000);
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$10K" + " \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 10K" + " \0");
 			}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("40")) {
 				data.setPreviousBid(40000);
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$40K" + " \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 40K" + " \0");
 			}else if(auctionService.getAllPlayer().get(playerId - 1).getBasePrice().equalsIgnoreCase("80")) {
 				data.setPreviousBid(80000);
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$80K" + " \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$PriceGrp$BaseValueGroup$txt_Value*GEOM*TEXT SET " + "$ 80K" + " \0");
 			}
 			
 			if(data.isPlayer_sold_or_unsold() == false) {
@@ -2268,9 +2239,9 @@ public class ILT20 extends Scene{
 				row = row + 1;
 	        	if(row <= 10) {
 	        		
-	        		crawler_Data = crawler_Data + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFull_name() + " : " +
+	        		crawler_Data = crawler_Data + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFull_name() + ": " +
 	        				AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints()) + " K" +" ("+ 
-	        				auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + ")\n";
+	        				auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName3() + ")\n";
 	        	}
 	        }
 		}
@@ -2295,13 +2266,13 @@ public class ILT20 extends Scene{
         Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 
         print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Crawl$CrawlHeader$Side" + which_side + "$txt_Header1*GEOM*TEXT SET " + "TOP BUYS" + " \0");
-        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Crawl$CrawlHeader$Side" + which_side + "$txt_Header2*GEOM*TEXT SET " + auction.getTeam().get(team_id-1).getTeamName4() + " \0");
+        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Crawl$CrawlHeader$Side" + which_side + "$txt_Header2*GEOM*TEXT SET " + auction.getTeam().get(team_id-1).getTeamName3() + " \0");
 
         for(int m=0; m<= top_sold.size() - 1; m++) {
         	if(top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
         		row = row + 1;
         		if(row <= 10) {
-        			crawler_Data = crawler_Data + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFull_name() + " : "+ 
+        			crawler_Data = crawler_Data + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFull_name() + ": "+ 
         					AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints()) + " K" + "\n";
         		}
         	}
@@ -2321,7 +2292,7 @@ public class ILT20 extends Scene{
 		
 		for(int i=0; i <= auction.getTeam().size()-1; i++) {
 			
-			crawler_Data = crawler_Data + auction.getTeam().get(i).getTeamName1() + " : ";
+			crawler_Data = crawler_Data + auction.getTeam().get(i).getTeamName1() + ": ";
 			
 			if(auction.getPlayers() != null ) {
 				for(int j=0; j <= auction.getPlayers().size()-1; j++) {
@@ -2352,7 +2323,7 @@ public class ILT20 extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Crawl$CrawlHeader$Side" + which_side + "$txt_Header2*GEOM*TEXT SET " + "" + " \0");
 		
 		for(Team tm : auction.getTeam()) {
-			crawler_Data = crawler_Data + tm.getTeamName1() + " : ";
+			crawler_Data = crawler_Data + tm.getTeamName1() + ": ";
 			
 			for(Player auc : auction.getPlayers()) {
 				if(tm.getTeamId() == auc.getTeamId()) {
@@ -2405,6 +2376,8 @@ public class ILT20 extends Scene{
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$BaseGrp$img_Base1*TEXTURE*IMAGE SET " 
 			        		+ base_path_1 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
+	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$ImageGrp$img_Base2*TEXTURE*IMAGE SET " 
+			        		+ base_path_2 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$ImageGrp$img_Base3*TEXTURE*IMAGE SET " 
 			        		+ base_path_3 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$img_Text3*TEXTURE*IMAGE SET " 
@@ -2478,6 +2451,8 @@ public class ILT20 extends Scene{
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$BaseGrp$img_Base1*TEXTURE*IMAGE SET " 
 			        		+ base_path_1 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
+	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$ImageGrp$img_Base2*TEXTURE*IMAGE SET " 
+			        		+ base_path_2 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$ImageGrp$img_Base3*TEXTURE*IMAGE SET " 
 			        		+ base_path_3 + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$img_Text3*TEXTURE*IMAGE SET " 
@@ -2606,6 +2581,8 @@ public class ILT20 extends Scene{
 	        		
 			        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$BaseGrp$img_Base1*TEXTURE*IMAGE SET " 
 			        		+ base_path_1 + auction.getTeam().get(team_id-1).getTeamName4() + " \0");
+			        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$ImageGrp$img_Base2*TEXTURE*IMAGE SET " 
+			        		+ base_path_2 + auction.getTeam().get(team_id-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$ImageGrp$img_Base3*TEXTURE*IMAGE SET " 
 			        		+ base_path_3 + auction.getTeam().get(team_id-1).getTeamName4() + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$img_Text3*TEXTURE*IMAGE SET " 
@@ -2627,7 +2604,7 @@ public class ILT20 extends Scene{
 	        		}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$CountryFlag$img_Flag"
-	    					+ "*TEXTURE*IMAGE SET " + auctionService.getAllPlayer().get(squad.get(m).getPlayerId()-1).getNationality() + " \0");
+	    					+ "*TEXTURE*IMAGE SET " + flag_path + auctionService.getAllPlayer().get(squad.get(m).getPlayerId()-1).getNationality() + " \0");
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$Price$txt_Value"
 	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(squad.get(m).getSoldForPoints()) + " K" + " \0");
@@ -2698,7 +2675,7 @@ public class ILT20 extends Scene{
 					}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$CountryFlag$img_Flag"
-	    					+ "*TEXTURE*IMAGE SET " + auctionService.getAllPlayer().get(squad.get(m).getPlayerId()-1).getNationality() + " \0");
+	    					+ "*TEXTURE*IMAGE SET " + flag_path + auctionService.getAllPlayer().get(squad.get(m).getPlayerId()-1).getNationality() + " \0");
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$Price$txt_Value"
 	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(squad.get(m).getSoldForPoints()) + " K" + " \0");
@@ -4348,11 +4325,12 @@ public class ILT20 extends Scene{
 		}
 	}
 
-	public void populateRTMAvailable(PrintWriter print_writer, int whichSide,int whichTeam, Auction match, AuctionService auctionService) {
+	public void populateRTMAvailable(PrintWriter print_writer, int whichSide, Auction match, AuctionService auctionService) {
 		if(!which_graphics_onscreen.isEmpty()) {
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$RTM$TextAll$Side" + whichSide + "$select_Status*FUNCTION*Omo*vis_con SET 0\0");
 		}else {
-			Team tm = auctionService.getTeams().stream().filter(tms -> tms.getTeamId() == whichTeam).findAny().orElse(null);
+			Player player = auctionService.getAllPlayer().stream().filter(plyr -> plyr.getPlayerId() == match.getPlayers().get(match.getPlayers().size() - 1).getPlayerId()).findAny().orElse(null);
+			Team tm = auctionService.getTeams().stream().filter(tms -> tms.getTeamId() == player.getLastYearTeam()).findAny().orElse(null);
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$RTM$Base$Logo$img_Badges*TEXTURE*IMAGE SET " + logo_path + 
 					tm.getTeamName4() + "\0");
@@ -4361,13 +4339,6 @@ public class ILT20 extends Scene{
 					tm.getTeamName4() + "\0");
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$All$RTM$Base$InnerBase$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + 
 					tm.getTeamName4() + "\0");
-			
-//			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$RTM$OuterRing$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + 
-//					auctionService.getTeams().get(player.getLastYearTeam()-1).getTeamName4() + "\0");
-//			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$RTM$TextAll$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + 
-//					auctionService.getTeams().get(player.getLastYearTeam()-1).getTeamName4() + "\0");
-//			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$RTM$TextAll$img_Text1*TEXTURE*IMAGE SET " + text_path_1 + 
-//					auctionService.getTeams().get(player.getLastYearTeam()-1).getTeamName4() + "\0");
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$RTM$TextAll$Side" + whichSide + "$select_Status*FUNCTION*Omo*vis_con SET 0\0");
 		}
@@ -4398,7 +4369,8 @@ public class ILT20 extends Scene{
 		case "STYLE":
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
 			if(player.getAge() != null) {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Age*GEOM*TEXT SET AGE " + player.getAge() + "\0");
+				//print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Age*GEOM*TEXT SET AGE " + player.getAge() + "\0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Age*GEOM*TEXT SET \0");
 			}else {
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Age*GEOM*TEXT SET \0");
 			}
@@ -4586,64 +4558,58 @@ public class ILT20 extends Scene{
 		
 		if(whichSide == 1) {
 			if(data.isData_on_screen() && !whatToProcess.equalsIgnoreCase("POPULATE-FF-PLAYERPROFILE")) {
-				previewCommand = "anim_ScoreBug$In_Out 2.500 anim_ScoreBug$In_Out$Essentials 2.500 anim_ScoreBug$In_Out$Essentials$In 1.500 "
-						+ "anim_ScoreBug$In_Out$Left_Data 1.500 anim_ScoreBug$In_Out$Left_Data$In 1.500 anim_ScoreBug$In_Out$RightData 2.500 anim_ScoreBug$In_Out$RightData$Gavel 2.500 "
-						+ "anim_ScoreBug$In_Out$RightData$Gavel$in 2.500 ";
+				previewCommand = "anim_ScoreBug$In_Out$Essentials$In 1.200 anim_ScoreBug$In_Out$Player_Detail$In 1.680 anim_ScoreBug$In_Out$Base_Price$In 1.700 ";
 			}
 			if(isProfileStatsOnScreen) {
-				previewCommand =previewCommand + "anim_ScoreBug$In_Out$Stats 2.500 anim_ScoreBug$In_Out$Stats$In 1.760 ";
+				previewCommand = previewCommand + "anim_ScoreBug$In_Out$Stats$In 1.060 ";
 			}
 			switch (whatToProcess.toUpperCase()) {
 			case "POPULATE-FF-PLAYERPROFILE":
-				previewCommand = "anim_ScoreBug$In_Out 2.500 anim_ScoreBug$In_Out$Essentials 2.500 anim_ScoreBug$In_Out$Essentials$In 1.500 "
-						+ "anim_ScoreBug$In_Out$Left_Data 1.500 anim_ScoreBug$In_Out$Left_Data$In 1.500 anim_ScoreBug$In_Out$RightData 2.500 anim_ScoreBug$In_Out$RightData$Gavel 2.500 "
-						+ "anim_ScoreBug$In_Out$RightData$Gavel$in 2.500";
+				previewCommand = "anim_ScoreBug$In_Out$Essentials$In 1.200 anim_ScoreBug$In_Out$Player_Detail$In 1.680 anim_ScoreBug$In_Out$Base_Price$In 1.700 "
+						+ "anim_ScoreBug$In_Out$Stats$In 1.060";
+						
 				break;
 			case "POPULATE-PROFILE_STATS": case "POPULATE-TEAM_CURR_BID":
-				previewCommand = previewCommand + "anim_ScoreBug$In_Out$Stats 2.500 anim_ScoreBug$In_Out$Stats$In 1.760";
+				previewCommand = previewCommand + "anim_ScoreBug$In_Out$Stats$In 1.060";
 				break;
 			case "POPULATE-RTM_AVAILABLE":
-				previewCommand = previewCommand + "anim_RTM$In_Out 0.800 anim_RTM$In_Out$In 0.800";
-				break;
-			case "POPULATE-GOOGLY_POWER":
-				previewCommand = previewCommand + "anim_Googly$In_Out 0.500 anim_Googly$In_Out$In 0.500";
+				previewCommand = previewCommand + "anim_RTM$In_Out$In 1.400";
 				break;
 			case "POPULATE-LOF_REMAINING_PURSE": case "POPULATE-LOF_TOP_SOLD": case "POPULATE-LOF_TEAM_TOP_SOLD": case "POPULATE-SQUAD-PLAYER": 
 			case "POPULATE-LOF_REMAINING_SLOT": case "POPULATE-LOF_SQUAD_SIZE": case "POPULATE-LOF_RTM_REMAINING": case "POPULATE-LOF_SQUAD_SIZE_CATEGORY_WISE": 
 			case "POPULATE-LOF_SQUAD": case "POPULATE-ZONEWISE_PLAYERS_SOLD":
-				previewCommand = previewCommand + "anim_LOF$In_Out 2.000 anim_LOF$In_Out$Essentials 2.000 anim_LOF$In_Out$Essentials$In 1.100 "
-						+ "anim_LOF$In_Out$Header 2.000 anim_LOF$In_Out$Header$In 1.200 anim_LOF$In_Out$SubHeader 2.000 anim_LOF$In_Out$SubHeader$In 1.300 "
-						+ "anim_LOF$In_Out$Main 2.000 ";
+				previewCommand = previewCommand + "anim_LOF$In_Out 2.200 anim_LOF$In_Out$Essentials 2.200 anim_LOF$In_Out$Essentials$In 1.000 "
+						+ "anim_LOF$In_Out$Header 2.200 anim_LOF$In_Out$Header$In 1.200 anim_LOF$In_Out$SubHeader 2.200 anim_LOF$In_Out$SubHeader$In 1.300 "
+						+ "anim_LOF$In_Out$Main 2.200 ";
 				switch (whatToProcess.toUpperCase()) {
 				case "POPULATE-LOF_REMAINING_PURSE": case "POPULATE-LOF_REMAINING_SLOT": case "POPULATE-LOF_SQUAD_SIZE": case "POPULATE-LOF_RTM_REMAINING":
 				case "POPULATE-ZONEWISE_PLAYERS_SOLD":
-					previewCommand = previewCommand + "anim_LOF$In_Out$Main$RemainingPurse 2.000 anim_LOF$In_Out$Main$RemainingPurse$In 2.000 "
-							+ "anim_LOF$In_Out$Main$Name 2.000 anim_LOF$In_Out$Main$Name$In 1.100 anim_LOF$In_Out$Main$Logo 2.000 anim_LOF$In_Out$Main$Logo$In 1.100";
+					previewCommand = previewCommand + "anim_LOF$In_Out$Main$RemainingPurse 2.200 anim_LOF$In_Out$Main$RemainingPurse$In 2.000 "
+							+ "anim_LOF$In_Out$Main$Name 2.200 anim_LOF$In_Out$Main$Name$In 1.100 anim_LOF$In_Out$Main$Logo 2.200 anim_LOF$In_Out$Main$Logo$In 1.100";
 					break;
 				case "POPULATE-LOF_TEAM_TOP_SOLD": case "POPULATE-LOF_SQUAD":
-					previewCommand = previewCommand + "anim_LOF$In_Out$Main$TopBuysTeam 2.000 anim_LOF$In_Out$Main$TopBuysTeam$In 1.700";
+					previewCommand = previewCommand + "anim_LOF$In_Out$Main$TopBuysTeam 2.200 anim_LOF$In_Out$Main$TopBuysTeam$In 1.800";
 					break;
 				case "POPULATE-LOF_TOP_SOLD":
-					previewCommand = previewCommand + "anim_LOF$In_Out$Main$TopBuys 2.000 anim_LOF$In_Out$Main$TopBuys$In 1.700";
+					previewCommand = previewCommand + "anim_LOF$In_Out$Main$TopBuys 2.200 anim_LOF$In_Out$Main$TopBuys$In 1.800";
 					break;
 				case "POPULATE-SQUAD-PLAYER":
-					previewCommand = previewCommand + "anim_LOF$In_Out$Main$SquadSize_Category 2.000 anim_LOF$In_Out$Main$SquadSize_Category$In 1.900 "
-							+ "CtegoryHighlight$Side1$" + rowHighlight + " 1.200";
+					previewCommand = previewCommand + "anim_LOF$In_Out$Main$SquadSize_Category 2.200 anim_LOF$In_Out$Main$SquadSize_Category$In 1.900 "
+							+ "CtegoryHighlight$Side1$" + rowHighlight + " 0.800";
 					for(int i=(rowHighlight+1);i<=8;i++) {
-						previewCommand = previewCommand + " MoveForCatHighlight$Side1$" + i + " 1.200";
+						previewCommand = previewCommand + " MoveForCatHighlight$Side1$" + i + " 1.000";
 					}
 					break;
 				case "POPULATE-LOF_SQUAD_SIZE_CATEGORY_WISE":
-					previewCommand = previewCommand + "anim_LOF$In_Out$Main$SquadSize_Team 2.000 anim_LOF$In_Out$Main$SquadSize_Team$In 1.880";
+					previewCommand = previewCommand + "anim_LOF$In_Out$Main$SquadSize_Team 2.200 anim_LOF$In_Out$Main$SquadSize_Team$In 1.760";
 					break;
 				}
 				break;
 			}
 		}else {
 			if(data.isData_on_screen() && !whatToProcess.equalsIgnoreCase("POPULATE-FF-PLAYERPROFILE")) {
-				previewCommand = "anim_ScoreBug$In_Out 2.500 anim_ScoreBug$In_Out$Essentials 2.500 anim_ScoreBug$In_Out$Essentials$In 1.500 "
-						+ "anim_ScoreBug$In_Out$Left_Data 1.500 anim_ScoreBug$In_Out$Left_Data$In 1.500 anim_ScoreBug$In_Out$RightData 2.500 "
-						+ "anim_ScoreBug$In_Out$RightData$Gavel 2.500 anim_ScoreBug$In_Out$RightData$Gavel$in 2.500 ";
+				previewCommand = "anim_ScoreBug$In_Out$Essentials$In 1.200 anim_ScoreBug$In_Out$Player_Detail$In 1.680 anim_ScoreBug$In_Out$Base_Price$In 1.700 "
+						+ "anim_ScoreBug$In_Out$Stats$In 1.060";
 			}
 			switch (which_graphics_onscreen.toUpperCase()) {
 			case "LOF_REMAINING_PURSE": case "LOF_REMAINING_SLOT": case "LOF_SQUAD_SIZE": case "LOF_RTM_REMAINING": case "ZONEWISE_PLAYERS_SOLD":
@@ -4654,7 +4620,7 @@ public class ILT20 extends Scene{
 			}
 			switch (which_graphics_onscreen.toUpperCase()) {
 			case "LOF_REMAINING_PURSE": case "LOF_REMAINING_SLOT": case "LOF_SQUAD_SIZE": case "LOF_RTM_REMAINING": case "ZONEWISE_PLAYERS_SOLD":
-				previewCommand = previewCommand + "Change_LOF$RemainingPurse$Change_Out 0.980 Change_LOF$Name$Change_Out 0.600 Change_LOF$Logo$Change_Out 0.600 ";
+				previewCommand = previewCommand + "Change_LOF$RemainingPurse$Change_Out 0.860 Change_LOF$Name$Change_Out 0.600 Change_LOF$Logo$Change_Out 0.600 ";
 				break;
 			case "LOF_TEAM_TOP_SOLD": case "LOF_SQUAD":
 				previewCommand = previewCommand + "Change_LOF$TopBuysTeam$Change_Out 0.740 ";
@@ -4666,20 +4632,19 @@ public class ILT20 extends Scene{
 				previewCommand = previewCommand + "Change_LOF$SquadSize_Category$Change_Out 0.800 ";
 				break;
 			case "LOF_SQUAD_SIZE_CATEGORY_WISE":
-				previewCommand = previewCommand + "Change_LOF$SquadSize_Team$Change_Out 0.820 ";
+				previewCommand = previewCommand + "Change_LOF$SquadSize_Team$Change_Out 0.740 ";
 				break;
 			}
 			
 			switch (whatToProcess.toUpperCase()) {
 			case "POPULATE-PROFILE_STATS": case "POPULATE-TEAM_CURR_BID":
-				previewCommand = previewCommand + "Change$Stats$Change_Out 1.000 Change$Stats$Change_In 1.300";
+				previewCommand = previewCommand + "Change_Stat 1.000";
 				break;
 			case "POPULATE-LOF_REMAINING_PURSE": case "POPULATE-LOF_REMAINING_SLOT": case "POPULATE-LOF_SQUAD_SIZE": case "POPULATE-LOF_RTM_REMAINING":
 			case "POPULATE-ZONEWISE_PLAYERS_SOLD":
-				previewCommand = previewCommand + "Change_LOF$RemainingPurse$Change_In 2.000 Change_LOF$Name$Change_In 1.100 Change_LOF$Logo$Change_In 1.100";
+				previewCommand = previewCommand + "Change_LOF$RemainingPurse$Change_In 1.800 Change_LOF$Name$Change_In 0.900 Change_LOF$Logo$Change_In 0.900";
 				break;
 			case "POPULATE-LOF_TEAM_TOP_SOLD": case "POPULATE-LOF_SQUAD":
-				System.out.println("whatToProcess - " + whatToProcess + " which_graphics_onscreen - " + which_graphics_onscreen);
 				if(!which_graphics_onscreen.equalsIgnoreCase("LOF_TEAM_TOP_SOLD") && !which_graphics_onscreen.equalsIgnoreCase("LOF_SQUAD")) {
 					previewCommand = previewCommand + "Change_LOF$TopBuysTeam$Change_In 1.600";
 				}
@@ -4692,7 +4657,7 @@ public class ILT20 extends Scene{
 				previewCommand = previewCommand + "Change_LOF$TopBuys$Change_In 1.600";
 				break;
 			case "POPULATE-SQUAD-PLAYER":
-				previewCommand = previewCommand + "Change_LOF$SquadSize_Category$Change_In 1.700 CtegoryHighlight$Side2$" + rowHighlight + " 0.800 ";
+				previewCommand = previewCommand + "Change_LOF$SquadSize_Category$Change_In 1.720 CtegoryHighlight$Side2$" + rowHighlight + " 0.800 ";
 				for(int i=(rowHighlight+1);i<=8;i++) {
 					previewCommand = previewCommand + "MoveForCatHighlight$Side2$" + i + " 1.000 ";
 				}
@@ -4702,7 +4667,7 @@ public class ILT20 extends Scene{
 				break;
 			}	
 		}
-		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/Overlays " + "C:/Temp/Preview.jpg " + previewCommand + "\0");
+		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/gfx_Overlays " + "C:/Temp/Preview.tga " + previewCommand + "\0");
 		
 	}
 	public void processPreviewFullFrames(PrintWriter print_writer, String whatToProcess, int whichSide) {
@@ -4853,8 +4818,9 @@ public class ILT20 extends Scene{
 				previewCommand = "anim_IconLowerThird$In_Out 1.800 anim_IconLowerThird$In_Out$In 1.800";
 				break;
 			case "POPULATE-PLAYERPROFILE_LT": case "POPULATE-L3-NAMESUPER":
-				previewCommand = "anim_LowerThird$In_Out$Essentials 1.800 anim_LowerThird$In_Out$$Essentials$In 1.400 anim_LowerThird$In_Out$TopData 1.800 "
-						+ "anim_LowerThird$In_Out$$TopData$In 1.800 anim_LowerThird$In_Out$BottomData 1.800 anim_LowerThird$In_Out$$BottomData$In 1.760";
+				previewCommand = "anim_LowerThird$In_Out$Essentials 1.400 anim_LowerThird$In_Out$$Essentials$In 1.200 anim_LowerThird$In_Out$Name 1.400 "
+						+ "anim_LowerThird$In_Out$$Name$In 1.200 anim_LowerThird$In_Out$Subline 1.400 anim_LowerThird$In_Out$$Subline$In 1.400 "
+						+ "anim_LowerThird$In_Out$Logo 1.400 anim_LowerThird$In_Out$$Logo$In 1.400";
 				break;
 			case "POPULATE-L3-FLIPPER":
 				previewCommand = "anim_Flipper$In_Out$Essentials 1.800 anim_Flipper$In_Out$$Essentials$In 1.800 anim_Flipper$In_Out$Header 1.800 "
@@ -4864,11 +4830,14 @@ public class ILT20 extends Scene{
 		}else {
 			switch (whatToProcess.toUpperCase()) {
 			case "POPULATE-PLAYERPROFILE_LT": case "POPULATE-L3-NAMESUPER":
-				previewCommand = "Change_LowerThird$TopData 1.800 Change_LowerThird$TopData$Change_Out 1.000 Change_LowerThird$TopData$Change_In 1.800 "
-						+ "Change_LowerThird$BottomData 1.300 Change_LowerThird$BottomData$Change_Out 1.000 Change_LowerThird$BottomData$Change_In 1.800";
+				previewCommand = "anim_LowerThird$Changes 1.500 anim_LowerThird$Changes$Essentials 1.500 anim_LowerThird$Changes$Essentials$Change_Out 0.700 "
+						+ "anim_LowerThird$Changes$Essentials$Change_In 1.500 anim_LowerThird$Changes$Name 1.500 anim_LowerThird$Changes$Name$Change_Out 0.400 "
+						+ "anim_LowerThird$Changes$Name$Change_In 1.300 anim_LowerThird$Changes$Subline 1.500 anim_LowerThird$Changes$Subline$Change_Out 0.400 "
+						+ "anim_LowerThird$Changes$Subline$Change_In 1.300 anim_LowerThird$Changes$Logo 1.500 anim_LowerThird$Changes$Logo$Change_Out 0.500 "
+						+ "anim_LowerThird$Changes$Logo$Change_In 1.300";
 				break;
 			case "POPULATE-PLAYERPROFILE_LT_STATS":
-				previewCommand = "Change_LowerThird$BottomData 1.300 Change_LowerThird$BottomData$Change_Out 1.000 Change_LowerThird$BottomData$Change_In 1.800";
+				previewCommand = "anim_LowerThird$Changes$Subline 1.500 anim_LowerThird$Changes$Subline$Change_Out 0.400 anim_LowerThird$Changes$Subline$Change_In 1.300";
 				break;
 			case "POPULATE-L3-FLIPPER":
 				previewCommand = "Change_Flipper$Header 1.740 Change_Flipper$Header$Change_Out 0.720 Change_Flipper$Header$Change_In 1.740 "
@@ -4876,7 +4845,7 @@ public class ILT20 extends Scene{
 				break;
 			}
 		}
-		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/Overlays " + "C:/Temp/Preview.jpg " + previewCommand + "\0");
+		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/gfx_Overlays " + "C:/Temp/Preview.tga " + previewCommand + "\0");
 	}
 	
 	public void processPreviewCrawler(PrintWriter print_writer, String whatToProcess, int whichSide) throws InterruptedException {
@@ -4900,7 +4869,7 @@ public class ILT20 extends Scene{
 				break;
 			}
 		}
-		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/Overlays " + "C:/Temp/Preview.jpg " + previewCommand + "\0");
+		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/gfx_Overlays " + "C:/Temp/Preview.tga " + previewCommand + "\0");
 		
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Crawl$CrawlAll$Side" + whichSide + "$Crawl*GEOM*reset INVOKE\0");
 	}
@@ -4908,6 +4877,27 @@ public class ILT20 extends Scene{
 	public void processAnimation(PrintWriter print_writer, String animationName,String animationCommand, String which_broadcaster,int which_layer)
 	{
 		print_writer.println("-1 RENDERER*STAGE*DIRECTOR*In START \0");
+	}
+	
+	public void resetData(PrintWriter print_writer) {
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Loop SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Audio SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Anim_WaterMark SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Crawl SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Crawl SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_RTM SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Stat SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LowerThird SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LOF SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_LOF SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*CtegoryHighlight SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*MoveForCatHighlight SHOW 0.0 \0");
+	
+		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Loop SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*FadeForOutcome SHOW 0.0 \0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*Change SHOW 0.0 \0");
 	}
 	
 	public String toString() {
