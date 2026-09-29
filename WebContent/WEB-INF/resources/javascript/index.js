@@ -124,20 +124,19 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				break;
 			}
 			break;
-		case 'F6': //FF TOP BUY AUCTION
-		$("#captions_div").hide();
-		$("#cancel_match_setup_btn").hide();
-		$("#expiry_message").hide();
-		$("#auction_div").hide();
+		case 'F6': //FF TOP BUY AUCTION		
 		switch ($('#selected_broadcaster').val()){
 			case 'ADT10':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
 				processAuctionProcedures('ROUNDSUMARRY_DRAFT_GRAPHICS-OPTIONS');
 				break;
 			default:
 				stopTeamRotation();
 				which_GFX = "";
 				processAuctionProcedures('POPULATE-FF_TOP_BUYS_AUCTION');
-			
 				break;
 			}
 			break;	
@@ -249,8 +248,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': 
-			case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': 
+			case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -264,7 +263,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'PSL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': 
+			case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL': case 'PSL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -281,7 +281,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;	
 		case 'Control_s': //FF 5 TOP BUY AUCTION
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': 
+			case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -377,7 +378,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break	
 		case 'F11': //FF ICONIC PLAYERS
 			switch ($('#selected_broadcaster').val()){
-			case 'PSL':
+			case 'PSL': case 'ILT20':
 				break;
 			case 'UTT_BIGSCREEN':
 				stopTeamRotation();
@@ -648,7 +649,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL':case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 			case 'UTT_VIZ': case'UTT_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
@@ -656,7 +657,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				$("#auction_div").hide();
 				processAuctionProcedures('ZONE-PLAYER_GRAPHICS-OPTIONS');
 				break;
-			case 'PSL':
+			case 'PSL': case 'ILT20':
 				break;
 			default://ISPL
 				$("#captions_div").hide();
@@ -668,7 +669,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			}
 			break;	
 		case '6': //ZONE PLAYERS CHANGE ON
-			processAuctionProcedures('POPULATE-ZONE_PLAYERS_STATS');
+			switch ($('#selected_broadcaster').val()){
+			case 'PSL': case 'ILT20':
+				break;
+			default://ISPL
+				processAuctionProcedures('POPULATE-ZONE_PLAYERS_STATS');
+				break;
+			}
 			break
 			
 		case 'Alt_F12':
