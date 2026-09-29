@@ -139,7 +139,7 @@ public class ADT10 extends Scene{
 		case "POPULATE-FF_FIVE_TOP_BUY_TEAM": case "POPULATE-ZONEWISE_PLAYERS_SOLD": case "POPULATE-FLIPPER_SQUAD": case "POPULATE-FF_SQUAD_TEAM":
 		case "POPULATE-FF_SQUAD_ROLE_TEAM":case "POPULATE-LOF_TEAM_BID_AUCTION": case "POPULATE-L3-FLIPPER_TEXT": case "POPULATE-PROFILE_FF": 
 		case "LOF_SLOT_CHANGEON": case "POPULATE-PLAYERPROFILE_DRAFT_FF": case "ROUNDSUMMARY_DRAFT-OPTIONS": case "POPULATE-PICKORDER":
-		case "POPULATE-L3-NAMESUPER-PLAYER":
+		case "POPULATE-L3-NAMESUPER-PLAYER": case "POPULATE-COUNTER_TIMER": case "POPULATE-COUNTER_STOP":
 		case "POPULATE-PICKORDERONLY":	
 			switch (session_selected_broadcaster.toUpperCase()) {
 			case "ADT10":
@@ -191,7 +191,12 @@ public class ADT10 extends Scene{
 							auctionService.getAllStats(),auction, session_curr_bid,auctionService, session_selected_broadcaster);
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
-					
+				case "POPULATE-COUNTER_TIMER":
+					populateCounterTimer(print_writer, session_selected_broadcaster);
+					break;
+				case "POPULATE-COUNTER_STOP":
+					populateCounterStop(print_writer, session_selected_broadcaster);
+					break;
 				case "POPULATE-PLAYERPROFILE_FF":
 					if(!which_graphics_onscreen.isEmpty()) {
 						whichSideNotProfile = 2;
@@ -203,17 +208,17 @@ public class ADT10 extends Scene{
 							Integer.valueOf(valueToProcess.split(",")[2]), valueToProcess.split(",")[3], valueToProcess.split(",")[4], auctionService.getAllStats(), auctionService, session_selected_broadcaster);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
-				case "POPULATE-PLAYERPROFILE_DRAFT_FF":
-					if(!which_graphics_onscreen.isEmpty()) {
-						whichSideNotProfile = 2;
-					}else {
-						whichSideNotProfile = 1;
-					}
-					side2ValueToProcess = valueToProcess;
-					populatePlayerProfileDraftFF(false,print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]),
-							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster, session_draft);
-					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
-					break;
+//				case "POPULATE-PLAYERPROFILE_DRAFT_FF":
+//					if(!which_graphics_onscreen.isEmpty()) {
+//						whichSideNotProfile = 2;
+//					}else {
+//						whichSideNotProfile = 1;
+//					}
+//					side2ValueToProcess = valueToProcess;
+//					populatePlayerProfileDraftFF(false,print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]),
+//							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster, session_draft);
+//					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
+//					break;
 				case "ROUNDSUMMARY_DRAFT-OPTIONS":	
 					if(!which_graphics_onscreen.isEmpty()) {
 						whichSideNotProfile = 2;
@@ -1023,11 +1028,12 @@ public class ADT10 extends Scene{
 							break;
 						case "ANIMATE-IN-SQUAD":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad$In_Out START\0");
-							which_graphics_onscreen = "SQUAD";
+							which_graphics_onscreen = "SQUAD_ADT";
 							break;
+						
 						case "ANIMATE-IN-SQUADIMAGE":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad_Images$In_Out START\0");
-							which_graphics_onscreen = "SQUADS";
+							which_graphics_onscreen = "SQUADS_ADT";
 							break;
 						case "ANIMATE-IN-ZONE-PLAYER_STATS":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad START\0");
@@ -1252,6 +1258,7 @@ public class ADT10 extends Scene{
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTSlug SHOW 0.0\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTPlayerDraft SHOW 0.0\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*LT_Round_Category SHOW 0.0\0");
+					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Timer SHOW 0.0\0");
 					
 					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad SHOW 0.0\0");
 					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_ID SHOW 0.0\0");
@@ -1429,7 +1436,7 @@ public class ADT10 extends Scene{
 						break;
 
 					case "IDENT": case "PLAYERPROFILE_FF": case "FF_RTM_AND_PURSE_REMAINING": case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
-					case "SQUAD": case "SQUADS": case "REMAINING_PURSE_ALL": case "FF_ICONIC_PLAYERS": case "ZONE-PLAYER_STATS": case "FF_FIVE_TOP_BUYS_AUCTION":
+					case "SQUAD_ADT": case "SQUADS_ADT": case "REMAINING_PURSE_ALL": case "FF_ICONIC_PLAYERS": case "ZONE-PLAYER_STATS": case "FF_FIVE_TOP_BUYS_AUCTION":
 					case "FF_FIVE_TOP_BUY_TEAM":case "FF_SQUAD_TEAM": case "FF_SQUAD_ROLE_TEAM": 
 					case "ZONE-PLAYER_FULL": case "FF_WINDOW": case "PICKORDER":
 					
@@ -1470,10 +1477,10 @@ public class ADT10 extends Scene{
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Window$In_out CONTINUE\0");
 							break;
 							
-						case "SQUAD": case "ZONE-PLAYER_STATS": case "ZONE-PLAYER_FULL":
+						case "SQUAD_ADT": case "ZONE-PLAYER_STATS": case "ZONE-PLAYER_FULL":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad$In_Out CONTINUE\0");
 							break;
-						case "SQUADS":
+						case "SQUADS_ADT":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad_Images$In_Out CONTINUE\0");
 							break;
 						case "FF_ICONIC_PLAYERS":
@@ -1668,8 +1675,8 @@ public class ADT10 extends Scene{
 						break;
 
 					case "IDENT": case "PLAYERPROFILE_FF": case "FF_RTM_AND_PURSE_REMAINING": case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
-					case "SQUAD": case "REMAINING_PURSE_ALL": case "FF_ICONIC_PLAYERS": case "ZONE-PLAYER_STATS": case "FF_FIVE_TOP_BUYS_AUCTION":
-					case "FF_FIVE_TOP_BUY_TEAM":case "FF_SQUAD_TEAM": case "FF_SQUAD_ROLE_TEAM": 
+					case "SQUAD_ADT": case "REMAINING_PURSE_ALL": case "FF_ICONIC_PLAYERS": case "ZONE-PLAYER_STATS": case "FF_FIVE_TOP_BUYS_AUCTION":
+					case "FF_FIVE_TOP_BUY_TEAM":case "FF_SQUAD_TEAM": case "FF_SQUAD_ROLE_TEAM": case "SQUADS_ADT":
 					case "ZONE-PLAYER_FULL": case "FF_WINDOW": case "PICKORDER":
 						
 
@@ -1707,8 +1714,11 @@ public class ADT10 extends Scene{
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header CONTINUE\0");
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRemaining CONTINUE\0");
 							break;
-						case "SQUAD": case "ZONE-PLAYER_STATS": case "ZONE-PLAYER_FULL":
+						case "SQUAD_ADT": case "ZONE-PLAYER_STATS": case "ZONE-PLAYER_FULL":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad$In_Out CONTINUE\0");
+							break;
+						case "SQUADS_ADT": 
+							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad_Images$In_Out CONTINUE\0");
 							break;
 						case "FF_ICONIC_PLAYERS":
 							print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header CONTINUE\0");
@@ -3132,13 +3142,20 @@ public class ADT10 extends Scene{
 //			System.out.println(session_draft.getData().getRoundWise().get);
 //		}
 	}
-	public void populatePlayerProfileDraftFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, List<Statistics> stats, Auction auction, 
-			AuctionService auctionService, String session_selected_broadcaster, DraftedPlayersSummary session_draft) throws InterruptedException 
+	
+	public void populateCounterStop(PrintWriter print_writer, String session_selected_broadcaster) throws InterruptedException 
 	{
-		System.out.println("session-------------------------------------------------------"+session_draft.getData().getRoundWise().get(0).getPlayers().toString());
-//		for(int i = 0; i <=session_draft.getData().getRoundWise()-1; i++) {
-//			System.out.println(session_draft.getData().getRoundWise().get);
-//		}
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Timer CONTINUE\0");
+	}
+	public void populateCounterTimer(PrintWriter print_writer, String session_selected_broadcaster) throws InterruptedException 
+	{
+		print_writer.println("-1 CLOCK0*TIME SET 60\0");
+		print_writer.println("-1 CLOCK0*LIMIT SET 0\0");
+		print_writer.println("-1 CLOCK0*DIRECTION SET DOWN\0");
+		
+		
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Timer START\0");
+		print_writer.println("-1 CLOCK0 START\0");
 	}
 	
 	public void populatePlayerProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats,  int teamId, String stats_Type, String cat, List<Statistics> stats, 
@@ -3373,21 +3390,6 @@ public class ADT10 extends Scene{
 					+ base_path_1 + "TLogo" + "\0");
 			
 		}
-		
-//		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp"
-//				+ "$ImageMask$Abhishek_Kumar_Dalhor*TEXTURE*IMAGE SET "+ photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
-//		if ("WITH_PHOTO".equalsIgnoreCase(session_photo_option)) {
-//			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player*ACTIVE SET 1\0");
-//			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player"
-//					+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-//		}else{
-//			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player*ACTIVE SET 0\0");
-//		}
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$img_Player*ACTIVE SET 0\0");
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp"
-				+ "$ImageMask$Abhishek_Kumar_Dalhor*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-		
-		
 		
 	}
 	
@@ -6439,7 +6441,7 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 	        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Round_and_Category"
                      + "$Category_Out$img_Text2$Category*GEOM*TEXT SET " + Cat + "\0");
 	        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Round_and_Category"
-                     + "$Round_Out$img_Text3$txt_Round*GEOM*TEXT SET " + "ROUND " + round + "\0");
+                     + "$Round_Out$Round_In$img_Text1$txt_Round*GEOM*TEXT SET " + "ROUND " + round + "\0");
 	
 	        print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select*FUNCTION*Omo*vis_con SET 0\0");
 	        // =========================================================
@@ -6451,6 +6453,8 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
 	                    + teamSlot + "$Player$Out_Name$Bottom_All$Select_Text*FUNCTION*Omo*vis_con SET 0\0"
 	            );
+	            print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$0"
+ 	                    + teamSlot + "$Player$Out_Name$Bottom_All$Select_Text$Pick_Grp*TEXTURE*IMAGE SET "+ base_path_1 +  "TLogo" + "\0");
 	            
 	            if(image.equalsIgnoreCase("WITH_PHOTO")) {
 	            	for(Player ply : auctionService.getAllPlayer()) {
@@ -6485,9 +6489,18 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 		    	                    + "\0"
 		    	            );
 		            		
-		            		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
-		    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Both$Logo$img_logo"
-		    	                    + "*TEXTURE*IMAGE SET " + logo_path + teamBadge + "\0");
+		            	
+		            		
+		            		
+		            		if(teamBadge.equalsIgnoreCase("United") || teamBadge.equalsIgnoreCase("Arabian")) {
+		            			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
+			    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Both$Logo$img_logo"
+			    	                    + "*TEXTURE*IMAGE SET " + logo_path1 + teamBadge + "\0");
+		            		}else {
+		            			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
+			    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Both$Logo$img_logo"
+			    	                    + "*TEXTURE*IMAGE SET " + logo_path + teamBadge + "\0");
+		            		}
 		            		
 		            		print_writer.println(
 		    	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
@@ -6519,9 +6532,16 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 		    	                    + teamSlot + "$Out_Image$Select_Player_Logo*FUNCTION*Omo*vis_con SET 1\0"
 		    	            );
 		            		
-		            		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
-		    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Logo$img_logo"
-		    	                    + "*TEXTURE*IMAGE SET " + logo_path + teamBadge + "\0");
+		            		
+		            		if(teamBadge.equalsIgnoreCase("United") || teamBadge.equalsIgnoreCase("Arabian")) {
+		            			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
+			    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Logo$img_logo"
+			    	                    + "*TEXTURE*IMAGE SET " + logo_path1 + teamBadge + "\0");
+		            		}else {
+		            			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
+			    	                    + teamSlot + "$Player$Out_Image$Select_Player_Logo$Logo$img_logo"
+			    	                    + "*TEXTURE*IMAGE SET " + logo_path + teamBadge + "\0");
+		            		}
 		            		
 		            		
 		            		print_writer.println(
@@ -6557,15 +6577,26 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 	                    + "*FUNCTION*Omo*vis_con SET 1\0"
 	            );
 	
-	            print_writer.println(
-	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"+ teamSlot+ "$Player$"
-	                    	+ "Out_Image$Select_Player_Logo$Logo$img_logo*TEXTURE*IMAGE SET "+ logo_path + teamBadge + "\0"
-	            );
+	            if(teamBadge.equalsIgnoreCase("United") || teamBadge.equalsIgnoreCase("Arabian")) {
+	            	  print_writer.println(
+	  	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"+ teamSlot+ "$Player$"
+	  	                    	+ "Out_Image$Select_Player_Logo$Logo$img_logo*TEXTURE*IMAGE SET "+ logo_path1 + teamBadge + "\0"
+	  	            );
+        		}else {
+        			  print_writer.println(
+      	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"+ teamSlot+ "$Player$"
+      	                    	+ "Out_Image$Select_Player_Logo$Logo$img_logo*TEXTURE*IMAGE SET "+ logo_path + teamBadge + "\0"
+      	            );
+        		}
+	            
+	            print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$0"
+ 	                    + teamSlot + "$Player$Out_Name$Bottom_All$Select_Text$Pick_Grp*TEXTURE*IMAGE SET "+ base_path_1 +  "TLogo" + "\0");
 	
 	            print_writer.println(
 	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$" + teamSlot
 	                    + "$Player$Out_Name$Bottom_All$Select_Text*FUNCTION*Omo*vis_con SET 1\0"
 	            );
+	            
 	            print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$"
 	                    + teamSlot + "$Player$Out_Name$Bottom_All$Select_Text$Pick_Grp$txt_Name*GEOM*TEXT SET "+ "PICK " +  pickNo + "\0");
 	        }
@@ -6577,8 +6608,8 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 		
 		 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Round_and_Category"
                    + "$Category_Out$img_Text2$Category*GEOM*TEXT SET " + catt.toUpperCase() + "\0");
-	     print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Round_and_Category"
-                   + "$Round_Out$img_Text3$txt_Round*GEOM*TEXT SET " + "ROUND " + round + "\0");	
+		 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Round_and_Category"
+                 + "$Round_Out$Round_In$img_Text1$txt_Round*GEOM*TEXT SET " + "ROUND " + round + "\0");
     int selectedRound;
 
     try {
@@ -6651,6 +6682,8 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 	                    "-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$0" + i
 	                    + "$Player$Out_Name$Bottom_All$Select_Text*FUNCTION*Omo*vis_con SET 1\0"
 	            );
+        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$0"
+ 	                    + i + "$Player$Out_Name$Bottom_All$Select_Text$Pick_Grp*TEXTURE*IMAGE SET "+ base_path_1 +  "TLogo" + "\0");
         		 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$Overlays_All$Select$LT_Round_Category$Select$0"
  	                    + i + "$Player$Out_Name$Bottom_All$Select_Text$Pick_Grp$txt_Name*GEOM*TEXT SET "+ "PICK " +  pickOrder.getPickNo() + "\0");
         	}
@@ -6723,23 +6756,34 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$HEADER$Select$Header_Data$img_Text3$txt_Header"
 							+ "*GEOM*TEXT SET " + tm.getTeamName1() + "\0");
 					
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$HEADER$Select$Header_Data$img_Text3"
-							+ "*TEXTURE*IMAGE SET " + text_path_3 + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base3"
-							+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$logo$img_Logo"
 							+ "*TEXTURE*IMAGE SET " + logo_path + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base2"
-							+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base1"
-							+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
-					
+					   
+					   if(  tm.getTeamName4().equalsIgnoreCase("Arabian")) {
+						   print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base3"
+									+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base2"
+								+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base1"
+								+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
+						
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$HEADER$Select$Header_Data$img_Text3"
+								+ "*TEXTURE*IMAGE SET " + text_path_1 + tm.getTeamName4() + "\0");
+		        		}else {
+		        			  print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base3"
+										+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
+							print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base2"
+									+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
+							print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$Header_Data$img_Base1"
+									+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
+							print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$HEADER$Select$Header_Data$img_Text3"
+									+ "*TEXTURE*IMAGE SET " + text_path_3 + tm.getTeamName4() + "\0");
+		        		}
 					
 					if(count < 9) {
 						count++;
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE$Player_0" + count+
 								 "*ACTIVE SET 1 \0");
-						
 						
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE$TOP_BAND"
 								+ "$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
@@ -6901,18 +6945,30 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$HEADER$Select$Header_Data$img_Text3$txt_Header"
 							+ "*GEOM*TEXT SET " + tm.getTeamName1() + "\0");
 					
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$HEADER$Select$Header_Data$img_Text3"
-							+ "*TEXTURE*IMAGE SET " + text_path_3 + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base3"
-							+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
+					if(tm.getTeamName4().equalsIgnoreCase("Arabian")) {
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base3"
+								+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
+						
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base2"
+								+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base1"
+								+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$HEADER$Select$Header_Data$img_Text3"
+								+ "*TEXTURE*IMAGE SET " + text_path_1 + tm.getTeamName4() + "\0");
+					}else {
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base3"
+								+ "*TEXTURE*IMAGE SET " + base_path_3 + tm.getTeamName4() + "\0");
+						
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base2"
+								+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base1"
+								+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
+						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$HEADER$Select$Header_Data$img_Text3"
+								+ "*TEXTURE*IMAGE SET " + text_path_3 + tm.getTeamName4() + "\0");
+					}
+					
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$logo$img_Logo"
 							+ "*TEXTURE*IMAGE SET " + logo_path + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base2"
-							+ "*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$Header_Data$img_Base1"
-							+ "*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
-					
-					
 					for(Player plyrs : auctionService.getAllPlayer()) {
 						if( Integer.valueOf( plyrs.getPlayerNumber()) ==  pl.getFSAId()) {
 						count++;	
@@ -6934,9 +6990,6 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 								+ "$Player$Out_Image$img_Base2*TEXTURE*IMAGE SET " + base_path_2 + tm.getTeamName4() + "\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$AllGraphics$LEFT_SIDE$0" + count
 								+ "$Player$Out_Image$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + tm.getTeamName4() + "\0");
-						
-						
-						
 						
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad_Image$AllGraphics$LEFT_SIDE$0" + count
 								+ "$Out_Name$Bottom_All$Select_Text*FUNCTION*Omo*vis_con SET 0\0");
@@ -7780,8 +7833,13 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 						+ "anim_LTPlayerDraft$In_Out$Main$Band$In 0.900 ";
 				break;
 			case "POPULATE-PICKORDER":
-				previewCommand = "LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player$In 1.040 LT_Round_Category$In_Out$Main$Pick$In 1.040 "
-						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 1.040 ";
+				previewCommand = "LT_Round_Category$In_Out 1.040 LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player 1.040 LT_Round_Category$In_Out$Main$Player$In 0.660 "
+						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 0.500";
+				break;
+			case "POPULATE-PICKORDERONLY":
+				previewCommand = "LT_Round_Category$In_Out 1.040 LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player 1.040 LT_Round_Category$In_Out$Main$Player$In 0.660 "
+						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 0.500";
+				break;
 			case "POPULATE-L3-FLIPPER": case "POPULATE-FLIPPER_SQUAD": case "POPULATE-L3-FLIPPER_TEXT":
 				previewCommand = "Flipper$In_Out$In 0.560 Scroll 8.540 ";
 				break;
@@ -7797,8 +7855,13 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 						+ "anim_LTPlayerDraft$In_Out$Main$Band$In 0.900 ";
 				break;
 			case "POPULATE-PICKORDER":
-				previewCommand = "LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player$In 1.040 LT_Round_Category$In_Out$Main$Pick$In 1.040 "
-						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 1.040 ";
+				previewCommand = "LT_Round_Category$In_Out 1.040 LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player 1.040 LT_Round_Category$In_Out$Main$Player$In 0.660 "
+						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 0.500";
+				break;
+			case "POPULATE-PICKORDERONLY":
+				previewCommand = "LT_Round_Category$In_Out 1.040 LT_Round_Category$In_Out$Main 1.040 LT_Round_Category$In_Out$Main$Player 1.040 LT_Round_Category$In_Out$Main$Player$In 0.660 "
+						+ "LT_Round_Category$In_Out$Essentials 1.040 LT_Round_Category$In_Out$Essentials$In 0.500";
+				break;
 			case "POPULATE-PLAYERPROFILE_LT_STATS":
 				previewCommand = "Change_LowerThird$BottomData 1.300 Change_LowerThird$BottomData$Change_Out 1.000 Change_LowerThird$BottomData$Change_In 1.800";
 				break;
@@ -7823,6 +7886,7 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTSlug SHOW 0.0\0");
 		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTPlayerDraft SHOW 0.0\0");
 		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*LT_Round_Category SHOW 0.0\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Timer SHOW 0.0\0");
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad SHOW 0.0\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_ID SHOW 0.0\0");

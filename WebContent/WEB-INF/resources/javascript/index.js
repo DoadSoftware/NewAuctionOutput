@@ -191,6 +191,9 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			case 'RALLY':
 				processAuctionProcedures('POPULATE-RIGHT_SUPER');
 				break;
+			case 'ADT10':
+				processAuctionProcedures('POPULATE-COUNTER_TIMER');
+				break;
 			default:
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
@@ -592,11 +595,18 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			processAuctionProcedures('CRAWLERFREETEXT_GRAPHICS-OPTIONS');
 	    		break;	
 		case 'v':
-			$("#captions_div").hide();
-			$("#cancel_match_setup_btn").hide();
-			$("#expiry_message").hide();
-			$("#auction_div").hide();
-			processAuctionProcedures('FLIPPER_TEXT_GRAPHICS-OPTIONS');
+			switch ($('#selected_broadcaster').val()){
+				case 'ADT10': 
+					processAuctionProcedures('POPULATE-COUNTER_STOP');
+					break;
+				default:
+					$("#captions_div").hide();
+					$("#cancel_match_setup_btn").hide();
+					$("#expiry_message").hide();
+					$("#auction_div").hide();
+					processAuctionProcedures('FLIPPER_TEXT_GRAPHICS-OPTIONS');
+					break;
+			}
 			break;
 		
 		case 'm': //LT ICONIC PPLAYERS
@@ -1941,7 +1951,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-PURSE_SIZE_ALL': case 'POPULATE-PURSE_SLOT_ALL':
 			
 			case 'POPULATE-RIGHT_SUPER': case 'POPULATE-LOCATION': case 'POPULATE-WATERMARK': case 'POPULATE-L3-SPLIT': case 'POPULATE-L3-SPLITPIP':
-			case 'POPULATE-L3-NAMESUPERSS':	case 'POPULATE-BREAKING':
+			case 'POPULATE-L3-NAMESUPERSS':	case 'POPULATE-BREAKING': 
 				
 			case 'POPULATE-PICKORDER': case 'POPULATE-TEAM_RTM_AVAILABLE': case 'POPULATE-PICKORDERONLY':
 			
