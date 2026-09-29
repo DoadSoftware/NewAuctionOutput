@@ -670,7 +670,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#expiry_message").hide();
 			$("#auction_div").hide();
 			addItemsToList('ZONE-PLAYER_FULL-OPTIONS',null);
-			break;	
+			break;
+				
 		case 'p': //ZONE PLAYERS CHANGE ON
 			switch ($('#selected_broadcaster').val()){
 			case 'RALLY':
@@ -693,7 +694,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			}
 			
 			break
-			
+		case 'i': //ZONE PLAYERS CHANGE ON
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				addItemsToList('PICKORDERONLY-OPTIONS',null);
+				break	
 		case 'q':
 		switch ($('#selected_broadcaster').val()){
 			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
@@ -1015,7 +1022,7 @@ function processUserSelection(whichInput)
 	case 'populate_zonewisePlayer_sold_btn':case "populate_profile_Change_stats_btn": case 'populate_flipper_squad_btn':case "populate_Squad_team_btn":case "populate_Squad_Role_team_btn":
 	case 'populate_Lof_Team_Bid_btn': case 'populate_profileff_btn': case 'populate_flipper_text_btn': case 'populate_squad_animation_btn': case 'populate_retain_players_squad_btn':
 	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn': case 'populate_ff_playerprofile_draft_btn': case 'populate_roundsummary_draft_btn': case 'populate_pick_order_btn':
-	case 'populate_rtm_available_btn':	
+	case 'populate_rtm_available_btn':	 case 'populate_pickonly_order_btn':
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
@@ -1025,6 +1032,9 @@ function processUserSelection(whichInput)
 		case 'populate_pick_order_btn':
 			processAuctionProcedures('POPULATE-PICKORDER');
 			break;
+		case 'populate_pickonly_order_btn':
+			processAuctionProcedures('POPULATE-PICKORDERONLY');
+			break;	
 		case 'curr_bid_section':
 			processAuctionProcedures('POPULATE-CURR_BID');
 			break;
@@ -1229,8 +1239,11 @@ function processAuctionProcedures(whatToProcess)
 		valueToProcess = $('#matchFileTimeStamp').val();
 		break;
 	case 'POPULATE-PICKORDER':
-		valueToProcess = $('#text1').val();
+		valueToProcess = $('#text1').val() + ',' + $('#selectSubHeader option:selected').val();
 		break;
+	case 'POPULATE-PICKORDERONLY':
+		valueToProcess = $('#text1').val() + ',' + $('#selectSubHeader option:selected').val();
+		break;		
 	case 'POPULATE-TEAM_RTM_AVAILABLE':
 		valueToProcess = $('#selectTeamName option:selected').val();
 		break;		
@@ -1903,7 +1916,7 @@ function processAuctionProcedures(whatToProcess)
 			case 'POPULATE-RIGHT_SUPER': case 'POPULATE-LOCATION': case 'POPULATE-WATERMARK': case 'POPULATE-L3-SPLIT': case 'POPULATE-L3-SPLITPIP':
 			case 'POPULATE-L3-NAMESUPERSS':	case 'POPULATE-BREAKING':
 				
-			case 'POPULATE-PICKORDER': case 'POPULATE-TEAM_RTM_AVAILABLE':
+			case 'POPULATE-PICKORDER': case 'POPULATE-TEAM_RTM_AVAILABLE': case 'POPULATE-PICKORDERONLY':
 			
 				if(whatToProcess == 'POPULATE-RTM_ENABLED' || whatToProcess == 'POPULATE-CURR_BID' || whatToProcess == 'POPULATE-RTM_PLAYER')	{
 					switch(whatToProcess){
@@ -1951,6 +1964,9 @@ function processAuctionProcedures(whatToProcess)
 						case 'POPULATE-PICKORDER':
 							processAuctionProcedures('ANIMATE-IN-PICKORDER');
 							break;
+						case 'POPULATE-PICKORDERONLY':	
+							processAuctionProcedures('ANIMATE-IN-PICKORDERONLY');
+							break;	
 						case 'POPULATE-BREAKING':
 							processAuctionProcedures('ANIMATE-IN-BREAKING');
 							break;	
@@ -2282,7 +2298,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 	case 'TEAM_CURRENT_BID-OPTIONS': case 'FF_TOP_FIVE_SOLD_TEAM-OPTIONS': case 'SINGLE_TEAM-OPTIONS':  case 'ZONEWISE_PLAYER_SOLD-OPTIONS':case "GRAPHICS-FF_FIVE_TOP_BUYS_AUCTION":
 	case 'PROFILE_FF_STATS-OPTIONS': case 'FLIPPER_SQUAD-OPTIONS':case "FF_SQUAD_TEAM-OPTIONS":case "FF_SQUAD_ROLE_TEAM-OPTIONS":case "LOF_TEAM_BID_OPTIONS": 
 	case 'PROFILEFF-OPTIONS': case 'FLIPPER_TEXT-OPTIONS': case 'CRAWL_TOP_SOLD_TEAM-OPTIONS': case 'CRAWL_SQUAD-OPTIONS': case 'ZONE-PLAYER_FULL-OPTIONS': case 'SQUAD_ANIMATION-OPTIONS':
-	case 'FF_BIG_PLAYERPROFILE-OPTIONS':	case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':case'NAMESUPERSS-OPTIONS': case 'BACKG-OPTIONS': case 'PICKORDER-OPTIONS':
+	case 'FF_BIG_PLAYERPROFILE-OPTIONS':	case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':case'NAMESUPERSS-OPTIONS': case 'BACKG-OPTIONS': case 'PICKORDER-OPTIONS': case 'PICKORDERONLY-OPTIONS':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'PSL':
 		case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY':  case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'VCL': case 'ILT20': case 'ADT10':
@@ -2345,8 +2361,88 @@ function addItemsToList(whatToProcess, dataToProcess)
 					label.for = select.id;
 					row.insertCell(cellCount).appendChild(label).appendChild(select);
 					cellCount = cellCount + 1;
+					
+					select = document.createElement('select');
+					select.style = 'width:130px';
+					select.id = 'selectSubHeader';
+					select.name = select.id;
+					
+					option = document.createElement('option');
+					option.value = 'WITH_PHOTO';
+					option.text = 'With Photo';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
+					option.value = 'WITHOUT_PHOTO';
+					option.text = 'Without Photo';
+					select.appendChild(option);
+					
+					row.insertCell(cellCount).appendChild(select);
+					cellCount = cellCount + 1;
 					break;
-				case "LOF_TEAM_BID_OPTIONS":
+			case 'PICKORDERONLY-OPTIONS':	
+				select = document.createElement('input');
+				select.type = "text";
+				select.id = 'text1';
+				select.value = '';
+
+				label = document.createElement('label');
+				label.type = 'label';
+				label.style = 'display:block';
+				label.innerHTML = 'ROUND';
+				label.for = select.id;
+				row.insertCell(cellCount).appendChild(label).appendChild(select);
+				cellCount = cellCount + 1;
+				
+				select = document.createElement('select');
+				select.style = 'width:130px';
+				select.id = 'selectSubHeader';
+				select.name = select.id;
+				
+				option = document.createElement('option');
+				option.value = 'ICON';
+				option.text = 'ICON';
+				select.appendChild(option);
+				
+				option = document.createElement('option');
+				option.value = 'PLATINUM';
+				option.text = 'PLATINUM';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'UAE STAR';
+				option.text = 'UAE STAR';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'CATEGORY A';
+				option.text = 'CATEGORY A';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'CATEGORY B';
+				option.text = 'CATEGORY B';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'CATEGORY C';
+				option.text = 'CATEGORY C';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'UAE_EMERGING U21';
+				option.text = 'UAE EMERGING - U21';
+				select.appendChild(option);
+
+				option = document.createElement('option');
+				option.value = 'ASSOCIATE HERO';
+				option.text = 'ASSOCIATE HERO';
+				select.appendChild(option);
+				
+				row.insertCell(cellCount).appendChild(select);
+				cellCount = cellCount + 1;
+				break;
+			case "LOF_TEAM_BID_OPTIONS":
 				
 					selectedArray = [];
 					
@@ -2633,6 +2729,25 @@ function addItemsToList(whatToProcess, dataToProcess)
 									row.insertCell(cellCount).appendChild(select);
 									cellCount = cellCount + 1;
 									break;
+								case 'ADT10':
+									select = document.createElement('select');
+									select.style = 'width:130px';
+									select.id = 'selectSubHeader';
+									select.name = select.id;
+									
+									option = document.createElement('option');
+									option.value = 'WITH_LINE';
+									option.text = 'With Line';
+									select.appendChild(option);
+									
+									option = document.createElement('option');
+									option.value = 'WITHOUT_LINE';
+									option.text = 'Without line';
+									select.appendChild(option);
+									
+									row.insertCell(cellCount).appendChild(select);
+									cellCount = cellCount + 1;
+									break;	
 								}
 							}
 							break;
@@ -3837,6 +3952,10 @@ function addItemsToList(whatToProcess, dataToProcess)
 				option.name = 'populate_pick_order_btn';
 			    option.value = 'Populate';
 				break;
+			case 'PICKORDERONLY-OPTIONS':
+				option.name = 'populate_pickonly_order_btn';
+			    option.value = 'Populate';
+				break;	
 			case 'RTM_TEAM-OPTIONS':
 				option.name = 'populate_rtm_available_btn';
 			    option.value = 'Populate';
