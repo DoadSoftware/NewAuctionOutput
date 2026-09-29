@@ -67,6 +67,7 @@
 			      		onchange="processUserSelection(this)">
 			      		<option value="ADT10">ADT10</option>
 			      		<option value="ILT20">ILT20</option>
+			      		<option value="ILT20_BIGSCREEN">ILT20 BIGSCREEN</option>
 			      		<option value="VCL">VCL</option>
 			      		<option value="PSL">PSL</option>
 			      		<option value="PWL">PWL</option>

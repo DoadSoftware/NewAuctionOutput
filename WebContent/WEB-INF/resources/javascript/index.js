@@ -281,7 +281,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;	
 		case 'Control_s': //FF 5 TOP BUY AUCTION
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -442,7 +442,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 'd': // LOF RTM REMAINING
 			switch ($('#selected_broadcaster').val()){
-			case 'KCL': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'PSL':
+			case 'KCL': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL': case 'PSL':
 				alert('GFX IS NOT ACTIVE FOR THIS AUCTION');
 				break;
 			default://ISPL
@@ -459,7 +459,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 'f': //LOF PURSE REMAINING
 			switch ($('#selected_broadcaster').val()){
-			case 'VIZ_ISPL_2024': case 'PSL': case 'KCL': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'UTT_VIZ':
+			case 'VIZ_ISPL_2024': case 'PSL': case 'KCL': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN':  case 'PWL': case 'UTT_VIZ':
 			case 'MUMBAI_T20_VIZ': case 'RALLY':
 				processAuctionProcedures('POPULATE-LOF_REMAINING_PURSE');
 				break;
@@ -559,7 +559,8 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 'x':
 			switch ($('#selected_broadcaster').val()){
-			case 'UTT_VIZ': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'UTT_BIGSCREEN':
+			case 'UTT_VIZ': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN':
+			case 'PWL': case 'UTT_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -647,7 +648,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 			case 'UTT_VIZ': case'UTT_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
@@ -711,7 +712,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				break	
 		case 'q':
 		switch ($('#selected_broadcaster').val()){
-			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':
+			case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'PWL':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();

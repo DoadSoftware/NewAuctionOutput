@@ -246,8 +246,12 @@ public class IndexController
 			case "ILT20_BIGSCREEN":
 				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "";
-				this_ILT20_BIGSCREEN.resetData(print_writer);
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Logo$In_Out START \0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+				
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
+				this_ILT20_BIGSCREEN.which_graphics_onscreen = "BG";
 				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
 			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
