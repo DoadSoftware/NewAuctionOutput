@@ -567,7 +567,7 @@ public class ILT20 extends Scene{
 					if(data.isData_on_screen()) {
 						if(isProfileStatsOnScreen) {
 							print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Stat START \0");
-							TimeUnit.MILLISECONDS.sleep(1000);
+							TimeUnit.MILLISECONDS.sleep(1500);
 							if(whatToProcess.equalsIgnoreCase("ANIMATE-IN-PROFILE_STATS")) {
 								populateProfileStats(print_writer, side2ValueToProcess, 1, auction, auctionService);
 							}else if(whatToProcess.equalsIgnoreCase("ANIMATE-IN-TEAM_CURR_BID")) {
@@ -4189,9 +4189,9 @@ public class ILT20 extends Scene{
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType$HeaderType1$Select_SquadData"
 				+ "*FUNCTION*Omo*vis_con SET 2\0");
 		
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$Header$txt_Header1"
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$img_Text_Highlight$txt_Header1"
 				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName2() + "\0");
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$Header$txt_Header2"
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$img_Text_Highlight$txt_Header2"
 				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName3() + "\0");
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$SubHeader"
@@ -4242,7 +4242,7 @@ public class ILT20 extends Scene{
 //		}
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 2\0");
-		
+		System.out.println(data_str.toString());
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
 			//System.out.println("data_str.get(k) = " + data_str.get(k));
@@ -4542,7 +4542,7 @@ public class ILT20 extends Scene{
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Title*GEOM*TEXT SET BATTING STYLE\0");
 				
 				if(player.getBatsmanStyle() != null) {
-					if(player.getBatsmanStyle() == "RHB") {
+					if(player.getBatsmanStyle().equalsIgnoreCase("RHB")) {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET RIGHT HANDED BATTER\0");
 					}else {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET LEFT HANDED BATTER\0");
@@ -4567,8 +4567,8 @@ public class ILT20 extends Scene{
 				}else {
 					BowlStyle = "SEAM";
 				}
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET BAT "
-						+ (BowlStyle.equalsIgnoreCase("") ? "" : "& " + BowlStyle) + "\0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET " + 
+						(player.getBowlerStyle() != null ? player.getBatsmanStyle() + " " : "RHB ") + (BowlStyle.equalsIgnoreCase("") ? "" : "& " + BowlStyle) + "\0");
 				break;
 			case "BAT/KEEPER": case "WICKET-KEEPER":
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Title*GEOM*TEXT SET BATTING STYLE\0");
