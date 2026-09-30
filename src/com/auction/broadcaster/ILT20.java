@@ -1887,6 +1887,12 @@ public class ILT20 extends Scene{
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 		
+		//BASE
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$BaseAll$Side" + whichSide + "$PurpleBase$ing_Base1*TEXTURE*IMAGE SET " 
+				+ base_path_1 + "EVENT" + " \0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$BaseAll$Side" + whichSide + "$HeroElement$img_HeroColour*TEXTURE*IMAGE SET " 
+				+ heroColor + "EVENT" + " \0");
+		
 		if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$NameAll$txt_FirstName*GEOM*TEXT SET " 
 					+ auctionService.getAllPlayer().get(playerId - 1).getFirstname() + "\0");
