@@ -703,6 +703,8 @@ public class ILT20_BIGSCREEN extends Scene{
 					isSBStatsonScreen = false;
 					update_gfx_Screen = false;
 					
+					getBaseColor(print_writer, 1, "EVENT");
+					getBaseColor(print_writer, 2, "EVENT");
 					TimeUnit.MILLISECONDS.sleep(1000);
 					
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
@@ -712,6 +714,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START\0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Base START \0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
+					
 					which_graphics_onscreen = "BG";
 					break;
 				case "ANIMATE-OUT-PROFILE":
@@ -1987,6 +1990,7 @@ public class ILT20_BIGSCREEN extends Scene{
 	public void populatePlayerProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats,String showData, List<Statistics> stats, Auction auction, 
 			AuctionService auctionService, String session_selected_broadcaster) throws InterruptedException 
 	{
+		getBaseColor(print_writer, which_side, "EVENT");
 		if(is_this_updating == false) {
 			
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
@@ -2005,7 +2009,7 @@ public class ILT20_BIGSCREEN extends Scene{
 				switch (show_stats) {
 				case "DT20": case "ILT20":
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$CraeerHead$txt_CareerInfo*GEOM*TEXT SET " 
-							+ (show_stats.equalsIgnoreCase("T20s") ? "T20 CAREER" : "ILT20 CAREER") + "\0");
+							+ (show_stats.equalsIgnoreCase("DT20") ? "T20 CAREER" : "DP WORLD ILT20 CAREER") + "\0");
 					
 					statsType = auctionService.getStatsTypes().stream().filter(stype -> stype.getStats_short_name().equalsIgnoreCase(show_stats)).findAny().orElse(null);
 					stat = auctionService.getAllStats().stream().filter(st -> st.getPlayer_id() == playerId && statsType.getStats_id() == st.getStats_type_id()).findAny().orElse(null);
