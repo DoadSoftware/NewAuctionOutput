@@ -251,6 +251,7 @@ public class IndexController
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "BG";
 				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 

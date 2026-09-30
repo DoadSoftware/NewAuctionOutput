@@ -33,6 +33,7 @@ public class ILT20_BIGSCREEN extends Scene{
 	public int player_id = 0,team_id=0,player_number=0;
 	public int zoneSize = 0, current_index = 0,side2val = 0;
 	private boolean update_gfx = false;
+	private boolean update_gfx_Screen = false;
 	
 	List<Player> squad = new ArrayList<Player>();
 	List<String> data_str = new ArrayList<String>();
@@ -168,7 +169,7 @@ public class ILT20_BIGSCREEN extends Scene{
 						break;
 					case "SQUAD": case "REMAINING_PURSE_ALL": case "SINGLE_PURSE": case "TOP_SOLD": case "NAMESUPER":
 					case "TOP_SOLD_TEAM": case "IDENT":case "FF_RTM_AND_PURSE_REMAINING": case "ANIMATE-SINGLEPURSE_TEAM":
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Out START \0");
+//						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Out START \0");
 						TimeUnit.MILLISECONDS.sleep(1500);
 						break;
 					}
@@ -176,6 +177,12 @@ public class ILT20_BIGSCREEN extends Scene{
 				switch (whatToProcess.toUpperCase()) {
 				
 				case "POPULATE-PLAYERPROFILE_FF":
+					
+					data.setBid_Start_or_not(false);
+		            data.setData_on_screen(false);
+		            isProfileStatsOnScreen = false;
+					data.setBid_result("");
+					
 					if(!which_graphics_onscreen.isEmpty()) {
 						whichSideNotProfile = 2;
 					}else {
@@ -251,7 +258,7 @@ public class ILT20_BIGSCREEN extends Scene{
 						whichSideNotProfile = 1;
 					}
 					side2ValueToProcess = valueToProcess;
-					populateFFRTMAndPurseRemaining(print_writer, whichSideNotProfile, auction,auctionService,session_selected_broadcaster);
+					populateFFRTMAndPurseRemaining(false,print_writer, whichSideNotProfile, auction,auctionService,session_selected_broadcaster);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
 				case "POPULATE-FF_TOP_BUYS_AUCTION":
@@ -558,18 +565,22 @@ public class ILT20_BIGSCREEN extends Scene{
 							populateZoneSquad(true,print_writer, side2ValueToProcess.split(",")[0], 1, auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
-							populateFFRTMAndPurseRemaining(print_writer, 1, auction, auctionService, session_selected_broadcaster);
+							populateFFRTMAndPurseRemaining(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_TOP_BUYS_AUCTION":
+							update_gfx_Screen = true;
 							populateFFTopBuysAuction(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_FIVE_TOP_BUYS_AUCTION":
+							update_gfx_Screen = true;
 							populateFFFiveTopBuysAuction(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_FIVE_TOP_BUY_TEAM":
+							update_gfx_Screen = true;
 							populateFFTopFiveBuysTeam(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_TOP_BUY_TEAM":
+							update_gfx_Screen = true;
 							populateFFTopBuysTeam(true,print_writer, 1, Integer.valueOf(side2ValueToProcess), auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_SQUAD_TEAM":
@@ -643,6 +654,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					data.setBid_result("");
 					isFlipperonScreen = false;
 					isSBStatsonScreen = false;
+					update_gfx_Screen = false;
 					
 					TimeUnit.MILLISECONDS.sleep(1000);
 					
@@ -651,6 +663,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START\0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 					which_graphics_onscreen = "BG";
 					break;
 				case "ANIMATE-OUT-PROFILE":
@@ -712,6 +725,7 @@ public class ILT20_BIGSCREEN extends Scene{
 				
 				case "ANIMATE-OUT":
 					System.out.println("which_graphics_onscreen = " + which_graphics_onscreen);
+					update_gfx_Screen = false;
 					switch(which_graphics_onscreen) {
 					case "LT_ICONIC_PLAYERS":
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_IconLowerThird CONTINUE\0");
@@ -727,13 +741,18 @@ public class ILT20_BIGSCREEN extends Scene{
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side2$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 						switch (which_graphics_onscreen) {
 						case "IDENT":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$MatchId$Change_Out START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Ident$Change_Out START\0");
 							break;
 						case "PLAYERPROFILE_FF":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Out START\0");
 							
 							if(data.isBid_Start_or_not()) {
 								print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Current_Price CONTINUE\0");
+							}
+							
+							if(data.isPlayer_sold_or_unsold()) {
+								print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Sold$Change_Out START\0");
+								print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Unsold$Change_Out START\0");
 							}
 							data.setBid_Start_or_not(false);
 							data.setPlayer_sold_or_unsold(false);
@@ -749,8 +768,11 @@ public class ILT20_BIGSCREEN extends Scene{
 						case "FF_SQUAD_ROLE_TEAM":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category$Change_Out START\0");
 							break;
-						case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
+						case "REMAINING_PURSE_ALL":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining$Change_Out START\0");
+							break;
+						case "FF_RTM_AND_PURSE_REMAINING":
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRTM$Change_Out START\0");
 							break;
 						case "SQUAD": case "ZONE-PLAYER_STATS": case "SQUAD_ANIMATION": case "ZONE-PLAYER_FULL":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad$Change_Out START\0");
@@ -769,7 +791,7 @@ public class ILT20_BIGSCREEN extends Scene{
 						TimeUnit.MILLISECONDS.sleep(1000);
 						
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionBG START\0");
-//						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						TimeUnit.MILLISECONDS.sleep(200);
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
 						
@@ -779,7 +801,7 @@ public class ILT20_BIGSCREEN extends Scene{
 //						TimeUnit.MILLISECONDS.sleep(1000);
 						
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionBG START\0");
-//						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
 						TimeUnit.MILLISECONDS.sleep(2000);
@@ -792,7 +814,7 @@ public class ILT20_BIGSCREEN extends Scene{
 						
 						switch (which_graphics_onscreen) {
 						case "IDENT":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$MatchId SHOW 0\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Ident SHOW 0\0");
 							break;
 						case "PLAYERPROFILE_FF":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Profile SHOW 0\0");
@@ -811,9 +833,12 @@ public class ILT20_BIGSCREEN extends Scene{
 						case "FF_SQUAD_ROLE_TEAM":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad_Category SHOW 0\0");
 							break;
-						case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
+						case "REMAINING_PURSE_ALL":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRemaining SHOW 0\0");
 							break;
+						case "FF_RTM_AND_PURSE_REMAINING":
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRTM SHOW 0\0");
+							break;	
 						case "SQUAD": case "ZONE-PLAYER_STATS": case "SQUAD_ANIMATION": case "ZONE-PLAYER_FULL":
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad SHOW 0\0");
 							break;
@@ -1359,9 +1384,12 @@ public class ILT20_BIGSCREEN extends Scene{
 			case "PLAYERPROFILE_FF":
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_Out START\0");
 				break;
-			case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
+			case "REMAINING_PURSE_ALL":
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining$Change_Out START\0");
 				break;
+			case "FF_RTM_AND_PURSE_REMAINING":
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRTM$Change_Out START\0");
+				break;	
 			case "SQUAD": case "SQUAD_ANIMATION":
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad$Change_Out START\0");
 				break;
@@ -1428,10 +1456,14 @@ public class ILT20_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuysImage$Change_In START\0");
 			break;
 			
-		case "ANIMATE-IN-REMAINING_PURSE_ALL": case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
+		case "ANIMATE-IN-REMAINING_PURSE_ALL":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining$Change_In  START\0");
 			break;
+		case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
+			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
+			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRTM$Change_In  START\0");
+			break;	
 		case "ANIMATE-IN-SQUAD":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
 			if(!which_graphics_onscreen.equalsIgnoreCase("SQUAD")) {
@@ -1473,10 +1505,14 @@ public class ILT20_BIGSCREEN extends Scene{
 					TimeUnit.MILLISECONDS.sleep(500);
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile SHOW 0.0\0");
 					break;
-				case "ANIMATE-IN-REMAINING_PURSE_ALL":case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
+				case "ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING":
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRTM SHOW 2.480\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRTM SHOW 0.0\0");
+					break;
+				case "ANIMATE-IN-REMAINING_PURSE_ALL":
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRemaining SHOW 2.480\0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining SHOW 0.0\0");
-					break;
+					break;	
 				case "ANIMATE-IN-SQUAD": case "ANIMATE-IN-ZONE-PLAYER_STATS": case "ANIMATE-IN-SQUAD_ANIMATION":
 				case "ANIMATE-IN-ZONE-PLAYER_FULL":	
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad SHOW 2.480\0");
@@ -1555,12 +1591,18 @@ public class ILT20_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$TopBuysImage SHOW 0.0\0");
 			break;
 			
-		case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
-			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-REMAINING_PURSE_ALL") && !whatToProcess.equalsIgnoreCase("ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING")) {
+		case "REMAINING_PURSE_ALL":
+			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-REMAINING_PURSE_ALL")) {
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRemaining SHOW 0.0\0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRemaining SHOW 0.0\0");	
 			}
 			break;
+		case "FF_RTM_AND_PURSE_REMAINING":
+			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-FF_RTM_AND_PURSE_REMAINING")) {
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$PurseRTM SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$PurseRTM SHOW 0.0\0");	
+			}
+			break;	
 		case "SQUAD":
 			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-SQUAD")) {
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad SHOW 0.0\0");
@@ -1593,14 +1635,14 @@ public class ILT20_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header1*GEOM*TEXT SET " 
-				+ "PLAYER " + "\0");
+				+ "DP WORLD ILT20 " + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header2*GEOM*TEXT SET " 
-				+ "AUCTION SEASON 3" + "\0");
+				+ "SEASON 5 AUCTION" + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info1$txt_Info*GEOM*TEXT SET " 
-				+ "INDIAN STREET PREMIER LEAGUE" + "\0");
+				+ "" + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info2$txt_Info*GEOM*TEXT SET " 
-				+ "TAJ LAND END, BANDRA, MUMBAI" + "\0");
+				+ "ICC ACADEMY" + "\0");
 	}
 	
 	public void populateProfileFF(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId, String show_stats, List<Statistics> stats, Auction auction, 
@@ -2016,65 +2058,63 @@ public class ILT20_BIGSCREEN extends Scene{
 		}
 	}
 	
-	public void populateFFRTMAndPurseRemaining(PrintWriter print_writer, int whichSide , Auction auction,AuctionService auctionService, String session_selected_broadcaster) throws Exception {
+	public void populateFFRTMAndPurseRemaining(boolean is_this_updating,PrintWriter print_writer, int whichSide , Auction auction,AuctionService auctionService, String session_selected_broadcaster) throws Exception {
 		
-		int total = 0;
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 3\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_Header1*GEOM*TEXT SET "
-		+auctionService.getVariousText().get(0).getHeader() + "\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_Header2*GEOM*TEXT SET \0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$txt_SubHeader*GEOM*TEXT SET "
-		+auctionService.getVariousText().get(0).getSubheader() + "\0");
+		int rtmUsed = 0;
+		int squadSize = 0;
+		int totalAmountSpent = 0;
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 3\0");
+		if(is_this_updating == false) {
+			
+			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
+				update_gfx = true;
+			}
+		}
+
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 2\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$LogoGrp$img_TeamLogo"
-				+ "*TEXTURE*IMAGE SET " + logo_path + "TLogo" + "\0");
+//		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType$HeaderType1$Select_SquadData*FUNCTION*Omo*vis_con SET 0\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Title$txt_Title1*GEOM*TEXT SET \0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Title$txt_Title2*GEOM*TEXT SET SLOTS REMAINING\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Title$txt_Title3*GEOM*TEXT SET PURSE REMAINING\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType2$Header$txt_Header1*GEOM*TEXT SET DP WORLD ILT20\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType2$Header$txt_Header2*GEOM*TEXT SET SEASON 5 AUCTION\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType2$SubHeader$txt_SubHeader*GEOM*TEXT SET SUMMARY\0");
 		
-		auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(auction.getTeam(), 
-				auction.getPlayers(), auction.getPlayersList(),session_selected_broadcaster));
+//		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType2$img_TeamLogoBW"
+//				+ "*TEXTURE*IMAGE SET " + logo_path + "EVENT" + "\0");
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Title$txt_Title1*GEOM*TEXT SET TEAMS\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Title$txt_Title2*GEOM*TEXT SET SQUAD SIZE\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Title$txt_Title3*GEOM*TEXT SET RTM REM.\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Title$txt_Title4*GEOM*TEXT SET PURSE REM. (IN USD)\0");
+		
 		int row = 0;
-		for(PlayerCount tm : auction.getTeamZoneList()) {
+		for(Team tm : auction.getTeam()) {
 			row++;
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$Logo$img_LogoBase*TEXTURE*IMAGE SET "+logo_base+tm.getTeamName4()+"\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$Logo$img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+tm.getTeamName4()+"\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$txt_TeamFirstName*GEOM*TEXT SET "+tm.getTeamName2()+"\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$txt_TeamLastName*GEOM*TEXT SET " + tm.getTeamName3()+"\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$RTM_Data$Data$Logo$img_TeamLogoBW"
+					+ "*TEXTURE*IMAGE SET " + logo_path + tm.getTeamName4()+"\0");
 			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$txt_SquadSize*GEOM*TEXT SET " +(14-tm.getPlayers())+"\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team"+ row + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
-//			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$Team"+row+"$txt_Value*GEOM*TEXT SET "+
-//					AuctionFunctions.ConvertToLakh(tm.getRemaingPurse())+" L\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$txt_TeamFirstName*GEOM*TEXT SET "+tm.getTeamName2()+"\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$txt_TeamLastName*GEOM*TEXT SET "+tm.getTeamName3()+"\0");
 			
-			if(auction.getPlayers() != null ) {
-				for(int j=0; j <= auction.getPlayers().size()-1; j++) {
-					if(auction.getPlayers().get(j).getTeamId() == tm.getTeamId()) {
-						total = total + auction.getPlayers().get(j).getSoldForPoints();
-					}
+			for(Player auc : auction.getPlayers()) {
+				if(tm.getTeamId() == auc.getTeamId() && auc.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
+					rtmUsed++;
+				}
+				if(tm.getTeamId() == auc.getTeamId()) {
+					squadSize++;
+					totalAmountSpent += auc.getSoldForPoints();
 				}
 			}
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$txt_SquadSize*GEOM*TEXT SET "+squadSize+"\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$txt_RTM*GEOM*TEXT SET "+(Integer.valueOf(tm.getTeamTotalRTM()) - rtmUsed)+"\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRTM$Team"+row+"$txt_Value*GEOM*TEXT SET "
+					+AuctionFunctions.ConvertToThousand((Integer.valueOf(tm.getTeamTotalPurse()) - totalAmountSpent),true)+" K"+"\0");
 			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" + row + "$Value$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(tm.getTeamTotalPurse()) - total)) + " L" + "\0");
-			
-			if((Integer.valueOf(tm.getTeamTotalPurse()) - total) == 100000) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
-						+ row + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
-			}else if((Integer.valueOf(tm.getTeamTotalPurse()) - total) <= 0) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
-						+ row + "$Value$RupeeSymbol*ACTIVE SET 0 \0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
-						+ row + "$Value$txt_Value*GEOM*TEXT SET " + "-" + "\0");
-				print_writer.println("-1 RENDERER*TREE*$Main$Row"+row+"$txt_PurseValue*GEOM*TEXT SET "+ "-"  + "\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
-						+ row + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
-			}
-			total = 0;
+			rtmUsed = 0;
+			totalAmountSpent = 0;
+			squadSize = 0;
 		}
 		
 	}
@@ -2092,6 +2132,11 @@ public class ILT20_BIGSCREEN extends Scene{
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
 				update_gfx = false;
 			}
+			for(int i=1; i<=8; i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
+						+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+			}
 		}
 		
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
@@ -2107,14 +2152,17 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title1*GEOM*TEXT SET PLAYER\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title2*GEOM*TEXT SET TEAM\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title3*GEOM*TEXT SET PRICE\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title3*GEOM*TEXT SET BID PRICE\0");
 		
-		
-		for(int i=1; i<=8; i++) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
-					+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+		if(update_gfx_Screen == true) {
+			for(int i=1; i<=8; i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
+						+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+			}
+			update_gfx_Screen = false;
 		}
+		
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
@@ -2151,13 +2199,6 @@ public class ILT20_BIGSCREEN extends Scene{
 			top_sold = auction.getPlayers();
 		}
 		
-		if(is_this_updating == false) {
-			
-			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
-				update_gfx = false;
-			}
-		}
-
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 1\0");
@@ -2173,10 +2214,25 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 8\0");
 		
-		for(int i=1;i<=5;i++) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+		
+		if(is_this_updating == false) {
+			
+			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
+				update_gfx = false;
+			}
+			
+			for(int i=1;i<=5;i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+			}
 		}
 		
+		if(update_gfx_Screen == true) {
+			for(int i=1;i<=5;i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+			}
+			update_gfx_Screen = false;
+		}
+
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
 				row = row + 1;
@@ -2215,7 +2271,7 @@ public class ILT20_BIGSCREEN extends Scene{
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
     					"$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
-        				"$txt_TeamName*GEOM*TEXT SET "+auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
+        				"$txt_TeamName*GEOM*TEXT SET "+auction.getTeam().get(plyr.getTeamId() - 1).getTeamName3()+"\0");
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
         				"$img_Flag*TEXTURE*IMAGE SET " + flag_path + auctionService.getAllPlayer().get(plyr.getPlayerId() - 1).getNationality()+"\0");
@@ -2272,14 +2328,6 @@ public class ILT20_BIGSCREEN extends Scene{
 		}
 		
 		Team team = auctionService.getTeams().stream().filter(tm -> tm.getTeamId() == team_id).findAny().orElse(null);
-		
-		if(is_this_updating == false) {
-			
-			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
-				update_gfx = false;
-			}
-		}
-		
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 1\0");
@@ -2296,10 +2344,23 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 8\0");
 		
-		for(int i=1;i<=5;i++) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+		if(is_this_updating == false) {
+			
+			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
+				update_gfx = false;
+			}
+			
+			for(int i=1;i<=5;i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+			}
 		}
 		
+		if(update_gfx_Screen == true) {
+			for(int i=1;i<=5;i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + i + "*ACTIVE SET 0\0");
+			}
+			update_gfx_Screen = false;
+		}
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
@@ -2394,7 +2455,12 @@ public class ILT20_BIGSCREEN extends Scene{
 			
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
 				update_gfx = false;
-			}	
+			}
+			for(int i=1; i<=8; i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
+						+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+			}
 		}
 		
 		Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
@@ -2409,12 +2475,17 @@ public class ILT20_BIGSCREEN extends Scene{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title1*GEOM*TEXT SET PLAYER\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title2*GEOM*TEXT SET CATEGORY\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title3*GEOM*TEXT SET PRICE\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Title$txt_Title3*GEOM*TEXT SET BID PRICE\0");
 		
-		for(int i=1; i<=8; i++) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
-					+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+		
+		
+		if(update_gfx_Screen == true) {
+			for(int i=1; i<=8; i++) {
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"*ACTIVE SET 0\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+i+"$IconsAll$Retain_Icon$"
+						+ "Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
+			}
+			update_gfx_Screen = false;
 		}
 		
 		for(Player plyr : top_sold) {
@@ -3097,7 +3168,7 @@ public class ILT20_BIGSCREEN extends Scene{
 		if(is_this_updating == false) {
 			
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
-				update_gfx = false;
+				update_gfx = true;
 			}
 		}
 		
@@ -3141,19 +3212,20 @@ public class ILT20_BIGSCREEN extends Scene{
 					+ "$txt_SquadSize*GEOM*TEXT SET " + row + "\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1) + "$Value$txt_Value"
 					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total), true) + ",000" + "\0");
-			
+			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
+					+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 0 \0");
 			if((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total) == 100000) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
-						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
+//						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
 			}else if((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total) <= 0) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
-						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 0 \0");
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
+//						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 0 \0");
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
 						+ (i+1) + "$Value$txt_Value*GEOM*TEXT SET " + "-" + "\0");
 				print_writer.println("-1 RENDERER*TREE*$Main$Row"+(i+1)+"$txt_PurseValue*GEOM*TEXT SET "+ "-"  + "\0");
 			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
-						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
+//				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
+//						+ (i+1) + "$Value$RupeeSymbol*ACTIVE SET 1 \0");
 			}
 			row = 0;
 			total = 0;
@@ -3176,7 +3248,7 @@ public class ILT20_BIGSCREEN extends Scene{
 		if(is_this_updating == false) {
 			
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
-				update_gfx = false;
+				update_gfx = true;
 			}
 		}
 		
@@ -3287,8 +3359,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					break;
 				case "SA":
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$txt_Category*GEOM*TEXT SET SAUDI \r\n"
-							+ "ARABIA\0");
+							"$NoData$txt_Category*GEOM*TEXT SET SAUDI ARABIA\r\n" + "(KSA)\0");
 					break;
 				case "KUWAIT":
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
@@ -3492,8 +3563,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					break;
 				case "SA":
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
-							"$NoData$txt_Category*GEOM*TEXT SET SAUDI \r\n"
-							+ "ARABIA\0");
+							"$NoData$txt_Category*GEOM*TEXT SET SAUDI ARABIA\r\n" + "(KSA)\0");
 					break;
 				case "KUWAIT":
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad$Players$Player" + row + 
@@ -3851,7 +3921,7 @@ public class ILT20_BIGSCREEN extends Scene{
 					break;
 				case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
-							+ "anim_Fullframe$In_Out$Main$Profile 2.480 anim_Fullframe$In_Out$Main$Profile$In 2.180";
+							+ "anim_Fullframe$In_Out$Main$Profile 2.800 anim_Fullframe$In_Out$Main$Profile$In 2.600";
 					break;
 //				case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
 //					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
@@ -3899,8 +3969,8 @@ public class ILT20_BIGSCREEN extends Scene{
 						+ "Change$MatchId 2.340 Change$MatchId$Change_Out 0.700 Change$MatchId$Change_In 2.340 ";
 				break;
 			case "PLAYERPROFILE_FF":
-				previewCommand = "anim_Fullframe$In_Out$Header 0.0 anim_Fullframe$In_Out$Header$In 0.0 Change$Profile 2.180 "
-						+ "Change$Profile$Change_Out 0.620 Change$Profile$Change_Inn 2.180 ";
+				previewCommand = "anim_Fullframe$In_Out$Header 0.0 anim_Fullframe$In_Out$Header$In 0.0 Change$Profile 2.800 "
+						+ "Change$Profile$Change_Out 0.780 Change$Profile$Change_In 2.800 ";
 				break;
 			case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
 				previewCommand = previewCommand + "Change$Header 2.600 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
@@ -3918,10 +3988,14 @@ public class ILT20_BIGSCREEN extends Scene{
 				previewCommand = previewCommand + "Change$Header 2.600 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
 						+ "Change$TopBuysImage 1.880 Change$TopBuysImage$Change_Out 0.920 ";
 				break;
-			case "REMAINING_PURSE_ALL":case "FF_RTM_AND_PURSE_REMAINING":
+			case "REMAINING_PURSE_ALL":
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
 						+ "Change$PurseRemaining 2.100 Change$PurseRemaining$Change_Out 0.740 Change$PurseRemaining$Change_In 2.100 ";
 				break;
+			case "FF_RTM_AND_PURSE_REMAINING":
+				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
+						+ "Change$PurseRTM 2.100 Change$PurseRTM$Change_Out 0.740 Change$PurseRTM$Change_In 2.100 ";
+				break;	
 			case "SQUAD": case "ZONE-PLAYER_STATS":
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
 						+ "Change$Squad 2.000 Change$Squad$Change_Out 0.560 Change$Squad$Change_In 2.000 ";
@@ -3930,48 +4004,62 @@ public class ILT20_BIGSCREEN extends Scene{
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
 						+ "Change$IconPlayers 2.000 Change$IconPlayers$Change_Out 0.560 Change$IconPlayers$Change_In 2.000 ";
 				break;
+			case "BG":
+				previewCommand = "Change$AuctionBG 1.520 Change$AuctionBG$Change_Out 0.520 Change$AuctionBG$Change_In 1.520 ";
+				break;	
 			}
 			
 			switch (whatToProcess.toUpperCase()) {
 			case "POPULATE-IDENT":
-				previewCommand = previewCommand + "Change$MatchId 2.340 Change$MatchId$Change_Out 0.700 Change$MatchId$Change_In 2.340 ";
+				previewCommand = previewCommand + "Change$MatchId 2.340 Change$MatchId$Change_Out 0.700 Change$MatchId$Change_In 2.340";
 				break;
 			case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
 				if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-					previewCommand = previewCommand + "Change$Profile 2.180 Change$Profile$Change_Out 0.620 Change$Profile$Change_Inn 2.180 ";
+					previewCommand = previewCommand + "Change$Profile 2.800 Change$Profile$Change_Out 0.780 Change$Profile$Change_In 2.800";
 				}
 				break;
-			case "POPULATE-REMAINING_PURSE_ALL":case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
-				if(!which_graphics_onscreen.equalsIgnoreCase("REMAINING_PURSE_ALL") && !which_graphics_onscreen.equalsIgnoreCase("FF_RTM_AND_PURSE_REMAINING")) {
-					previewCommand = previewCommand + "Change$PurseRemaining 2.100 Change$PurseRemaining$Change_Out 0.740 Change$PurseRemaining$Change_In 2.100 ";
+			case "POPULATE-REMAINING_PURSE_ALL":
+				if(!which_graphics_onscreen.equalsIgnoreCase("REMAINING_PURSE_ALL")) {
+					previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+							+ "Change$PurseRemaining 2.100 Change$PurseRemaining$Change_Out 0.740 Change$PurseRemaining$Change_In 2.100";
 				}
 				break;
+			case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
+				if(!which_graphics_onscreen.equalsIgnoreCase("FF_RTM_AND_PURSE_REMAINING")) {
+					previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+							+ "Change$PurseRTM 2.100 Change$PurseRTM$Change_Out 0.740 Change$PurseRTM$Change_In 2.100";
+				}
+				break;	
 			case "POPULATE-SQUAD": case "POPULATE-ZONE_PLAYERS_STATS":
 				if(!which_graphics_onscreen.equalsIgnoreCase("SQUAD") && !which_graphics_onscreen.equalsIgnoreCase("ZONE-PLAYER_STATS")) {
-					previewCommand = previewCommand + "Change$Squad 2.000 Change$Squad$Change_Out 0.560 Change$Squad$Change_In 2.000 ";
+					previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+							+ "Change$Squad 2.000 Change$Squad$Change_Out 0.560 Change$Squad$Change_In 2.000";
 				}
 				break;
 //			case "POPULATE-FF_RTM_AND_PURSE_REMAINING":
 //				previewCommand = previewCommand + "Change$PurseRTM 2.100 Change$PurseRTM$Change_Out 0.740 Change$PurseRTM$Change_In 2.100";
 //				break;
 			case "POPULATE-FF_TOP_BUYS_AUCTION": case "POPULATE-FF_TOP_BUY_TEAM":
-				previewCommand = previewCommand + "Change$TopBuys$Change_In 2.300";
+				previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+						+ "Change$TopBuys$Change_In 2.300";
 				break;
 			case "POPULATE-FF_SQUAD_TEAM":
-				previewCommand = previewCommand + "Change$Squad_New$Change_In 2.300";
+				previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+						+ "Change$Squad_New$Change_In 2.300";
 				break;
 			case "POPULATE-FF_SQUAD_ROLE_TEAM":
 				previewCommand = previewCommand + "Change$Squad_Category$Change_In 2.300";
 				break;
 			case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION": case "POPULATE-FF_FIVE_TOP_BUY_TEAM":
-				previewCommand = previewCommand + "Change$TopBuysImage$Change_In 1.880";
+				previewCommand = previewCommand + "Change$Header 1.660 Change$Header$Change_Out 0.620 Change$Header$Change_In 1.660 "
+						+ "Change$TopBuysImage$Change_In 1.880";
 				break;
 			case "POPULATE-FF_ICONIC_PLAYERS":
 				previewCommand = previewCommand + "Change$IconPlayers 2.000 Change$IconPlayers$Change_Out 0.560 Change$IconPlayers$Change_In 2.000 ";
 				break;
 			}
 		}
-		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/FullFrames " + "C:/Temp/Preview.tga " + previewCommand + "\0");
+		print_writer.println("-1 RENDERER PREVIEW SCENE*/Default/gfx_Fullframes " + "C:/Temp/Preview.tga " + previewCommand + "\0");
 	}
 	
 	
