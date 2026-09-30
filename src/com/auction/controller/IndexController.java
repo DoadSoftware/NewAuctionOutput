@@ -248,8 +248,10 @@ public class IndexController
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "";
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
 				
+				this_ILT20_BIGSCREEN.getBaseColor(print_writer, 1, "EVENT");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Base START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "BG";
@@ -594,6 +596,7 @@ public class IndexController
 		case "FF_TOP_FIVE_SOLD_TEAM_GRAPHICS-OPTIONS": case "SINGLE_GRAPHICS-OPTIONS": case "FLIPPER_SQUAD_GRAPHICS-OPTIONS":case "FF_SQUAD_GRAPHICS-OPTIONS":
 		case "FF_SQUAD_ROLE_GRAPHICS-OPTIONS":case "LOF_TEAM_BID_GRAPHICS-OPTIONS": case "CRAWL_SQUAD_GRAPHICS-OPTIONS": case "SQUAD_ANIMATION_GRAPHICS-OPTIONS":
 		case "RETAIN_PLAYERS_GRAPHICS-OPTIONS": case "TEAMS_GRAPHICS-OPTIONS": case "ADTTEAMS_GRAPHICS-OPTIONS":  case "NAMESUPER_TEAMSDATA_GRAPHICS-OPTIONS":
+		case "CATEGORY_ANIMATION_GRAPHICS-OPTIONS":	
 			System.out.println("Comiong in controller sssss");
 		    return (List<T>) session_team;
 		case "ZONEWISE_PLAYER_SOLD_GRAPHICS-OPTIONS": case "ZONE-PLAYER_GRAPHICS-OPTIONS":
