@@ -3773,7 +3773,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 			        });
 			    }
 				else if(broadcaster === 'ILT20' || broadcaster === 'ILT20_BIGSCREEN' ){
-					['category','style', 'prevteam', 'ILT20'].forEach(value => {
+					['category','style', 'prevteam', 'ILT20', 'DT20'].forEach(value => {
 			            const option = document.createElement('option');
 			            option.value = value;
 			            option.text = value.charAt(0).toUpperCase() + value.slice(1);
