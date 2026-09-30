@@ -4,6 +4,7 @@
 	<groupId>NewAuctionOutput</groupId>
 	<artifactId>NewAuctionOutput</artifactId>
 	<version>2.42</version>
+
 	<packaging>war</packaging>
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>

@@ -6873,6 +6873,16 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 			}
 		}
 		
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$Left"
+				+ "$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + TeamColour + "\0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$Right"
+				+ "$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + TeamColour + "\0");
+		
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE"
+				+ "$TOP_BAND$img_Text1*TEXTURE*IMAGE SET " + text_path_1 + TeamColour + "\0");
+		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$RIGHT_SIDE"
+				+ "$TOP_BAND$img_Text1*TEXTURE*IMAGE SET " + text_path_1 + TeamColour + "\0");
+		
 		if(sub.equalsIgnoreCase("WITH_LINE")) {
 			for(int i=count+1;i<=9;i++) {
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE$TOP_BAND"
@@ -7949,28 +7959,54 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 				}
 			}else if(ply.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
 				if(ply.getBowlerStyle() == null) {
-					role =  icon_path + "FastBowler" ;
+					role =  icon_path + "Bowler" ;
 				}else {
 					switch(ply.getBowlerStyle().toUpperCase()) {
 					case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-						role = icon_path + "FastBowler" ;
+						role = icon_path + "Pace_Ball" ;
 						break;
-					case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-						role = icon_path + "SpinBowlerIcon" ;
+					 case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+						role = icon_path + "SpinBowler" ;
 						break;
+					case "ROB": 
+						role = icon_path + "Off_Spin" ;
+						break;	
 					}
 				}
 			}else if(ply.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")) {
 				if(ply.getBowlerStyle() == null) {
-					role =  icon_path + "FastBowlerAllrounder" ;
+					if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
+						role =  icon_path + "Off_Spin_Allrounder_Left" ;
+					}else {
+						role =  icon_path + "Off_Spin_Allrounder" ;
+					}
+					
 				}else {
 					switch(ply.getBowlerStyle().toUpperCase()) {
 					case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-						role =  icon_path + "FastBowlerAllrounder" ;
+						
+						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
+							role =  icon_path + "Pace_BowlerAllrounerLeftHand" ;
+						}else {
+							role =  icon_path + "Pace_BowlerAllrounerRightHand" ;
+						}
 						break;
-					case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-						role =  icon_path + "SpinBowlerAllrounder" ;
+					 case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+						
+						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
+							role =  icon_path + "Leg_Spin_Allrounder_Left" ;
+						}else {
+							role =  icon_path + "Leg_Spin_Allrounder" ;
+						}
 						break;
+					case "ROB":
+						
+						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
+							role =  icon_path + "Off_Spin_Allrounder_Left" ;
+						}else {
+							role =  icon_path + "Off_Spin_Allrounder" ;
+						}
+						break;	
 					}
 				}
 			}
