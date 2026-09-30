@@ -1967,10 +1967,9 @@ function processAuctionProcedures(whatToProcess)
 							processAuctionProcedures('ANIMATE-IN-RTM_PLAYER');
 							break;
 					}
-				}else if(whatToProcess == 'POPULATE-PROFILE_STATS' || 
-						whatToProcess == 'POPULATE-SQUAD-PLAYER' || 
-						whatToProcess == 'POPULATE-LOF_TEAM_BID_AUCTION' || 
-						whatToProcess == 'POPULATE-L3-SPLITPIP')	{
+				}else if(whatToProcess == 'POPULATE-PROFILE_STATS' || whatToProcess == 'POPULATE-SQUAD-PLAYER' || 
+						whatToProcess == 'POPULATE-LOF_TEAM_BID_AUCTION' || whatToProcess == 'POPULATE-L3-SPLITPIP' ||
+						whatToProcess == 'POPULATE-CRAWLER_TEAM_TOP_SOLD')	{
 					if(confirm('Animate In?') == true){
 						switch(whatToProcess) {
 						case 'POPULATE-PROFILE_STATS':
@@ -1984,7 +1983,10 @@ function processAuctionProcedures(whatToProcess)
 							break;
 						case 'POPULATE-L3-SPLITPIP':	
 							processAuctionProcedures('ANIMATE-IN-SPLITPIP');	
-							break;			
+							break;
+						case 'POPULATE-CRAWLER_TEAM_TOP_SOLD':
+							processAuctionProcedures('ANIMATE-IN-CRAWLER_TEAM_TOP_SOLD');				
+							break;	
 						}
 					}
 				}else{
@@ -2095,9 +2097,6 @@ function processAuctionProcedures(whatToProcess)
 							break;
 						case 'POPULATE-LOF_TEAM_TOP_SOLD':
 							processAuctionProcedures('ANIMATE-IN-LOF_TEAM_TOP_SOLD');				
-							break;
-						case 'POPULATE-CRAWLER_TEAM_TOP_SOLD':
-							processAuctionProcedures('ANIMATE-IN-CRAWLER_TEAM_TOP_SOLD');				
 							break;
 						case 'POPULATE-CRAWLE_SQUAD':	
 							processAuctionProcedures('ANIMATE-IN-CRAWL_SQUAD');				
@@ -3774,7 +3773,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 			        });
 			    }
 				else if(broadcaster === 'ILT20' || broadcaster === 'ILT20_BIGSCREEN' ){
-					['category','style', 'prevteam'].forEach(value => {
+					['category','style', 'prevteam', 'ILT20'].forEach(value => {
 			            const option = document.createElement('option');
 			            option.value = value;
 			            option.text = value.charAt(0).toUpperCase() + value.slice(1);

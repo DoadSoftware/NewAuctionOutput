@@ -1986,7 +1986,7 @@ public class ILT20_BIGSCREEN extends Scene{
 //											? "SOLD" : "SOLD-RTM") + "\0");
 							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$Sold$"
-									+ "Text$txt_SoldPrice*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints())+" K"+"\0");
+									+ "Text$txt_SoldPrice*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints(), true)+",000"+"\0");
 							
 //							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$ImageGrp$Select_Logo$"
 //									+ "img_Base2*TEXTURE*IMAGE SET "+base_path_2+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
@@ -2134,7 +2134,7 @@ public class ILT20_BIGSCREEN extends Scene{
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_TeamName*GEOM*TEXT SET "+auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "
-        				+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints())+" K"+"\0");
+        				+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(), true)+",000"+"\0");
         		
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + 
@@ -2240,7 +2240,7 @@ public class ILT20_BIGSCREEN extends Scene{
         		
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
-        				"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints())+" K"+"\0");
+        				"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(), true)+",000"+"\0");
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + "$ImageGrp$img_Player"
 						+ "*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
@@ -2359,7 +2359,7 @@ public class ILT20_BIGSCREEN extends Scene{
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
     					"$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + 
-        				"$Data2$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints())+" K"+"\0");
+        				"$Data2$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(), true)+",000"+"\0");
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuysImage$IconPlayer" + row + "$ImageGrp$img_Player"
 						+ "*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
@@ -2440,7 +2440,7 @@ public class ILT20_BIGSCREEN extends Scene{
         		}
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$txt_Value*GEOM*TEXT SET "
-        				+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints())+" K"+"\0");
+        				+AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(), true)+",000"+"\0");
         		
         		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Team"+row+"$img_Icon*TEXTURE*IMAGE SET "+icon_path+ styleIcons(auctionService.getAllPlayer().get(plyr.getPlayerId() - 1))+" \0");
         		
@@ -3140,7 +3140,7 @@ public class ILT20_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1)
 					+ "$txt_SquadSize*GEOM*TEXT SET " + row + "\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1) + "$Value$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total)) + " K" + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total), true) + ",000" + "\0");
 			
 			if((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total) == 100000) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
@@ -3194,7 +3194,7 @@ public class ILT20_BIGSCREEN extends Scene{
 				+ "*TEXTURE*IMAGE SET " + logo_path + match.getTeam().get(team_id-1).getTeamName4() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$PurseRemaining"
-				+ "$txt_Value*GEOM*TEXT SET $" + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " K\0");
+				+ "$txt_Value*GEOM*TEXT SET $" + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total), true) + ",000\0");
 		
 //		if(sub.equalsIgnoreCase("PurseRemaining")) {
 //			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
@@ -3401,7 +3401,7 @@ public class ILT20_BIGSCREEN extends Scene{
 				+ "*TEXTURE*IMAGE SET " + logo_path + match.getTeam().get(team_id-1).getTeamName4() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$PurseRemaining"
-				+ "$txt_Value*GEOM*TEXT SET $" + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " K\0");
+				+ "$txt_Value*GEOM*TEXT SET $" + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total), true) + ",000\0");
 //		if(sub.equalsIgnoreCase("PurseRemaining")) {
 //			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
 //					+ "$txt_SubHeader*GEOM*TEXT SET PURSE REMAINING : " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(team_id-1).getTeamTotalPurse()) - total)) + " L\0");
@@ -3982,10 +3982,10 @@ public class ILT20_BIGSCREEN extends Scene{
 	
 	public void populateCurrentBid(PrintWriter print_writer,int which_side) {
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side1$txt_CurrentPrice_Value"
-				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid(), false) + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side2$txt_CurrentPrice_Value"
-				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+				+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid(), false) + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$txt_CurrentPrice_Head"
 				+ "*GEOM*TEXT SET CURRENT BID\0");
@@ -3999,7 +3999,7 @@ public class ILT20_BIGSCREEN extends Scene{
 	public void BidChangeOn(PrintWriter print_writer, Auction session_curr_bid, int which_side) {
 		if(data.isBid_Start_or_not()) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$PlayerProfile$FadeForOutcome" + which_Datas + "$Current$PriceGroup$Side" + which_side + "$txt_CurrentPrice_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid()) + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(data.getPreviousBid(), false) + "\0");
 		}
 	}
 	
