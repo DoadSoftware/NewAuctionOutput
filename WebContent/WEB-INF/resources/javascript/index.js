@@ -3423,6 +3423,26 @@ function addItemsToList(whatToProcess, dataToProcess)
 								option.text = 'T20';
 								select.appendChild(option);
 								
+								option = document.createElement('option');
+								option.value = 'ILT20 DEVELOPMENT';
+								option.text = 'ILT20 DEVELOPMENT';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'FIRST CLASS';
+								option.text = 'FIRST CLASS';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'U19 WC ODI';
+								option.text = 'U19 ODI';
+								select.appendChild(option);
+								
+								option = document.createElement('option');
+								option.value = 'LIST A';
+								option.text = 'LIST A';
+								select.appendChild(option);
+								
 								select.setAttribute('onchange', "processUserSelection(this)");
 
 								row.insertCell(cellCount).appendChild(select);
