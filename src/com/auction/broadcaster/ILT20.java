@@ -4651,8 +4651,9 @@ public class ILT20 extends Scene{
 			case "BAT/KEEPER": case "WICKET-KEEPER":
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Title*GEOM*TEXT SET BATTING STYLE\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Title*GEOM*TEXT SET BATTING STYLE\0");
+				System.out.println(player.getBatsmanStyle());
 				if(player.getBatsmanStyle() != null) {
-					if(player.getBatsmanStyle() == "RHB") {
+					if(player.getBatsmanStyle().equalsIgnoreCase("RHB")) {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET RIGHT HANDED BATTER\0");
 					}else {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$BottomData$Data$Side"+whichSide+"$Double_Data$txt_Value*GEOM*TEXT SET LEFT HANDED BATTER\0");
