@@ -30,7 +30,7 @@ public class ILT20 extends Scene{
 	public Data data = new Data();
 	public String which_graphics_onscreen = "",which_data="", rtm_googly_on_screen = "",which_crwaler_onscreen;
 	public int current_layer = 2, whichSide = 1, whichSideNotProfile=1, rowHighlight = 1,prevRowHighlight = 1, rtmGooglyWhichSide = 1, whichSideCrawler=1;
-	public int player_id = 0,team_id=0,player_number=0;
+	public int player_id = 0,team_id=0,player_number=0,id_player=0;
 	public int zoneSize = 0, current_index = 0;
 	public String enableAudio = "";
 	
@@ -244,7 +244,8 @@ public class ILT20 extends Scene{
 						whichSideNotProfile = 1;
 					}
 					side2ValueToProcess = valueToProcess;
-					populateProfileStats(print_writer, valueToProcess, whichSideNotProfile, auction, auctionService);
+					System.out.println("side2ValueToProcess = " + side2ValueToProcess);
+					populateProfileStats(print_writer, valueToProcess, whichSideNotProfile, auction, auctionService,id_player);
 					processPreview(print_writer, whatToProcess, whichSideNotProfile);
 					break;
 				case "POPULATE-TEAM_CURR_BID":
@@ -569,7 +570,7 @@ public class ILT20 extends Scene{
 							print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Stat START \0");
 							TimeUnit.MILLISECONDS.sleep(1500);
 							if(whatToProcess.equalsIgnoreCase("ANIMATE-IN-PROFILE_STATS")) {
-								populateProfileStats(print_writer, side2ValueToProcess, 1, auction, auctionService);
+								populateProfileStats(print_writer, side2ValueToProcess, 1, auction, auctionService,Integer.valueOf(side2ValueToProcess.split(",")[0]));
 							}else if(whatToProcess.equalsIgnoreCase("ANIMATE-IN-TEAM_CURR_BID")) {
 								populateTeamCurrentBid(print_writer, Integer.valueOf(side2ValueToProcess), 1, auction, session_curr_bid, auctionService);
 							}
@@ -1198,6 +1199,7 @@ public class ILT20 extends Scene{
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*ChangeForSold SHOW 0.0 \0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Name SHOW 0.0 \0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*MoveForStats_RTM SHOW 0.0 \0");
+					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Stat SHOW 0.0 \0");
 					data.setBid_Start_or_not(false);
 					data.setPlayer_sold_or_unsold(false);
 					data.setData_on_screen(false);
@@ -1753,7 +1755,7 @@ public class ILT20 extends Scene{
 	public void populatePlayerProfile(boolean is_this_updating,PrintWriter print_writer,int which_side, int playerId,List<Statistics> stats, Auction auction, 
 			Auction session_curr_bid,AuctionService auctionService, String session_selected_broadcaster) throws InterruptedException 
 	{
-		System.out.println("data.isData_on_screen() = " + data.isData_on_screen() + "     data.isPlayer_sold_or_unsold() = " + data.isPlayer_sold_or_unsold());
+		
 		if(session_curr_bid.getCurrentPlayers() != null) {
 			if(data.isData_on_screen() == true) {
 				if(data.isPlayer_sold_or_unsold() == false) {
@@ -1790,7 +1792,10 @@ public class ILT20 extends Scene{
 		
 		if(is_this_updating == false) {
 			
-			populateProfileStats(print_writer, "STYLE", which_side, auction, auctionService);
+			id_player = playerId;
+			System.out.println("STYLE = " + is_this_updating);
+			
+			populateProfileStats(print_writer, "STYLE", which_side, auction, auctionService,playerId);
 			
 			if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$NameAll$NormalName$txt_FirstName*GEOM*TEXT SET " + 
@@ -4535,10 +4540,12 @@ public class ILT20 extends Scene{
 		Team team = auctionService.getTeams().stream().filter(tm -> tm.getTeamId() == teamId).findAny().orElse(null);
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Googly_Power$img_TeamLogo*TEXTURE*IMAGE SET " + logo_path + team.getTeamName4() + "\0");
 	}
-	public void populateProfileStats(PrintWriter print_writer, String whichType, int whichSide, Auction auction, AuctionService auctionService) {
+	public void populateProfileStats(PrintWriter print_writer, String whichType, int whichSide, Auction auction, AuctionService auctionService,int playerId) {
 		
-		Player player = auctionService.getAllPlayer().stream().filter(plyr -> plyr.getPlayerId() == auction.getPlayers().get(auction.getPlayers().size()-1).getPlayerId()).findAny().orElse(null);
+		Player player = auctionService.getAllPlayer().stream().filter(plyr -> plyr.getPlayerId() == playerId).findAny().orElse(null);
 		String BowlStyle = "";
+		
+		System.out.println("player = " + player.getFull_name() + "              stylhhhge = " + whichType.split(",")[0].toUpperCase());
 		switch (whichType.split(",")[0].toUpperCase()) {
 		case "FREETEXT":
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side"+whichSide+"$Select_DataType*FUNCTION*Omo*vis_con SET 3\0");
