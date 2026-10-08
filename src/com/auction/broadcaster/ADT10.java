@@ -1766,18 +1766,6 @@ public class ADT10 extends Scene{
 //						which_graphics_onscreen = "";
 //						break;
 					}
-					
-					TimeUnit.MILLISECONDS.sleep(1500);
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTSlug SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_LTPlayerDraft SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*LT_Round_Category SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Timer SHOW 0.0\0");
-					
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_ID SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Profile SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Window SHOW 0.0\0");
-					print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Squad_Images SHOW 0.0\0");
 					break;
 				}
 				
@@ -6873,16 +6861,6 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 			}
 		}
 		
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$Left"
-				+ "$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + TeamColour + "\0");
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$Right"
-				+ "$img_Base1*TEXTURE*IMAGE SET " + base_path_1 + TeamColour + "\0");
-		
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE"
-				+ "$TOP_BAND$img_Text1*TEXTURE*IMAGE SET " + text_path_1 + TeamColour + "\0");
-		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$RIGHT_SIDE"
-				+ "$TOP_BAND$img_Text1*TEXTURE*IMAGE SET " + text_path_1 + TeamColour + "\0");
-		
 		if(sub.equalsIgnoreCase("WITH_LINE")) {
 			for(int i=count+1;i<=9;i++) {
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$FF_All$FF_Squad$AllGraphics$LEFT_SIDE$TOP_BAND"
@@ -7959,54 +7937,28 @@ public static String getbattingstyle (String battingType,String FullNShort,boole
 				}
 			}else if(ply.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
 				if(ply.getBowlerStyle() == null) {
-					role =  icon_path + "Bowler" ;
+					role =  icon_path + "FastBowler" ;
 				}else {
 					switch(ply.getBowlerStyle().toUpperCase()) {
 					case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-						role = icon_path + "Pace_Ball" ;
+						role = icon_path + "FastBowler" ;
 						break;
-					 case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-						role = icon_path + "SpinBowler" ;
+					case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+						role = icon_path + "SpinBowlerIcon" ;
 						break;
-					case "ROB": 
-						role = icon_path + "Off_Spin" ;
-						break;	
 					}
 				}
 			}else if(ply.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")) {
 				if(ply.getBowlerStyle() == null) {
-					if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-						role =  icon_path + "Off_Spin_Allrounder_Left" ;
-					}else {
-						role =  icon_path + "Off_Spin_Allrounder" ;
-					}
-					
+					role =  icon_path + "FastBowlerAllrounder" ;
 				}else {
 					switch(ply.getBowlerStyle().toUpperCase()) {
 					case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-						
-						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-							role =  icon_path + "Pace_BowlerAllrounerLeftHand" ;
-						}else {
-							role =  icon_path + "Pace_BowlerAllrounerRightHand" ;
-						}
+						role =  icon_path + "FastBowlerAllrounder" ;
 						break;
-					 case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-						
-						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-							role =  icon_path + "Leg_Spin_Allrounder_Left" ;
-						}else {
-							role =  icon_path + "Leg_Spin_Allrounder" ;
-						}
+					case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+						role =  icon_path + "SpinBowlerAllrounder" ;
 						break;
-					case "ROB":
-						
-						if(ply.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-							role =  icon_path + "Off_Spin_Allrounder_Left" ;
-						}else {
-							role =  icon_path + "Off_Spin_Allrounder" ;
-						}
-						break;	
 					}
 				}
 			}

@@ -25,6 +25,7 @@ import com.auction.model.Split;
 import com.auction.model.Statistics;
 import com.auction.model.StatsType;
 import com.auction.model.Team;
+import com.auction.model.VariousText;
 import com.auction.service.AuctionService;
 import com.auction.model.Auction;
 import com.auction.model.Flipper;
@@ -105,7 +106,7 @@ public class RALLY extends Scene{
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change_Overlays$CurrentBid SHOW 0.0 \0");
 			}
 		}
-		populateLocation(print_writer,whichSide , session_selected_broadcaster);
+		populateLocation(print_writer,whichSide , session_selected_broadcaster, auctionService);
 		return data;
 	}
 	
@@ -157,7 +158,7 @@ public class RALLY extends Scene{
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
 				case "POPULATE-LOCATION":
-					populateLocation(print_writer,whichSide , session_selected_broadcaster);
+					populateLocation(print_writer,whichSide , session_selected_broadcaster, auctionService);
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
 				case "POPULATE-RIGHT_SUPER":	
@@ -169,7 +170,7 @@ public class RALLY extends Scene{
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
 				case "POPULATE-BACKG":
-					populateBackG(print_writer,whichSide,valueToProcess.split(",")[0] , session_selected_broadcaster);
+					populateBackG(print_writer,whichSide,valueToProcess.split(",")[0] , session_selected_broadcaster, auctionService);
 					processPreview(print_writer, whatToProcess, whichSide);
 					break;
 				case "POPULATE-FF-PLAYERPROFILE":
@@ -5561,11 +5562,16 @@ public class RALLY extends Scene{
 			}
 		}
 	}
-	public void populateBackG(PrintWriter print_writer, int whichSide,String data,String session_selected_broadcaster) {
+	public void populateBackG(PrintWriter print_writer, int whichSide,String data,String session_selected_broadcaster, AuctionService auctionService) {
 		switch (data.toUpperCase()) {
 		case "NAYA_CHAPTER":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - INDORE"+"\0");
+			
+			for(VariousText vt : auctionService.getVariousText()) {
+				if(vt.getVariousType().equalsIgnoreCase("LOCATION") && vt.getUseThis().equalsIgnoreCase("YES") ) {
+					print_writer.println("-1 RENDERER*TREE*$BG$01$Text$Text2*GEOM*TEXT SET "+"STARTING SOON - " + vt.getHeader() +"\0");
+				}
+			}
 			break;
 		case "COUNT_COUNTINUES":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 2\0");
@@ -5578,13 +5584,15 @@ public class RALLY extends Scene{
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 4\0");
 			print_writer.println("-1 RENDERER*TREE*$BG$04$Text$Text3*GEOM*TEXT SET "+"WE WILL BE RIGHT BACK"+"\0");
 			break;
+			
+			
 		}
 	}
 	public void populateBreaking(PrintWriter print_writer, int whichSide,String filename,String session_selected_broadcaster) {
 		
 		print_writer.println("-1 RENDERER*TREE*$Breaking_News$Side1$text*GEOM*TEXT SET "+filename+"\0");
 	}
-	public void populateLocation(PrintWriter print_writer, int whichSide,String session_selected_broadcaster) {
+	public void populateLocation(PrintWriter print_writer, int whichSide,String session_selected_broadcaster, AuctionService auctionService) {
 		
 		LocalTime currentTime = LocalTime.now();
 
@@ -5592,7 +5600,11 @@ public class RALLY extends Scene{
 
         String time = currentTime.format(formatter);
         
-        print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET INDORE, MP\0");
+        for(VariousText vt : auctionService.getVariousText()) {
+			if(vt.getVariousType().equalsIgnoreCase("LOCATION") && vt.getUseThis().equalsIgnoreCase("YES") ) {
+				print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$NAME*GEOM*TEXT SET " + vt.getSubheader() + "\0");
+			}
+		}
         
 		print_writer.println("-1 RENDERER*TREE*$Location_Band$Top$Time*GEOM*CLOCK*DEPEND SET DEPEND_LOCALTIME\0");
 		
