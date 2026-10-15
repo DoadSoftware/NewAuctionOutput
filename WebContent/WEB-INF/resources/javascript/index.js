@@ -3377,7 +3377,8 @@ function addItemsToList(whatToProcess, dataToProcess)
 						}*/
 						switch ($('#selected_broadcaster').val().toUpperCase()) {
 						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN': case 'PSL': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 
-						       switch(whatToProcess){
+						case 'KCL':    
+						 switch(whatToProcess){
 								case 'FF_PLAYERPROFILE-OPTIONS': case 'PROFILEFF-OPTIONS':
 									select = document.createElement('select');
 									select.style = 'width:100px';
@@ -3439,6 +3440,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 									
 									switch ($('#selected_broadcaster').val().toUpperCase()){
 									case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
+									case 'KCL':	
 										// Second cell: reserved for conditional dropdown
 									    const seCell = row.insertCell(cellCount);
 									    seCell.id = 'Playerstats'; // So we can target it easily later
@@ -3608,8 +3610,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 			            select.appendChild(option);
 			        });
 				}
-				else if($('#selected_broadcaster').val().toUpperCase() === 'KCL' || 
-				$('#selected_broadcaster').val().toUpperCase() === 'VCL'){
+				else if($('#selected_broadcaster').val().toUpperCase() === 'VCL'){
 					['player'].forEach(value => {
 			            const option = document.createElement('option');
 			            option.value = value;

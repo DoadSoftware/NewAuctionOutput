@@ -152,7 +152,7 @@ public class Scene {
 		case "PSL":	case "UTT_BIGSCREEN": case "ISPL_VIZ":  case "ILT20": case "ILT20_BIGSCREEN":
 			switch (whatToProcess) {
 			case "OVERLAYS":
-				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/gfx_Overlays \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*SCENE_DATA INITIALIZE \0");
 //				print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE SHOW 0.0 \0");
 				break;

@@ -255,6 +255,7 @@ public class IndexController
 				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
 			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
+				
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
 				switch (session_selected_broadcaster) {
