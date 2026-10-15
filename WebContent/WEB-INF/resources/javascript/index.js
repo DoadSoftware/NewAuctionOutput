@@ -1392,10 +1392,10 @@ function processAuctionProcedures(whatToProcess)
 	case 'POPULATE-PLAYERPROFILE_LT':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'VIZ_ISPL_2024': case 'PSL': case "UTT_VIZ": case 'UTT_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
-		case 'ILT20': case 'VCL_BIGSCREEN':
+		case 'ILT20': case 'VCL_BIGSCREEN': case 'KCL':
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectShowData option:selected').val() + ',' + $('#PlayerData option:selected').val();
 			break;
-		case 'KCL': case 'KCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':  case 'VCL':  case 'ADT10':
+		case 'KCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL':  case 'VCL':  case 'ADT10':
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectLogo option:selected').val();
 			break;	
 		}
@@ -2979,13 +2979,14 @@ function addItemsToList(whatToProcess, dataToProcess)
 						select.name = select.id;
 						
 						option = document.createElement('option');
-						option.value = 'WITHOUT_LOGO';
-						option.text = 'WITHOUT LOGO';
-						select.appendChild(option);
-						
-						option = document.createElement('option');
 						option.value = 'WITH_LOGO';
 						option.text = 'WITH LOGO';
+						select.appendChild(option);
+						
+
+						option = document.createElement('option');
+						option.value = 'WITHOUT_LOGO';
+						option.text = 'WITHOUT LOGO';
 						select.appendChild(option);
 					
 						select.setAttribute('onchange',"processUserSelection(this)");
@@ -3533,7 +3534,15 @@ function addItemsToList(whatToProcess, dataToProcess)
 								            select.appendChild(option);
 								        });
 									}
-									else if(broadcaster === 'KCL' || broadcaster === 'VCL' || broadcaster === 'ILT20' || broadcaster === 'ADT10' || broadcaster === 'VCL_BIGSCREEN' || broadcaster === 'ILT20_BIGSCREEN' 
+									else if(broadcaster === 'KCL'){
+										['tournament_name', 'KCL_Stats', 'category'].forEach(value => {
+								            const option = document.createElement('option');
+								            option.value = value;
+								            option.text = value;
+								            select.appendChild(option);
+								        });
+									}
+									else if(broadcaster === 'VCL' || broadcaster === 'ILT20' || broadcaster === 'ADT10' || broadcaster === 'VCL_BIGSCREEN' || broadcaster === 'ILT20_BIGSCREEN' 
 										|| broadcaster === 'KCL_BIGSCREEN'|| broadcaster === 'PWL'){
 										['player', 'thisyearteam','category'].forEach(value => {
 								            const option = document.createElement('option');
@@ -3747,7 +3756,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 			
 			    // Determine which options to show based on broadcaster
 			    const broadcaster = $('#selected_broadcaster').val().toUpperCase();
-			    if (broadcaster === 'UTT_VIZ'|| broadcaster === 'VCL' || broadcaster === 'KCL' || broadcaster === 'VCL_BIGSCREEN'
+			    if (broadcaster === 'UTT_VIZ'|| broadcaster === 'VCL' || broadcaster === 'VCL_BIGSCREEN'
 					|| broadcaster === 'KCL_BIGSCREEN'  || broadcaster === 'PWL') {
 			        ['category','rank', 'style', 'bio'].forEach(value => {
 			            const option = document.createElement('option');
@@ -3784,7 +3793,16 @@ function addItemsToList(whatToProcess, dataToProcess)
 			            option.text = value.charAt(0).toUpperCase() + value.slice(1);
 			            select.appendChild(option);
 			        });
-				}else if(broadcaster === 'MUMBAI_T20_VIZ'){
+				}
+				else if(broadcaster === 'KCL'){
+					['KCL'].forEach(value => {
+			            const option = document.createElement('option');
+			            option.value = value;
+			            option.text = value.charAt(0).toUpperCase() + value.slice(1);
+			            select.appendChild(option);
+			        });
+				}
+				else if(broadcaster === 'MUMBAI_T20_VIZ'){
 					['style', 'prevteam', 'stats'].forEach(value => {
 			            const option = document.createElement('option');
 			            option.value = value;
