@@ -1647,12 +1647,12 @@ public class KCL extends Scene{
 					+ Bid_Team.size() +  "$Row" + row + "$txt_Category*GEOM*TEXT SET " + team.getTeamName1() + " \0");
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + whichSide + "$PurseRemaining_Small$Select_Lines$"
 					+ Bid_Team.size() +  "$Row" + row + "$txt_Title*GEOM*TEXT SET " + 
-					(Double .valueOf(AuctionFunctions.ConvertToLakh((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints))) <0 ? "-" :
-					AuctionFunctions.ConvertToLakh((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints))+ " K" )+ " \0");
+					(Double .valueOf(AuctionFunctions.ConvertToThousand((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints),false)) <0 ? "-" :
+					AuctionFunctions.ConvertToThousand((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints),false)+ " K" )+ " \0");
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + whichSide + "$PurseRemaining_Small$Select_Lines$"
 					+ Bid_Team.size() +  "$Row" + row + "$RupeeSymbol*ACTIVE SET " + 
-					(Double .valueOf(AuctionFunctions.ConvertToLakh((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints))) <0 ? "0" :1)+ " \0");
+					(Double .valueOf(AuctionFunctions.ConvertToThousand((Integer.valueOf(team.getTeamTotalPurse())-totalSoldPoints),false)) <0 ? "0" :1)+ " \0");
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + whichSide + "$PurseRemaining_Small$Select_Lines$"
 					+ Bid_Team.size() +  "$Row" + row + "$MainBase*TEXTURE*IMAGE SET " + logo_path + team.getTeamName4() + "\0");
@@ -1745,7 +1745,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 				row++;	
 			}
@@ -1783,7 +1783,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 				row++;	
 			}
@@ -1821,7 +1821,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 				row++;	
 			}
@@ -1852,7 +1852,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 				row++;	
 			}		
@@ -1883,7 +1883,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 				row++;	
 			}
@@ -1930,7 +1930,7 @@ public class KCL extends Scene{
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$IconPlayer1$Price$Value*ACTIVE SET 0\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$IconPlayer1$txt_Value*GEOM*TEXT SET "+
-				AuctionFunctions.ConvertToLakh(team.getPlayerCategoryWise().get("ICON").get(0).getSoldForPoints()) + " L \0");
+				AuctionFunctions.ConvertToThousand(team.getPlayerCategoryWise().get("ICON").get(0).getSoldForPoints(),false) + " K \0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$IconPlayer1$img_Icon*TEXTURE*IMAGE SET " 
 				+ setPlayerRole(team.getPlayerCategoryWise().get("ICON").get(0)) + "\0");
 		
@@ -1964,7 +1964,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 			}
 			row = row + 1;
@@ -1994,7 +1994,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 			}
 			
@@ -2032,7 +2032,7 @@ public class KCL extends Scene{
 						"$SquadCategoryData$PlayerName$Iconic_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
 				
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_New$DataAll$Row" + row +
-						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " L \0");
+						"$SquadCategoryData$PlayerName$Value$txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K \0");
 				
 			}			
 		}
@@ -2762,7 +2762,7 @@ public class KCL extends Scene{
 				+ "Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 				+ "Select_Value$txt_Value*GEOM*TEXT SET " +  
-				AuctionFunctions.ConvertToLakh(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000")).replace(".00", "")+ " K"+"\0");
+				AuctionFunctions.ConvertToThousand(Double.valueOf(auctionService.getAllPlayer().get(playerId - 1).getBasePrice()+"000"),false).replace(".00", "")+ " K"+"\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$"
 				+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 0\0");
 		
@@ -2777,7 +2777,7 @@ public class KCL extends Scene{
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 								+ "Select_Value$txt_Title*GEOM*TEXT SET SOLD\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-								+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+								+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints(),false)+" K"+"\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
 								+ "img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
@@ -2790,7 +2790,7 @@ public class KCL extends Scene{
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
 								+ "Select_Value$txt_Title*GEOM*TEXT SET SOLD-RTM\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-								+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(auc.getSoldForPoints())+" K"+"\0");
+								+ "Select_Value$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(auc.getSoldForPoints(),false)+" K"+"\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
 								+ "img_TeamLogo*TEXTURE*IMAGE SET "+logo_path+auctionService.getTeams().get(auc.getTeamId() - 1).getTeamName4()+"\0");
 						print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo$"
@@ -3047,7 +3047,7 @@ public class KCL extends Scene{
 						"$txt_Value*GEOM*TEXT SET " + "-" + " \0");
 			}else {
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$RemainingPurse$Row" + (i+1) + "$txt_Value*GEOM*TEXT SET " 
-						+ AuctionFunctions.ConvertToLakh((Integer.valueOf(auction.getTeam().get(i).getTeamTotalPurse()) - total)) + " K \0");
+						+ AuctionFunctions.ConvertToThousand((Integer.valueOf(auction.getTeam().get(i).getTeamTotalPurse()) - total),false) + " K \0");
 			}
 			total = 0;
 		}
@@ -3100,7 +3100,7 @@ public class KCL extends Scene{
 					}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$Price$txt_Value"
-	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(top_sold.get(m).getSoldForPoints()) + " K" + " \0");
+	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints(),false) + " K" + " \0");
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "$ImageGrp$img_Player"
 	        				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getPhotoName() 
@@ -3222,7 +3222,7 @@ public class KCL extends Scene{
 					}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$Price$txt_Value"
-	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(top_sold.get(m).getSoldForPoints()) + " K" + " \0");
+	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints(),false) + " K" + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "$ImageGrp$img_Player"
 	        				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getPhotoName() 
 	        				+ AuctionUtil.PNG_EXTENSION + "\0");
@@ -3338,7 +3338,7 @@ public class KCL extends Scene{
 					}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Squad$Row" + row + "$Price$txt_Value"
-	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(squad.get(m).getSoldForPoints()) + " K" + " \0");
+	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(squad.get(m).getSoldForPoints(),false) + " K" + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Squad$Row" + row + "$ImageGrp$img_Player"
 	        				+ "*TEXTURE*IMAGE SET "+ photo_path +  squad.get(m).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Squad$Row" + row + "$Icon$img_Icon"
@@ -3394,7 +3394,7 @@ public class KCL extends Scene{
 					}
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Squad$Row" + row + "$Price$txt_Value"
-	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(squad.get(m).getSoldForPoints()) + " K" + " \0");
+	    					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(squad.get(m).getSoldForPoints(),false) + " K" + " \0");
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Squad$Row" + row + "$ImageGrp$img_Player"
 	        				+ "*TEXTURE*IMAGE SET "+ photo_path + squad.get(m).getPhotoName() 
 	        				+ AuctionUtil.PNG_EXTENSION + "\0");
@@ -3818,7 +3818,7 @@ public class KCL extends Scene{
 			}
 			
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" + row + "$Value$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(tm.getTeamTotalPurse()) - total)) + " K" + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand((Integer.valueOf(tm.getTeamTotalPurse()) - total),false) + " K" + "\0");
 			
 			if((Integer.valueOf(tm.getTeamTotalPurse()) - total) == 100000) {
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$PurseRemaining$DataAll$Team" 
@@ -4243,7 +4243,7 @@ public class KCL extends Scene{
 				 
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data1$txt_Value*GEOM*TEXT SET "+
-							AuctionFunctions.ConvertToLakh(Double.valueOf(player.getBasePrice()+"000"))+"L"+"\0");
+							AuctionFunctions.ConvertToThousand(Double.valueOf(player.getBasePrice()+"000"),false)+" K"+"\0");
 					for(Player plyr : top_sold) {
 						if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
 							if(player.getPlayerId() == plyr.getPlayerId()) {
@@ -4252,7 +4252,7 @@ public class KCL extends Scene{
 										+ "Price*ACTIVE SET 0\0");
 								
 								print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$"
-										+ "txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+										+ "txt_Value*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(),false)+" K"+"\0");
 								print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$img_TeamLogo"
 										+ "*TEXTURE*IMAGE SET " + logo_path + auction.getTeam().get(plyr.getTeamId() - 1).getTeamName4()+"\0");
 								print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Player"+row+"$Data2$img_LogoBase"
@@ -4306,7 +4306,7 @@ public class KCL extends Scene{
 							"$Icon$img_Icon*TEXTURE*IMAGE SET " + setPlayerRole(player) + "\0");
 					 
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToLakh(Double.valueOf(player.getBasePrice()+"000")).replace(".00", "")+"L"+"\0");
+					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data1$txt_Value*GEOM*TEXT SET "+AuctionFunctions.ConvertToThousand(Double.valueOf(player.getBasePrice()+"000"),false).replace(".00", "")+" K"+"\0");
 					for(Player plyr : top_sold) {
 						if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
 							if(player.getPlayerId() == plyr.getPlayerId()) {
@@ -4315,7 +4315,7 @@ public class KCL extends Scene{
 										+ "*FUNCTION*Omo*vis_con SET 1\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$Price*ACTIVE SET 0\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$txt_Value*GEOM*TEXT SET "
-										+ AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints())+" K"+"\0");
+										+ AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(),false)+" K"+"\0");
 								print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_IconLowerThird$PlayerAllGrp$IconPlayer"+row+"$Data2$txt_TeamName*GEOM*TEXT SET "
 										+ auction.getTeam().get(plyr.getTeamId() - 1).getTeamName1()+"\0");
 								
@@ -4483,7 +4483,7 @@ public class KCL extends Scene{
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Text*GEOM*TEXT SET " + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName1() + "\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-								AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " K" + "\0");
+								AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(),false) + " K" + "\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$Logo$Side" + which_side + "$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 								auction.getTeam().get(plyr.getTeamId()-1).getTeamName4() + "\0");
 						
@@ -4516,7 +4516,7 @@ public class KCL extends Scene{
 			String price = auctionService.getAllPlayer().get(playerId - 1).getLastYearPrice() + "000";
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$TeamWithPrice$txt_Value*GEOM*TEXT SET " + 
-					AuctionFunctions.ConvertToLakh(Double.valueOf(price)) + " K" + "\0");
+					AuctionFunctions.ConvertToThousand(Double.valueOf(price),false) + " K" + "\0");
 		}
 		else if(show_stats.equalsIgnoreCase("stats")) {
 			
@@ -4661,7 +4661,7 @@ public class KCL extends Scene{
 							+ "*TEXTURE*IMAGE SET " + logo_path + auctionService.getTeams().get(plyr.getTeamId()-1).getTeamName4() + "\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Rest_Data*FUNCTION*Omo*vis_con SET 0\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$txt_Value*GEOM*TEXT SET " + 
-							AuctionFunctions.ConvertToLakh(plyr.getSoldForPoints()) + " K" + "\0");
+							AuctionFunctions.ConvertToThousand(plyr.getSoldForPoints(),false) + " K" + "\0");
 				}
 			}
 			
@@ -4687,7 +4687,7 @@ public class KCL extends Scene{
 				}
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Rest_Data*FUNCTION*Omo*vis_con SET 0\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$txt_Value*GEOM*TEXT SET " + 
-						AuctionFunctions.ConvertToLakh((Integer.valueOf(tm.getTeamTotalPurse()) - totalAmountSpent)) + " K" + "\0");
+						AuctionFunctions.ConvertToThousand((Integer.valueOf(tm.getTeamTotalPurse()) - totalAmountSpent),false) + " K" + "\0");
 				
 				totalAmountSpent = 0;
 			}
@@ -4726,7 +4726,7 @@ public class KCL extends Scene{
 					}else {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Rest_Data*FUNCTION*Omo*vis_con SET 0\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Value$txt_Value*GEOM*TEXT SET " + 
-								AuctionFunctions.ConvertToLakh(ply.getSoldForPoints()) + " K" + "\0");
+								AuctionFunctions.ConvertToThousand(ply.getSoldForPoints(),false) + " K" + "\0");
 					}
 				}
 			}
@@ -4761,7 +4761,7 @@ public class KCL extends Scene{
 					
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Rest_Data*FUNCTION*Omo*vis_con SET 0\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$txt_Value*GEOM*TEXT SET " + 
-							AuctionFunctions.ConvertToLakh(top_sold.get(m).getSoldForPoints()) + " K" + "\0");
+							AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints(),false) + " K" + "\0");
 				}
 			}
 			for(int i=row+1;i<=18;i++) {
@@ -4816,8 +4816,8 @@ public class KCL extends Scene{
 	        			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PlayerFirstName*GEOM*TEXT SET "+ auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFirstname() + "\0");
 	        			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PlayerLastName*GEOM*TEXT SET "+ "" + "\0");
 	        		}
-	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PurseValue*GEOM*TEXT SET "+ AuctionFunctions.ConvertToLakh(top_sold.get(m).getSoldForPoints())  + "\0");
-	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_Unit*GEOM*TEXT SET "+ "LAKHS" + "\0");
+	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PurseValue*GEOM*TEXT SET "+ AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints(),false)  + "\0");
+	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_Unit*GEOM*TEXT SET "+ "THOUSAND" + "\0");
 	        		
 	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$img_Icon*TEXTURE*IMAGE SET "+ 
 	        				setPlayerRole(auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1)) + "\0");
@@ -4857,8 +4857,8 @@ public class KCL extends Scene{
 	        		}else {
 	        			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PlayerName*GEOM*TEXT SET "+ auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1).getFirstname() + "\0");
 	        		}
-	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PurseValue*GEOM*TEXT SET "+ AuctionFunctions.ConvertToLakh(top_sold.get(m).getSoldForPoints())  + "\0");
-	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_Unit*GEOM*TEXT SET "+ "LAKHS" + "\0");
+	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_PurseValue*GEOM*TEXT SET "+ AuctionFunctions.ConvertToThousand(top_sold.get(m).getSoldForPoints(),false)  + "\0");
+	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$txt_Unit*GEOM*TEXT SET "+ "THOUSAND" + "\0");
 	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$img_Logo*TEXTURE*IMAGE SET "+ logo_path + auction.getTeam().get(top_sold.get(m).getTeamId()-1).getTeamName4() + "\0");
 	        		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$Main$Row"+row+"$img_Icon*TEXTURE*IMAGE SET "+ setPlayerRole(auctionService.getAllPlayer().get(top_sold.get(m).getPlayerId()-1)) + "\0");
 	        		
@@ -4909,7 +4909,7 @@ public class KCL extends Scene{
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1)
 					+ "$txt_Size*GEOM*TEXT SET " + row + "\0");
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" + (i+1) + "$Price$txt_Value"
-					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToLakh((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total)) + " K" + "\0");
+					+ "*GEOM*TEXT SET " + AuctionFunctions.ConvertToThousand((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total),false) + " K" + "\0");
 			
 			if((Integer.valueOf(match.getTeam().get(i).getTeamTotalPurse()) - total) == 100000) {
 				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$PurseRemaining$DataAll$Team" 
