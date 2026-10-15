@@ -5573,6 +5573,9 @@ public class RALLY extends Scene{
 				}
 			}
 			break;
+		case "VANAKKAM":
+			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 1\0");
+			break;
 		case "COUNT_COUNTINUES":
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 2\0");
 			print_writer.println("-1 RENDERER*TREE*$BG$02$Text$Text3*GEOM*TEXT SET "+"JOIN THE MOVEMENT: RAHULGANDHI.IN/CKG"+"\0");
@@ -5584,7 +5587,9 @@ public class RALLY extends Scene{
 			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 4\0");
 			print_writer.println("-1 RENDERER*TREE*$BG$04$Text$Text3*GEOM*TEXT SET "+"WE WILL BE RIGHT BACK"+"\0");
 			break;
-			
+		case "PANNATHUKKU_NANDRI":
+			print_writer.println("-1 RENDERER*TREE*$BG$Select*FUNCTION*Omo*vis_con SET 5\0");
+			break;
 			
 		}
 	}

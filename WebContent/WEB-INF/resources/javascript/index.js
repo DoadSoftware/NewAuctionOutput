@@ -313,6 +313,14 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			$("#auction_div").hide();
 			processAuctionProcedures('FF_TOP_FIVE_SOLD_TEAM_GRAPHICS-OPTIONS');
 			break;
+		case 'Control_Shift_P':
+			which_GFX = "";
+			$("#captions_div").hide();
+			$("#cancel_match_setup_btn").hide();
+			$("#expiry_message").hide();
+			$("#auction_div").hide();
+			processAuctionProcedures('SINGLE_PURSE_GRAPHICS-OPTIONS');
+			break;
 		case 'Control_y': //SINGLE PURSE
 			stopTeamRotation();
 			which_GFX = "";
@@ -1517,6 +1525,10 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL':
 			valueToProcess = 'D:/DOAD_In_House_Everest/Everest_Cricket/Everest_ISPL_Auction_2024/Scenes/RemainingPurse_Individual.sum' + ',' + $('#selectTeamName option:selected').val();
 			break;	
+		case 'KCL':
+			valueToProcess = $('#selectTeamName option:selected').val();
+			console.log('valueToProcess--------------------------------'+valueToProcess);
+			break;
 		}
 		break;
 		
@@ -2538,6 +2550,16 @@ function addItemsToList(whatToProcess, dataToProcess)
 					select.name = select.id;
 					
 					option = document.createElement('option');
+					option.value = 'VANAKKAM';
+					option.text = 'VANAKKAM';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
+					option.value = 'PANNATHUKKU_NANDRI';
+					option.text = 'PANNATHUKKU_NANDRI';
+					select.appendChild(option);
+					
+					option = document.createElement('option');
 					option.value = 'NAYA_CHAPTER';
 					option.text = 'INDIA KA NAYA CHAPTER';
 					select.appendChild(option);
@@ -2658,7 +2680,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					break;
 				case 'SINGLE_PURSE-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'HANDBALL': case 'ISPL':
+					case 'HANDBALL': case 'ISPL': case 'KCL':
 						select = document.createElement('select');
 						select.id = 'selectTeamName';
 						select.name = select.id;
