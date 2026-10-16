@@ -4490,31 +4490,31 @@ public class KCL extends Scene{
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$1$txt_Text*GEOM*TEXT SET " 
 					+ (stats.getMatches().equalsIgnoreCase("0") ? "-" : stats.getMatches()) + "\0");
 			
-			if(plyr.getRole().trim().contains("RAIDER")) {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET RAID PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " 
-						+ (stats.getRaid_Points().equalsIgnoreCase("0") ? "-" : stats.getRaid_Points()) + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET RAID SR\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
-						+ (stats.getRaid_Sr().equalsIgnoreCase("0") ? "-" : stats.getRaid_Sr()) + "\0");
-			}else if(plyr.getRole().trim().contains("ALL ROUNDER")) {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET RAID PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " 
-						+ (stats.getRaid_Points().equalsIgnoreCase("0") ? "-" : stats.getRaid_Points()) + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET TACKLE PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
-						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Points()) + "\0");
-			}else {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET TACKLE PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " + "   " 
-						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Points()) + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET TACKLE SR\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
-						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Sr()) + "\0");
-			}
+//			if(plyr.getRole().trim().contains("RAIDER")) {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET RAID PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " 
+//						+ (stats.getRaid_Points().equalsIgnoreCase("0") ? "-" : stats.getRaid_Points()) + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET RAID SR\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
+//						+ (stats.getRaid_Sr().equalsIgnoreCase("0") ? "-" : stats.getRaid_Sr()) + "\0");
+//			}else if(plyr.getRole().trim().contains("ALL ROUNDER")) {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET RAID PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " 
+//						+ (stats.getRaid_Points().equalsIgnoreCase("0") ? "-" : stats.getRaid_Points()) + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET TACKLE PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
+//						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Points()) + "\0");
+//			}else {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Title*GEOM*TEXT SET TACKLE PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$2$txt_Text*GEOM*TEXT SET " + "   " 
+//						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Points()) + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Title*GEOM*TEXT SET TACKLE SR\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LowerThird$BottomGrp$Side" + which_side + "$Stats$3$txt_Text*GEOM*TEXT SET " 
+//						+ (stats.getTackle_Points().equalsIgnoreCase("0") ? "-" : stats.getTackle_Sr()) + "\0");
+//			}
 		}
 	}
 	public void ChangeOnLTStats(PrintWriter print_writer,int which_side, int playerId, String show_stats,int sta, List<Statistics> stats, Auction auction, 
@@ -5084,7 +5084,7 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 3\0");
 		
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$Header$txt_Header1"
-				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName1() + "\0");
+				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName1().toUpperCase() + "\0");
 		print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType3$SubHeader$txt_SubHeader"
 				+ "*GEOM*TEXT SET " + "KCL AUCTION 2026" + "\0");
 		
@@ -5414,39 +5414,39 @@ public class KCL extends Scene{
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$1$txt_Text"
 					+ "*GEOM*TEXT SET " + stats.getMatches() + "\0");
 			
-			if(player.getRole().trim().contains("RAIDER")) {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
-						+ "*GEOM*TEXT SET RAID PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getRaid_Points() + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
-						+ "*GEOM*TEXT SET RAID SR\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getRaid_Sr() + "\0");
-				
-			}else if(player.getRole().trim().contains("ALL ROUNDER")) {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
-						+ "*GEOM*TEXT SET RAID PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getRaid_Points() + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
-						+ "*GEOM*TEXT SET TACKLE PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getTackle_Points() + "\0");
-				
-			}else {
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
-						+ "*GEOM*TEXT SET TACKLE PTS\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getTackle_Points() + "\0");
-				
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
-						+ "*GEOM*TEXT SET TACKLE SR\0");
-				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
-						+ "*GEOM*TEXT SET " + stats.getTackle_Sr() + "\0");
-			}
+//			if(player.getRole().trim().contains("RAIDER")) {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
+//						+ "*GEOM*TEXT SET RAID PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getRaid_Points() + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
+//						+ "*GEOM*TEXT SET RAID SR\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getRaid_Sr() + "\0");
+//				
+//			}else if(player.getRole().trim().contains("ALL ROUNDER")) {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
+//						+ "*GEOM*TEXT SET RAID PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getRaid_Points() + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
+//						+ "*GEOM*TEXT SET TACKLE PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getTackle_Points() + "\0");
+//				
+//			}else {
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Title"
+//						+ "*GEOM*TEXT SET TACKLE PTS\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$2$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getTackle_Points() + "\0");
+//				
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Title"
+//						+ "*GEOM*TEXT SET TACKLE SR\0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Stats2Grp$StatsData$Side"+whichSide+"$Stats$3$txt_Text"
+//						+ "*GEOM*TEXT SET " + stats.getTackle_Sr() + "\0");
+//			}
 			break;
 		}
 	}

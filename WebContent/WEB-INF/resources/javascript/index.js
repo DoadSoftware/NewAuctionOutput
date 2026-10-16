@@ -251,7 +251,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			stopTeamRotation();
 			which_GFX = "";
 			switch ($('#selected_broadcaster').val()){
-			case 'KCL': 
+			case 'KCL': case 'KCL_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -1062,7 +1062,7 @@ function processUserSelection(whichInput)
 		break;
 		
 	case 'populate_namesuper_btn': case 'populate_split_btn': case 'populate_splitpip_btn': case 'populate_namesuperss_btn': case 'populate_namesuper_player_btn': case 'populate_playerprofile_btn':	case 'populate_squad_btn': case 'populate_category_btn': case 'populate_Top_Sold_btn': 
-	case 'populate_single_purse_btn': case 'curr_bid_section': case 'populate_googly_purse_btn':  case 'populate_teams_btn': case 'populate_profile_stats_btn': case 'populate_single_purse_btn': case 'populate_squads_btn':
+	case 'populate_single_purse_btn': case 'curr_bid_section': case 'populate_googly_purse_btn':  case 'populate_teams_btn': case 'populate_profile_stats_btn':  case 'populate_squads_btn':
 	case 'populate_zonePlayer_full_btn': case 'curr_bid_section': case 'populate_lof_remaining_purse_btn': case 'populate_crawl_Top_Sold_team_btn': case 'populate_Lof_Top_Sold_team_btn': 
 	case "populate_squad_Player_btn": case "populate_ffTop5Buys_btn": case 'populate_squad_size_category_wise_btn': case 'populate_ff_playerprofile_btn': case 'populate_ff_Top_Sold_team_btn': 
 	case 'populate_lt_playerprofile_btn': case 'populate_lt_playerprofile_stats_btn': case 'populate_Lof_squad_btn': case 'populate_crawle_squad_btn': case 'populate_freetextcrawler_btn': 
@@ -1543,9 +1543,8 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL':
 			valueToProcess = 'D:/DOAD_In_House_Everest/Everest_Cricket/Everest_ISPL_Auction_2024/Scenes/RemainingPurse_Individual.sum' + ',' + $('#selectTeamName option:selected').val();
 			break;	
-		case 'KCL':
+		case 'KCL': case 'KCL_BIGSCREEN':
 			valueToProcess = $('#selectTeamName option:selected').val();
-			console.log('valueToProcess--------------------------------'+valueToProcess);
 			break;
 		}
 		break;
@@ -2720,7 +2719,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					break;
 				case 'SINGLE_PURSE-OPTIONS':
 				switch ($('#selected_broadcaster').val().toUpperCase()) {
-					case 'HANDBALL': case 'ISPL': case 'KCL':
+					case 'HANDBALL': case 'ISPL': case 'KCL': case 'KCL_BIGSCREEN':
 						select = document.createElement('select');
 						select.id = 'selectTeamName';
 						select.name = select.id;

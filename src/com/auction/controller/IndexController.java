@@ -253,8 +253,19 @@ public class IndexController
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "BG";
 				break;
+			case "KCL_BIGSCREEN":
+				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
+				this_KCL_BIGSCREEN.which_graphics_onscreen = "BG";
+				this_KCL_BIGSCREEN.resetData(print_writer);
+				
+				print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 7\0");
+				
+				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BS_Logo START \0");
+				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			case "KCL_BIGSCREEN": case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
+			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
 				
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
@@ -283,9 +294,6 @@ public class IndexController
 					break;	
 				case "PWL":
 					this_pwl.resetData(print_writer);
-					break;
-				case "KCL_BIGSCREEN":
-					this_KCL_BIGSCREEN.resetData(print_writer);
 					break;
 				case "VCL_BIGSCREEN":
 					this_VCL_BIGSCREEN.resetData(print_writer);
