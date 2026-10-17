@@ -224,6 +224,9 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			case 'ADT10':
 				processAuctionProcedures('POPULATE-FF_WINDOW');
 				break;
+			case 'KCL':
+				alert('GFX IS NOT ACTIVE FOR THIS AUCTION');
+				break;	
 			default:
 				processAuctionProcedures('POPULATE-FF_RTM_AND_PURSE_REMAINING');
 				break;
