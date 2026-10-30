@@ -3452,8 +3452,8 @@ function addItemsToList(whatToProcess, dataToProcess)
 							cellCount = cellCount + 1;
 						}*/
 						switch ($('#selected_broadcaster').val().toUpperCase()) {
-						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN':  case 'PSL': case 'AFG_DRAFT': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 
-						case 'KCL':    
+						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN':  case 'PSL': case 'AFG_DRAFT': case "UTT_VIZ": 
+						case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'KCL':    
 						 switch(whatToProcess){
 								case 'FF_PLAYERPROFILE-OPTIONS': case 'PROFILEFF-OPTIONS':
 									select = document.createElement('select');
@@ -3477,7 +3477,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 										row.insertCell(cellCount).appendChild(select);
 										cellCount = cellCount + 1;
 										break;
-									case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
+									case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'AFG_DRAFT':
 										option = document.createElement('option');
 										option.value = 'without';
 										option.text = 'WithOut Stats';
@@ -3516,7 +3516,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 									
 									switch ($('#selected_broadcaster').val().toUpperCase()){
 									case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN':
-									case 'KCL':	
+									case 'KCL':	case 'AFG_DRAFT':
 										// Second cell: reserved for conditional dropdown
 									    const seCell = row.insertCell(cellCount);
 									    seCell.id = 'Playerstats'; // So we can target it easily later
@@ -3555,6 +3555,15 @@ function addItemsToList(whatToProcess, dataToProcess)
 										                option.style.fontWeight = 'bold';
 										                statsDropdown.appendChild(option);
 										            });
+													break;
+												case 'AFG_DRAFT':
+													['T20s', 'FC', 'LIST_A'].forEach(value => {
+													    const option = document.createElement('option');
+													    option.value = value;
+													    option.text = value;
+													    option.style.fontWeight = 'bold';
+													    statsDropdown.appendChild(option);
+													});
 													break;
 												}
 									            

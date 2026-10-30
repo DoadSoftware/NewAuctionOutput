@@ -148,8 +148,27 @@ public class Scene {
 				break;
 			}
 			break;	
-		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "VCL":  case "KCL": case "VCL_BIGSCREEN":  case "KCL_BIGSCREEN": case "PWL":
-		case "PSL": case "AFG_DRAFT":	case "UTT_BIGSCREEN": case "ISPL_VIZ":  case "ILT20": case "ILT20_BIGSCREEN":
+		case "AFG_DRAFT":
+			switch (whatToProcess) {
+			case "OVERLAYS":
+				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");
+				print_writer.println("-1 RENDERER*FRONT_LAYER*SCENE_DATA INITIALIZE \0");
+//				print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE SHOW 0.0 \0");
+				break;
+			case "FULL-FRAMERS":
+				print_writer.println("-1 RENDERER SET_OBJECT SCENE*/Default/FullFrames \0");
+				print_writer.println("-1 RENDERER*SCENE_DATA INITIALIZE \0");
+				print_writer.println("-1 RENDERER*STAGE SHOW 0.0 \0");
+				break;
+			case "BIGSCREEN":
+				print_writer.println("-1 RENDERER SET_OBJECT SCENE*/Default/FullFrames \0");
+				print_writer.println("-1 RENDERER*SCENE_DATA INITIALIZE \0");
+				print_writer.println("-1 RENDERER*STAGE SHOW 0.0 \0");
+				break;
+			}
+			break; 
+		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "VCL": case "KCL": case "VCL_BIGSCREEN": 
+		case "KCL_BIGSCREEN": case "PWL": case "PSL": case "UTT_BIGSCREEN": case "ISPL_VIZ":  case "ILT20": case "ILT20_BIGSCREEN":
 			switch (whatToProcess) {
 			case "OVERLAYS":
 				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");

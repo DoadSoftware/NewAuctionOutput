@@ -1,7 +1,11 @@
 package com.auction.broadcaster;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.auction.containers.Data;
-import com.auction.containers.PickOrderData;
 import com.auction.containers.Scene;
 import com.auction.model.Player;
 import com.auction.model.PlayerCount;
@@ -19,10 +22,8 @@ import com.auction.model.Squad;
 import com.auction.model.Statistics;
 import com.auction.model.StatsType;
 import com.auction.model.Team;
-import com.auction.model.TeamPick;
 import com.auction.service.AuctionService;
 import com.auction.model.Auction;
-import com.auction.model.DraftedPlayersSummary;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
 import com.auction.util.AuctionFunctions;
@@ -154,8 +155,11 @@ public class AFG_DRAFT extends Scene{
 						whichSideNotProfile = 1;
 					}
 					side2ValueToProcess = valueToProcess;
+					
+					System.out.println("valueToProcess - " + valueToProcess);
+					
 					populatePlayerProfileFF(print_writer, whichSideNotProfile, Integer.valueOf(valueToProcess.split(",")[0]), valueToProcess.split(",")[1], 
-							auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+							valueToProcess.split(",")[2], auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
 					processPreviewFullFrames(print_writer, whatToProcess, whichSideNotProfile);
 					break;
 					
@@ -790,7 +794,7 @@ public class AFG_DRAFT extends Scene{
 							which_graphics_onscreen = "REMAINING_PURSE_ALL";
 							break;
 						case "ANIMATE-IN-SQUAD":
-							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad18 START\0");
+							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad19 START\0");
 							which_graphics_onscreen = "SQUAD";
 							break;
 						case "ANIMATE-IN-ZONE-PLAYER_STATS": 
@@ -818,7 +822,7 @@ public class AFG_DRAFT extends Scene{
 							break;
 						case "ANIMATE-IN-PLAYERPROFILE_FF":
 							populatePlayerProfileFF(print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1], 
-									auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+									side2ValueToProcess.split(",")[2], auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-REMAINING_PURSE_ALL":
 							populateRemainingPurse(print_writer, 1, auction, auctionService, session_selected_broadcaster);
@@ -1760,9 +1764,9 @@ public class AFG_DRAFT extends Scene{
 					break;
 				case "ANIMATE-IN-SQUAD":
 					if(!whichGraphicOnScreen.equalsIgnoreCase("SQUAD")) {
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad18 SHOW 2.980\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad19 SHOW 2.980\0");
 					}
-					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad18 SHOW 0.0\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad19 SHOW 0.0\0");
 					break;
 				case "ANIMATE-IN-ZONE-PLAYER_STATS": case "ANIMATE-IN-ZONE-PLAYER_FULL":
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad SHOW 2.480\0");
@@ -1898,8 +1902,8 @@ public class AFG_DRAFT extends Scene{
 			break;
 		case "SQUAD":
 			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-SQUAD")) {
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad18 SHOW 0.0\0");
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad18 SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad19 SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad19 SHOW 0.0\0");
 			}
 			break;
 		case "FF_ICONIC_PLAYERS":
@@ -1924,13 +1928,18 @@ public class AFG_DRAFT extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header1*GEOM*TEXT SET " 
-				+ "HBL AFG_DRAFT PLAYER " + "\0");
+				+ "HBL AFG DRAFT PLAYER " + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header2*GEOM*TEXT SET " 
 				+ "AUCTION" + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info1$txt_Info*GEOM*TEXT SET " 
-				+ "EXPO CENTRE, LAHORE" + "\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info2$txt_Info*GEOM*TEXT SET \0");
+		String venue = "";
+	    try {
+	        venue = new String(Files.readAllBytes(Paths.get("C:/Sports/Auction/MatchIdent.txt"))).trim();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info1$txt_Info*GEOM*TEXT SET " + venue + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$InfoGrp$Info2$txt_Info*GEOM*TEXT SET " + "" + "\0");
 		
 	}
 	
@@ -2101,22 +2110,14 @@ public class AFG_DRAFT extends Scene{
 		}
 	}
 	
-	public void populatePlayerProfileFF(PrintWriter print_writer,int which_side, int playerId, String show_stats, List<Statistics> stats, Auction auction, 
+	public void populatePlayerProfileFF(PrintWriter print_writer,int which_side, int playerId, String show_stats,String whichStats, List<Statistics> stats, Auction auction, 
 			AuctionService auctionService, String session_selected_broadcaster) throws InterruptedException 
 	{
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 1\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 1\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$HeaderType1$txt_Header*GEOM*TEXT SET " + "HBL AFG_DRAFT PLAYER AUCTION" + "\0");
-		
-		if(auctionService.getAllPlayer().get(playerId - 1).getIconic().equalsIgnoreCase(AuctionUtil.YES)) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Icon$Select_Icon"
-					+ "*FUNCTION*Omo*vis_con SET 0\0");
-		}else {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Icon$Select_Icon"
-					+ "*FUNCTION*Omo*vis_con SET 0\0");
-		}
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$HeaderType1$txt_Header*GEOM*TEXT SET " + "HBL AFG DRAFT PLAYER AUCTION" + "\0");
 		
 		if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Name$txt_FirstName*GEOM*TEXT SET " 
@@ -2132,43 +2133,19 @@ public class AFG_DRAFT extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Abhishek_Kumar_Dalhor"
 				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 		
-		if(auctionService.getAllPlayer().get(playerId - 1).getNationality().equalsIgnoreCase("PAKISTAN")) {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
-		}else {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 1\0");
-		}
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$PlayerRole$txt_Role*GEOM*TEXT SET " + 
 				auctionService.getAllPlayer().get(playerId - 1).getRole().replace("Batsman", "BATTER").toUpperCase() + "\0");
 		
-		if(auctionService.getAllPlayer().get(playerId - 1).getCategory() != null) {
-			if(auctionService.getAllPlayer().get(playerId - 1).getCategory().equalsIgnoreCase("U19")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET UNDER 19\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-						auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
-			}
-		}else {
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET \0");
-		}
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Career$txt_Career*GEOM*TEXT SET " + 
+				auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value*FUNCTION*Omo*vis_con SET 0\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
 		
-		switch (auctionService.getAllPlayer().get(playerId - 1).getBasePrice()) {
-		case "42000":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET 4.200 CR"+"\0");
-			break;
-		case "22000":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET 2.200 CR"+"\0");
-			break;
-		case "11000":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET 1.100 CR"+"\0");
-			break;
-		case "6000":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET 60 L"+"\0");
-			break;
-		}
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET "+"\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Title*GEOM*TEXT SET "+"\0");
 		
 //		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 0\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$TeamLogo*ACTIVE SET 0\0");
@@ -2178,25 +2155,10 @@ public class AFG_DRAFT extends Scene{
 				if(auc.getPlayerId() == playerId) {
 					switch(auc.getSoldOrUnsold()) {
 					case AuctionUtil.SOLD: case AuctionUtil.RTM:
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-								+ "Select_Value*FUNCTION*Omo*vis_con SET 0\0");
-//						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$"
-//								+ "ImageGrp$Select_Logo*FUNCTION*Omo*vis_con SET 1\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value*FUNCTION*Omo*vis_con SET 0\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$TeamLogo*ACTIVE SET 1\0");
-						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-								+ "Select_Value$txt_Title*GEOM*TEXT SET " +(auc.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD)
-										? "SOLD" : "SOLD-RTM") + "\0");
-						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Value*GEOM*TEXT SET "
-								+ AuctionFunctions.formatRawAmount(auc.getSoldForPoints()).split(",")[0] + " " + AuctionFunctions.formatRawAmount(auc.getSoldForPoints()).split(",")[1] +"\0");
-						
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$TeamLogo$Logo$img_TeamLogo*TEXTURE*IMAGE SET "
 								+ logo_path + auctionService.getTeams().get(auc.getTeamId() - 1).getTeamBadge()+"\0");
-						break;
-					case AuctionUtil.UNSOLD:
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$"
-								+ "Select_Value*FUNCTION*Omo*vis_con SET 1\0");
 						break;
 					}
 					break;
@@ -2204,16 +2166,32 @@ public class AFG_DRAFT extends Scene{
 			}
 		}
 		
-		switch (show_stats) {
-		case "ISPL S-1": case "ISPL S-2":
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Career$txt_Career*GEOM*TEXT SET " 
-					+ (show_stats.equalsIgnoreCase("ISPL S-1") ? "ISPL SEASON 1" : "ISPL SEASON 2") + "\0");
+		switch (show_stats.toUpperCase()) {
+		case "WITHOUT":
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category*ACTIVE SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats*ACTIVE SET 0\0");
+			break;
+		case "WITH_INFO":
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category*ACTIVE SET 1\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats*ACTIVE SET 1\0");
 			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$1*ACTIVE SET 1\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$3*ACTIVE SET 1\0");
-			
-			statsType = auctionService.getStatsTypes().stream().filter(stype -> stype.getStats_short_name().equalsIgnoreCase(show_stats)).findAny().orElse(null);
+			statsType = auctionService.getStatsTypes().stream().filter(stype -> stype.getStats_short_name().equalsIgnoreCase(whichStats)).findAny().orElse(null);
 			stat = auctionService.getAllStats().stream().filter(st -> st.getPlayer_id() == playerId && statsType.getStats_id() == st.getStats_type_id()).findAny().orElse(null);
+			
+			switch(statsType.getStats_short_name()) {
+			case "T20s":
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+						"T20 CAREER" + "\0");
+				break;
+			case "FC":
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+						"FIRST CLASS CAREER" + "\0");
+				break;
+			case "LIST_A":
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
+						"LIST A CAREER" + "\0");
+				break;
+			}
 			
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$1$txt_StatHead*GEOM*TEXT SET MATCHES\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$1$txt_StatValue*GEOM*TEXT SET " 
@@ -2247,20 +2225,6 @@ public class AFG_DRAFT extends Scene{
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$3$txt_StatHead*GEOM*TEXT SET WICKETS\0");
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$3$txt_StatValue*GEOM*TEXT SET " 
 						+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
-			}
-			break;
-		default:
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Career$txt_Career*GEOM*TEXT SET \0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$1*ACTIVE SET 0\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$3*ACTIVE SET 0\0");
-			if(auctionService.getAllPlayer().get(playerId - 1).getAge() != null) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$2$txt_StatHead*GEOM*TEXT SET AGE\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-						+ auctionService.getAllPlayer().get(playerId - 1).getAge() + "\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$2$txt_StatHead*GEOM*TEXT SET COUNTRY\0");
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Stats$2$txt_StatValue*GEOM*TEXT SET " 
-						+ auctionService.getAllPlayer().get(playerId - 1).getNationality() + "\0");
 			}
 			break;
 		}
@@ -3504,10 +3468,10 @@ public class AFG_DRAFT extends Scene{
 				auction.getTeam().get(team_id-1).getTeamName3() + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$SubHeader$txt_SubHeader*GEOM*TEXT SET SQUAD\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$LogoGrp$img_TeamLogo"
-				+ "*TEXTURE*IMAGE SET " + logo_path + auction.getTeam().get(team_id-1).getTeamBadge() + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3$Logo$Text$img_Logo*TEXTURE*IMAGE SET " 
+				+ logo_path + auction.getTeam().get(team_id-1).getTeamBadge() + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 7\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 2\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$select_PlayerNumber"
 				+ "*FUNCTION*Omo*vis_con SET " + squad.size() + "\0");
 		
@@ -3519,21 +3483,8 @@ public class AFG_DRAFT extends Scene{
 			
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + 
 					"$SlectDataStyle*FUNCTION*Omo*vis_con SET 1\0");
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + 
-					"$PlayerName$img_Text1$Icons$Retain_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
-			if(squad.get(m).getSoldOrUnsold().equalsIgnoreCase("RETAIN")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + 
-						"$PlayerName$img_Text1$Icons$Retain_Icon$Select_Icon*FUNCTION*Omo*vis_con SET 1\0");
-			}
-			
-			if(plyrData.getNationality().equalsIgnoreCase("PAKISTAN")) {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$OverseasAll$"
-						+ "select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
-			}else {
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$OverseasAll$"
-						+ "select_Overseas*FUNCTION*Omo*vis_con SET 1\0");
-			}
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$OverseasAll$"
+					+ "select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
 			
 			if(plyrData.getSurname() != null) {
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$Name$"
@@ -3546,17 +3497,9 @@ public class AFG_DRAFT extends Scene{
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$Name$"
 						+ "txt_LastName*GEOM*TEXT SET " + plyrData.getFirstname() + "\0");
 			}
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$Base$"
-					+ "img_Base1*TEXTURE*IMAGE SET " + base_path_1 + auction.getTeam().get(team_id-1).getTeamBadge() + "\0");
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$img_Text1"
-					+ "*TEXTURE*IMAGE SET " + text_path_1 + auction.getTeam().get(team_id-1).getTeamBadge() + "\0");
+
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$Icon$img_Icon"
 					+ "*TEXTURE*IMAGE SET " + icon_path + styleIcons(plyrData) + "\0");
-			
-			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Squad_Category$Row" + row + "$PlayerName$Value$"
-					+ "txt_Value*GEOM*TEXT SET " +  AuctionFunctions.formatAmountInCrore(squad.get(m).getSoldForPoints()).split(",")[0] 
-					+ " " + AuctionFunctions.formatAmountInCrore(squad.get(m).getSoldForPoints()).split(",")[1] + "\0");
 		}
 	}
 	
@@ -4216,87 +4159,61 @@ public class AFG_DRAFT extends Scene{
 	{
 		int row = 0;
 		data_str.clear();
-		data_str = AuctionFunctions.getSquadDataInZone(match,team_id);
+		data_str = AuctionFunctions.getSquadDataInZone(match, team_id, session_selected_broadcaster);
 		
 		Auction session_auction = match;
 		session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(), session_auction.getPlayers(), 
 				session_auction.getPlayersList(),session_selected_broadcaster));
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 2\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Header$Select_Icon*FUNCTION*Omo*vis_con SET 0\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Select_Gavel*FUNCTION*Omo*vis_con SET 0\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Select_Gavel*FUNCTION*Omo*vis_con SET 1\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Header$txt_Header1"
-				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName2() + "\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Header$txt_Header2"
-				+ "*GEOM*TEXT SET " + match.getTeam().get(team_id-1).getTeamName3() + "\0");
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader"
-				+ "$txt_SubHeader*GEOM*TEXT SET " + "SQUAD" + "\0");
-		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$LogoGrp$img_TeamLogo"
-				+ "*TEXTURE*IMAGE SET " + logo_path + match.getTeam().get(team_id-1).getTeamBadge() + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Header$txt_Header1*GEOM*TEXT SET " 
+				+ match.getTeam().get(team_id-1).getTeamName2() + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Header$txt_Header2*GEOM*TEXT SET " 
+				+ match.getTeam().get(team_id-1).getTeamName3() + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SubHeader$txt_SubHeader*GEOM*TEXT SET " 
+				+ "SQUAD" + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$Logo$Text$img_Logo*TEXTURE*IMAGE SET " 
+				+ logo_path + match.getTeam().get(team_id-1).getTeamBadge() + "\0");
 		
 		for (int i = 1; i <= session_auction.getTeamZoneList().size(); i++) {
 			PlayerCount teamZone = session_auction.getTeamZoneList().get(i - 1); 
 		    if (teamZone.getTeamId() == team_id) {
-		        
-		     // Team Total Value 
-		        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$txt_SquadSize"
-		        	+ "*GEOM*TEXT SET " + (teamZone.getEastZone() + teamZone.getWestZone() + teamZone.getNorthZone() + teamZone.getSouthZone() 
-		        		+ teamZone.getCentralZone()+ teamZone.getU19()) + "\0");
-
-		        for(int k=1; k<=2; k++) {
-		        	for (int j = 1; j <= 7; j++) {
-			            // Zone names
-			            String zoneName = (j == 1 ? "NZ" : j == 2 ? "CZ" : j == 3 ? "EZ" : j == 4 ? "WZ" : j == 5 ? "SZ" : j == 6 ? "U19" : "");
-			            
-			            print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" 
-			            		+ j + "$txt_Zone*GEOM*TEXT SET " + zoneName + "\0");
-			            print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" 
-			            		+ j + "$txt_Value*GEOM*TEXT SET " + "" + "\0");
-
-			            // Zone values
-			            String zoneValue = (j == 1 ? String.valueOf(teamZone.getNorthZone()) :
-			                    j == 2 ? String.valueOf(teamZone.getCentralZone()) :
-			                    j == 3 ? String.valueOf(teamZone.getEastZone()) :
-			                    j == 4 ? String.valueOf(teamZone.getWestZone()) :
-			                    j == 5 ? String.valueOf(teamZone.getSouthZone()) :
-			                    j == 6 ? String.valueOf(teamZone.getU19()) : "");
-			            
-			            print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" 
-			            		+ j + "$txt_Value*GEOM*TEXT SET " + zoneValue + "\0");
-			        }
-		        }
+		    	int j=0;
+		    	List<String> categoryOrder = Arrays.asList("PLATINUM", "DIAMOND", "GOLD", "SILVER", "EMERGING", "SUPPLEMENTARY");
+		     
+	        	for (String category : categoryOrder) {
+	        		j++;
+        	        Integer value = teamZone.getCategory().getOrDefault(category, 0);
+        	        
+        	        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" + j
+        	                + "$txt_Zone*GEOM*TEXT SET " + category + "\0");
+        	        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$Category$" + j
+        	                + "$txt_Value*GEOM*TEXT SET " + value + "\0");
+	        	}
+		        	
+	        	// Team Total Value 
+		        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType2$SquadData$txt_SquadSize*GEOM*TEXT SET " 
+		        		+ teamZone.getPlayers() + "\0");
 		    } 
 		}
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$select_PlayerNumber*FUNCTION*Omo*vis_con SET 18\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 3\0");
 		
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
-			if(row <= 18) {
-				if(data_str.get(k).equalsIgnoreCase("NZ") || data_str.get(k).equalsIgnoreCase("SZ") || data_str.get(k).equalsIgnoreCase("CZ") || 
-						data_str.get(k).equalsIgnoreCase("EZ") || data_str.get(k).equalsIgnoreCase("WZ") || data_str.get(k).equalsIgnoreCase("U19") ||
-						data_str.get(k).equalsIgnoreCase("ZONE")) {
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row 
-							+ "$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row 
-							+ "$Blank$NameGrp$txt_LastName*GEOM*TEXT SET \0");
+			if(row <= 19) {
+				if(data_str.get(k).equalsIgnoreCase("PLATINUM") || data_str.get(k).equalsIgnoreCase("DIAMOND") || data_str.get(k).equalsIgnoreCase("GOLD") 
+						|| data_str.get(k).equalsIgnoreCase("SILVER") || data_str.get(k).equalsIgnoreCase("EMERGING") || data_str.get(k).equalsIgnoreCase("SUPPLEMENTARY")) {
+					
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 0\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$Blank$NameGrp$txt_LastName*GEOM*TEXT SET \0");
+					
 				}else {
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + 
-							"$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
-					
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$"
-							+ "Icon_Player$Select_Retain*FUNCTION*Omo*vis_con SET 0\0");
-					
-					for(Player pyr : session_auction.getPlayers()) {
-						if(pyr.getPlayerId() == Integer.valueOf(data_str.get(k)) && pyr.getSoldOrUnsold().equalsIgnoreCase("RETAIN")) {
-							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$"
-									+ "Icon_Player$Select_Retain*FUNCTION*Omo*vis_con SET 1\0");
-						}
-					}
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$Icon_Player$Select_Retain"
+							+ "*FUNCTION*Omo*vis_con SET 0\0");
 					
 					for(Player plyr : match.getPlayersList()) {
 						if(plyr.getPlayerId() == Integer.valueOf(data_str.get(k))) {
@@ -4315,21 +4232,8 @@ public class AFG_DRAFT extends Scene{
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$ImageGrp$"
 									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 							
-							if(plyr.getNationality().equalsIgnoreCase("PAKISTAN")) {
-								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row 
-										+ "$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
-							}else {
-								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row 
-										+ "$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 1\0");
-							}
-							
-							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$NameGrp$"
-									+ "img_Base1*TEXTURE*IMAGE SET " + base_path_1 + match.getTeam().get(team_id-1).getTeamBadge() + "\0");
-							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$NameGrp$"
-									+ "Text*TEXTURE*IMAGE SET " + text_path_1 + match.getTeam().get(team_id-1).getTeamBadge() + "\0");
-							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$txt_Category"
-									+ "*GEOM*TEXT SET " + plyr.getNationality() + "\0");
+									+ "*GEOM*TEXT SET " + plyr.getCategory() + "\0");
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + 
 									"$Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + styleIcons(plyr) + "\0");
 						}
@@ -4862,7 +4766,7 @@ public class AFG_DRAFT extends Scene{
 					break;
 				case "POPULATE-SQUAD":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
-							+ "anim_Fullframe$In_Out$Main$Squad18 2.980 anim_Fullframe$In_Out$Main$Squad18$In 2.380";
+							+ "anim_Fullframe$In_Out$Main$Squad19 2.980 anim_Fullframe$In_Out$Main$Squad19$In 2.380";
 					break;
 				case "POPULATE-ZONE_PLAYERS_STATS": case "POPULATE-ZONE_PLAYERS_FULL":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
@@ -4907,7 +4811,7 @@ public class AFG_DRAFT extends Scene{
 				break;
 			case "SQUAD":
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
-						+ "Change$Squad18 1.980 Change$Squad18$Change_Out 0.500 Change$Squad18$Change_In 1.980 ";
+						+ "Change$Squad19 1.980 Change$Squad19$Change_Out 0.500 Change$Squad19$Change_In 1.980 ";
 				break;
 			case "ZONE-PLAYER_STATS": case "ZONE-PLAYER_FULL":
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
@@ -4942,7 +4846,7 @@ public class AFG_DRAFT extends Scene{
 				break;
 			case "POPULATE-SQUAD":
 				if(!which_graphics_onscreen.equalsIgnoreCase("SQUAD")) {
-					previewCommand = previewCommand + "Change$Squad18 1.980 Change$Squad18$Change_Out 0.500 Change$Squad18$Change_In 1.980 ";
+					previewCommand = previewCommand + "Change$Squad19 1.980 Change$Squad19$Change_Out 0.500 Change$Squad19$Change_In 1.980 ";
 				}
 				break;
 			case "POPULATE-ZONE_PLAYERS_STATS":

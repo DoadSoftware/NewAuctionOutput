@@ -4088,7 +4088,7 @@ public class VIZ_ISPL_2024 extends Scene{
 	{
 		int row = 0;
 		data_str.clear();
-		data_str = AuctionFunctions.getSquadDataInZone(match,team_id);
+		data_str = AuctionFunctions.getSquadDataInZone(match,team_id,session_selected_broadcaster);
 		
 		Auction session_auction = match;
 		session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(), session_auction.getPlayers(), 
