@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.auction.broadcaster.ADT10;
 import com.auction.broadcaster.AFG_DRAFT;
+import com.auction.broadcaster.AFG_DRAFT_BIGSCREEN;
 import com.auction.broadcaster.Doad;
 import com.auction.broadcaster.ILT20;
 import com.auction.broadcaster.ILT20_BIGSCREEN;
@@ -74,6 +75,7 @@ public class IndexController
 	public static VIZ_ISPL_2024 this_ispl_viz_2024;
 	public static PSL this_psl;
 	public static AFG_DRAFT this_afgDraft;
+	public static AFG_DRAFT_BIGSCREEN this_afgDraft_bigscreen;
 	public static MUMBAI_T20_VIZ this_mumbai_t20_viz;
 	public static MUMBAI_T20_BIGSCREEN this_MUMBAI_T20_BIGSCREEN;
 	public static RALLY this_rally;
@@ -182,6 +184,7 @@ public class IndexController
 			this_ispl_viz = new ISPL_VIZ();
 			this_ispl_viz_2024 = new VIZ_ISPL_2024();
 			this_psl = new PSL();
+			this_afgDraft_bigscreen = new AFG_DRAFT_BIGSCREEN();
 			this_afgDraft = new AFG_DRAFT();
 			this_mumbai_t20_viz = new MUMBAI_T20_VIZ();
 			this_rally = new RALLY();
@@ -268,7 +271,7 @@ public class IndexController
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BS_Logo START \0");
 				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL": case "AFG_DRAFT": case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
+			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":  case "AFG_DRAFT_BIGSCREEN":
 				
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
@@ -303,6 +306,9 @@ public class IndexController
 					break;
 				case "ILT20_BIGSCREEN":
 					this_ILT20_BIGSCREEN.resetData(print_writer);
+					break;
+				case "AFG_DRAFT_BIGSCREEN":
+					this_afgDraft_bigscreen.resetData(print_writer);
 					break;
 				case "ILT20":
 					this_ilt20.resetData(print_writer);
@@ -460,6 +466,12 @@ public class IndexController
 					}
 					this_afgDraft.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 					break;
+				case "AFG_DRAFT_BIGSCREEN":	
+					if(this_afgDraft_bigscreen.data.isBid_Start_or_not() == true) {
+						this_afgDraft_bigscreen.data.setWhichside(2);
+					}
+					this_afgDraft_bigscreen.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;
 				case "UTT_VIZ":
 					if(this_utt_viz.data.isBid_Start_or_not() == true) {
 						this_utt_viz.data.setWhichside(2);
@@ -554,6 +566,9 @@ public class IndexController
 				break;			
 			case "AFG_DRAFT":
 				this_afgDraft.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;	
+			case "AFG_DRAFT_BIGSCREEN":
+				this_afgDraft_bigscreen.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;	
 			case "MUMBAI_T20_VIZ":
 				this_mumbai_t20_viz.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
