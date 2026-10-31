@@ -590,7 +590,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 		case 'x':
 			switch ($('#selected_broadcaster').val()){
 			case 'UTT_VIZ': case 'MUMBAI_T20_VIZ': case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN':
-			case 'PWL': case 'UTT_BIGSCREEN':
+			case 'PWL': case 'UTT_BIGSCREEN': case 'APL_DRAFT':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -1461,10 +1461,13 @@ function processAuctionProcedures(whatToProcess)
 		case 'ISPL_VIZ':
 			valueToProcess = '/Default/BidLt'+ ',' + $('#selectPlayerName option:selected').val();
 			break;
-		case 'VIZ_ISPL_2024':  case 'PSL': case 'AFG_DRAFT': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': 
+		case 'VIZ_ISPL_2024':  case 'PSL': case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'KCL': 
 		case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'VCL': case 'ILT20': case 'ADT10':
 			valueToProcess = $('#selectPlayerName option:selected').val();
 			break;
+		case 'AFG_DRAFT':
+			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectTeamName option:selected').val() + ',' + $('#selectShowData option:selected').val();
+			break;		
 		case "UTT_VIZ":
 			valueToProcess = $('#selectPlayerName option:selected').val() + ',' + $('#selectShowData option:selected').val() + ',' + $('#selectBottomData option:selected').val();
 			break;
@@ -1774,8 +1777,14 @@ function processAuctionProcedures(whatToProcess)
 			case 'PLAYERPROFILE_MAIN_GRAPHICS-OPTIONS':
 				addItemsToList('PLAYERPROFILE_MAIN-OPTIONS',data);
 				addItemsToList('POPULATE-PROFILE',data);
+				processAuctionProcedures('TEAMS_DRAFT_GRAPHICS-OPTIONS');
+				//addItemsToList('POPULATE-TEAMSS',data);
 				match_data = data;
 				break;
+			case 'TEAMS_DRAFT_GRAPHICS-OPTIONS':
+				addItemsToList('POPULATE-TEAMSS',data);
+				match_data = data;
+				break;	
 			case 'PLAYERPROFILE_DRAFT_GRAPHICS-OPTIONS':
 				addItemsToList('PLAYERPROFILE_DRAFT-OPTIONS',data);
 				match_data = data;
@@ -2268,6 +2277,25 @@ function addItemsToList(whatToProcess, dataToProcess)
 		});
 		
 		break;
+	case 'POPULATE-TEAMSS':
+		$('#selectTeamName').empty();
+
+		$('#selectTeamName').append(
+			$(document.createElement('option')).prop({
+				value: 'NO_Team',
+				text: ''
+			})
+		);
+		
+		dataToProcess.forEach(function(tm,index,arr1){
+			$('#selectTeamName').append(
+					$(document.createElement('option')).prop({
+					value: tm.teamId,
+					text: tm.teamName1
+				}))
+		});
+
+		break;	
 	case 'ADTTEAMS-OPTIONS':
 		var whichInput = lastSelectedInput;
 		var row = $(whichInput).closest('tr')[0];
@@ -3228,6 +3256,36 @@ function addItemsToList(whatToProcess, dataToProcess)
 							option.text = 'WithOut Photo';
 							select.appendChild(option);
 							
+							select.setAttribute('onchange',"processUserSelection(this)");
+							row.insertCell(cellCount).appendChild(select);
+							cellCount = cellCount + 1;
+						}
+						
+						if($('#selected_broadcaster').val().toUpperCase()==='AFG_DRAFT'){
+							
+							select = document.createElement('select');
+							select.id = 'selectTeamName';
+							select.name = select.id;
+
+							select.setAttribute('onchange',"processUserSelection(this)");
+							row.insertCell(cellCount).appendChild(select);
+							cellCount = cellCount + 1;
+							
+							select = document.createElement('select');
+							select.style = 'width:150px';
+							select.id = 'selectShowData';
+							select.name = select.id;
+
+							option = document.createElement('option');
+							option.value = 'With_Stat';
+							option.text = 'With Stats';
+							select.appendChild(option);
+
+							option = document.createElement('option');
+							option.value = 'WithOut_Stat';
+							option.text = 'WithOut Stats';
+							select.appendChild(option);
+
 							select.setAttribute('onchange',"processUserSelection(this)");
 							row.insertCell(cellCount).appendChild(select);
 							cellCount = cellCount + 1;
