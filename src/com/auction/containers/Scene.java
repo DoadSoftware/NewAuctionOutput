@@ -167,8 +167,19 @@ public class Scene {
 				break;
 			}
 			break; 
+		case "AFG_DRAFT_BIGSCREEN":
+			switch (whatToProcess) {
+			case "BIGSCREEN":
+				print_writer.println("-1 RENDERER SET_OBJECT SCENE*/Default/" + 
+						(config.getBroadcaster().equalsIgnoreCase("UTT_VIZ") ? "gfx_Fullframes" : 
+							config.getBroadcaster().equalsIgnoreCase("ILT20") ? "gfx_Fullframes" : "FullFrames") + " \0");
+					print_writer.println("-1 RENDERER*SCENE_DATA INITIALIZE \0");
+					print_writer.println("-1 RENDERER*STAGE SHOW 0.0 \0");
+				break;
+			}
+			break;
 		case "VIZ_ISPL_2024":case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "VCL": case "KCL": case "VCL_BIGSCREEN": 
-		case "KCL_BIGSCREEN": case "PWL": case "PSL": case "UTT_BIGSCREEN": case "ISPL_VIZ":  case "ILT20": case "ILT20_BIGSCREEN": case "AFG_DRAFT_BIGSCREEN":
+		case "KCL_BIGSCREEN": case "PWL": case "PSL": case "UTT_BIGSCREEN": case "ISPL_VIZ":  case "ILT20": case "ILT20_BIGSCREEN": 
 			switch (whatToProcess) {
 			case "OVERLAYS":
 				print_writer.println("-1 RENDERER*FRONT_LAYER SET_OBJECT SCENE*/Default/Overlays \0");

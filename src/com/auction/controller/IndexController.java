@@ -5,6 +5,11 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +54,7 @@ import com.auction.model.Auction;
 import com.auction.model.DraftedPlayersSummary;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
+import com.auction.model.PickOrder;
 import com.auction.model.Player;
 import com.auction.model.Split;
 import com.auction.model.Team;
@@ -56,6 +62,7 @@ import com.auction.service.AuctionService;
 import com.auction.util.AuctionFunctions;
 import com.auction.util.AuctionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 @Controller
 public class IndexController 
@@ -103,6 +110,7 @@ public class IndexController
 	List<Flipper> session_flipper = new ArrayList<Flipper>();
 	List<Team> session_team = new ArrayList<Team>();
 	List<Player> session_player = new ArrayList<Player>();
+	List<PickOrder> session_pickorder = new ArrayList<PickOrder>();
 	public static Scene scene = new Scene();
 	List<Auction> auction_file = new ArrayList<Auction>();
 	List<Scene> session_selected_scenes = new ArrayList<Scene>();
@@ -114,7 +122,8 @@ public class IndexController
 	boolean is_Infobar_on_Screen = false;
 	boolean is_director_on_bottom = false;
 	boolean is_Ident_on_Screen = false;
-	public static ObjectMapper objectMapper = new ObjectMapper(); 
+	public static ObjectMapper objectMapper = new ObjectMapper();
+	private static final String DB_URL = "jdbc:ucanaccess://C:/path/to/your.accdb";
 	
 	@RequestMapping(value = {"/","/initialise"}, method={RequestMethod.GET,RequestMethod.POST}) 
 	public String initialisePage(ModelMap model) throws JAXBException, IOException, ParseException 
@@ -259,6 +268,17 @@ public class IndexController
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
 				this_ILT20_BIGSCREEN.which_graphics_onscreen = "BG";
 				break;
+			case "AFG_DRAFT_BIGSCREEN":
+				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
+				this_afgDraft_bigscreen.which_graphics_onscreen = "";
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+				
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Wipe START \0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
+				this_afgDraft_bigscreen.which_graphics_onscreen = "BG";
+				break;
 			case "KCL_BIGSCREEN":
 				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
 				this_KCL_BIGSCREEN.which_graphics_onscreen = "BG";
@@ -271,7 +291,7 @@ public class IndexController
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BS_Logo START \0");
 				break;
 			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL": case "AFG_DRAFT": case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
-			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":  case "AFG_DRAFT_BIGSCREEN":
+			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10": 
 				
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
 				scene.LoadScene("FULL-FRAMERS", print_writer, session_Configurations);
@@ -395,7 +415,9 @@ public class IndexController
 				this_mumbai_t20_viz.enableAudio ="FALSE";
 				this_rally.enableAudio ="FALSE";
 			}
-			return null;	
+			return null;
+		case "READ-PICKORDER-FOR-ROUND":
+			return objectMapper.writeValueAsString(getPickOrderForRound(valueToProcess));
 		case "RE_READ_DATA":
 			getDataFromDB();
 			return objectMapper.writeValueAsString(session_auction);
@@ -634,7 +656,7 @@ public class IndexController
 		case "FF_TOP_FIVE_SOLD_TEAM_GRAPHICS-OPTIONS": case "SINGLE_GRAPHICS-OPTIONS": case "FLIPPER_SQUAD_GRAPHICS-OPTIONS":case "FF_SQUAD_GRAPHICS-OPTIONS":
 		case "FF_SQUAD_ROLE_GRAPHICS-OPTIONS":case "LOF_TEAM_BID_GRAPHICS-OPTIONS": case "CRAWL_SQUAD_GRAPHICS-OPTIONS": case "SQUAD_ANIMATION_GRAPHICS-OPTIONS":
 		case "RETAIN_PLAYERS_GRAPHICS-OPTIONS": case "TEAMS_GRAPHICS-OPTIONS": case "ADTTEAMS_GRAPHICS-OPTIONS":  case "NAMESUPER_TEAMSDATA_GRAPHICS-OPTIONS":
-		case "TEAMS_DRAFT_GRAPHICS-OPTIONS":	
+		case "TEAMS_DRAFT_GRAPHICS-OPTIONS": case "FF_TIMER_GRAPHICS-OPTIONS":
 			System.out.println("Comiong in controller sssss");
 		    return (List<T>) session_team;
 		case "ZONEWISE_PLAYER_SOLD_GRAPHICS-OPTIONS": case "ZONE-PLAYER_GRAPHICS-OPTIONS":
@@ -655,5 +677,27 @@ public class IndexController
 		session_team = auctionService.getTeams();
 		session_split = auctionService.getSplits();
 		session_player = auctionService.getAllPlayer();
+		session_pickorder = auctionService.getPickOrders();
+	}
+	public List<String> getPickOrderForRound(String round) {
+		List<String> teams = new ArrayList<>();
+		if (session_pickorder == null || session_team == null || round == null) return teams;
+
+		for (PickOrder p : session_pickorder) {
+			if (p.getPickRound() != null && p.getPickRound().trim().equalsIgnoreCase(round.trim())) {
+				Integer[] ids = { p.getPickTeam1(), p.getPickTeam2(), p.getPickTeam3(), p.getPickTeam4(), p.getPickTeam5() };
+				for (Integer id : ids) {
+					if (id == null) continue;
+					for (Team t : session_team) {
+						if (t.getTeamId() == id.intValue()) {
+							teams.add(t.getTeamName1());
+							break;
+						}
+					}
+				}
+				break;
+			}
+		}
+		return teams;
 	}
 }

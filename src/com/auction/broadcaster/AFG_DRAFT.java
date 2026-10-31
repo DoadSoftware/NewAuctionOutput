@@ -908,7 +908,7 @@ public class AFG_DRAFT extends Scene{
 					which_graphics_onscreen = "LOF_SQUAD";
 					break;
 					
-				case "ANIMATE-IN-CRAWL_REMAINING_PURSE": case "ANIMATE-IN-CRAWL_SQUAD_SIZE": case "ANIMATE-IN-CRAWLER_TEAM_TOP_SOLD":
+				case "ANIMATE-IN-CRAWL_REMAINING_PURSE": case "ANIMATE-IN-CRAWL_SQUAD_SIZE": case "ANIMATE-IN-CRAWLER_TEAM_TOP_SOLD": case "ANIMATE-IN-FLIPPER":
 					if(which_crwaler_onscreen != null && !which_crwaler_onscreen.isEmpty()) {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Crawl START \0");
 						
@@ -1342,7 +1342,7 @@ public class AFG_DRAFT extends Scene{
 				case "ANIMATE-OUT-CRAWLER":
 					switch(which_crwaler_onscreen) {
 					case "CRAWL_REMAINING_PURSE": case "CRAWL_SQUAD_SIZE": case "CRAWL_TOP_SOLD": case "CRAWLER_TEAM_TOP_SOLD": 
-					case "CRAWL_SQUAD": case "FREEETEXTCRAWLER":
+					case "CRAWL_SQUAD": case "FLIPPER":
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Crawl$In_Out CONTINUE \0");
 						which_crwaler_onscreen = "";
 						TimeUnit.MILLISECONDS.sleep(1200);

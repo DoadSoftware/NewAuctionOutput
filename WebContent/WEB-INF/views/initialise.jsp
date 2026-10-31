@@ -66,6 +66,7 @@
 			      <select id="select_broadcaster" name="select_broadcaster" class="browser-default custom-select custom-select-sm"
 			      		onchange="processUserSelection(this)">
 			      		<option value="AFG_DRAFT">AFG DRAFT</option>
+			      		<option value="AFG_DRAFT_BIGSCREEN">AFG DRAFT BIGSCREEN</option>
 			      		<option value="ADT10">ADT10</option>
 			      		<option value="ILT20">ILT20</option>
 			      		<option value="ILT20_BIGSCREEN">ILT20 BIGSCREEN</option>

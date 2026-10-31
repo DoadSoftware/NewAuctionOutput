@@ -5,7 +5,50 @@ var which_GFX = "",selectedSubHeader = "";
 let currentTeamIndex = 0,id = 0;  
 let teamRotationInterval = null;
 var lastSelectedInput; 
+var lastPickOrderRound = null;
 
+function isAplDraft() {
+	var b = ($('#selected_broadcaster').val() || '').toUpperCase();
+	return b === 'AFG_DRAFT' || b === 'AFG_DRAFT_BIGSCREEN';
+}
+
+function updatePickOrderFromAuction(auction) {
+	if (!isAplDraft() || !auction) return;
+	var round = auction.currentRound;
+	if (round == null || round === '') return;
+
+	if (round !== lastPickOrderRound) {
+		lastPickOrderRound = round;
+		processAuctionProcedures('READ-PICKORDER-FOR-ROUND');
+	}
+	highlightCurrentPick(auction.currentTeamPick);
+}
+
+function renderPickOrder(teams) {
+	var tbody = document.getElementById('pickorder_table_body');
+	if (!tbody) return;
+	tbody.innerHTML = '';
+	document.getElementById('pickorder_round_header').innerHTML = 'Pick Order - Round ' + lastPickOrderRound;
+
+	(teams || []).forEach(function (name, i) {
+		var row = tbody.insertRow();
+		row.style.fontSize = '16px';
+		row.style.fontWeight = '800';
+		row.insertCell(0).innerText = i + 1;
+		row.insertCell(1).innerText = name;
+	});
+	if (session_auction) highlightCurrentPick(session_auction.currentTeamPick);
+}
+
+function highlightCurrentPick(currentTeam) {
+	var tbody = document.getElementById('pickorder_table_body');
+	if (!tbody) return;
+	for (var i = 0; i < tbody.rows.length; i++) {
+		var isCurrent = currentTeam && tbody.rows[i].cells[1].innerText === currentTeam;
+		tbody.rows[i].style.backgroundColor = isCurrent ? '#E34234' : '';
+		tbody.rows[i].style.color = isCurrent ? 'white' : '#2E008B';
+	}
+}
 
 // Function to start rotating teams
 function startTeamRotation() {
@@ -245,6 +288,13 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 				$("#auction_div").hide();
 				addItemsToList('GRAPHICS-FF_FIVE_TOP_BUYS_AUCTION',null);
 				break;
+			case 'AFG_DRAFT_BIGSCREEN':
+				$("#captions_div").hide();
+				$("#cancel_match_setup_btn").hide();
+				$("#expiry_message").hide();
+				$("#auction_div").hide();
+				processAuctionProcedures('FF_TIMER_GRAPHICS-OPTIONS');
+				break;		
 			default://ISPL
 				processAuctionProcedures('POPULATE-FF_FIVE_TOP_BUYS_AUCTION');
 				break;
@@ -804,6 +854,11 @@ function initialiseForm(whatToProcess,dataToProcess)
 		processUserSelection($('#select_broadcaster'));
 		break;
 	case 'UPDATE-MATCH-ON-OUTPUT-FORM':
+		updatePickOrderFromAuction(dataToProcess);
+		if(dataToProcess.currentTeamPick != null){
+			document.getElementById('Current_Pick_Team').innerHTML = "CURRENT TEAM PICK : " + dataToProcess.currentTeamPick;
+		}
+		
 		if(dataToProcess.players != null){
 			if(dataToProcess.players.length > 0){
 				document.getElementById('player_name').innerHTML = "NAME : " + dataToProcess.players[dataToProcess.players.length-1].full_name +
@@ -820,7 +875,7 @@ function initialiseForm(whatToProcess,dataToProcess)
 					document.getElementById('player_last_year_team').innerHTML = "LAST YEAM TEAM : -";
 				}
 			}
-				if($('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN' && $('#selected_broadcaster').val().toUpperCase() != 'ADT10' && 
+				if(!isAplDraft() && $('#selected_broadcaster').val().toUpperCase() != 'VCL_BIGSCREEN' && $('#selected_broadcaster').val().toUpperCase() != 'ADT10' && 
 					$('#selected_broadcaster').val().toUpperCase() != 'ILT20' && $('#selected_broadcaster').val().toUpperCase() != 'ILT20_BIGSCREEN'){
 					const tbody = document.getElementById('zone_table_body');
 									
@@ -1076,7 +1131,7 @@ function processUserSelection(whichInput)
 	case 'populate_zonewisePlayer_sold_btn':case "populate_profile_Change_stats_btn": case 'populate_flipper_squad_btn':case "populate_Squad_team_btn":case "populate_Squad_Role_team_btn":
 	case 'populate_Lof_Team_Bid_btn': case 'populate_profileff_btn': case 'populate_flipper_text_btn': case 'populate_squad_animation_btn': case 'populate_retain_players_squad_btn':
 	case 'populate_ff_big_playerprofile_btn': case 'populate_backg_btn': case 'populate_ff_playerprofile_draft_btn': case 'populate_roundsummary_draft_btn': case 'populate_pick_order_btn':
-	case 'populate_rtm_available_btn':	 case 'populate_pickonly_order_btn': case 'populate_ffTop5RDBuys_btn':
+	case 'populate_rtm_available_btn':	 case 'populate_pickonly_order_btn': case 'populate_ffTop5RDBuys_btn': case 'populate_timer_btn':
 
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		switch ($(whichInput).attr('name')) {
@@ -1222,6 +1277,9 @@ function processUserSelection(whichInput)
 		case "populate_Squad_Role_team_btn":
 			processAuctionProcedures('POPULATE-FF_SQUAD_ROLE_TEAM');
 			break;
+		case 'populate_timer_btn':
+			processAuctionProcedures('POPULATE-FF_TIMER');
+			break;	
 		case'populate_ff_Top_Five_Sold_team_btn':
 			processAuctionProcedures('POPULATE-FF_FIVE_TOP_BUY_TEAM');
 			break;
@@ -1286,6 +1344,9 @@ function processAuctionProcedures(whatToProcess)
 {
 	var valueToProcess;
 	switch(whatToProcess) {
+	case 'READ-PICKORDER-FOR-ROUND':
+		valueToProcess = 'Round ' + lastPickOrderRound;
+		break;	
 	case 'GET-CONFIG-DATA':
 		valueToProcess = $('#select_configuration_file option:selected').val();
 		break;
@@ -1569,6 +1630,9 @@ function processAuctionProcedures(whatToProcess)
 				break;
 			}
 			break;
+	case 'POPULATE-FF_TIMER':
+		valueToProcess = $('#selectTeamName option:selected').val();
+		break;			
 	case 'POPULATE-LOF_TEAM_TOP_SOLD': case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-LOF_SQUAD': case 'POPULATE-TEAM_CURR_BID': 
 	case "POPULATE-FF_SQUAD_TEAM":case "POPULATE-FF_SQUAD_ROLE_TEAM": case 'POPULATE-CRAWLER_TEAM_TOP_SOLD': case 'POPULATE-CRAWLE_SQUAD':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
@@ -1708,6 +1772,9 @@ function processAuctionProcedures(whatToProcess)
 			//match_data = data;
 			
         	switch(whatToProcess) {
+			case 'READ-PICKORDER-FOR-ROUND':
+				renderPickOrder(data);
+				break;	
 			case 'GET-CONFIG-DATA':
 				initialiseForm('UPDATE-CONFIG',data);
 				break;
@@ -1724,6 +1791,7 @@ function processAuctionProcedures(whatToProcess)
 					break;	
 				}
 				if(whatToProcess == 'RE_READ_DATA'){
+					lastPickOrderRound = null;
 					alert('Data is Loaded');
 				}
 				break;
@@ -1910,6 +1978,11 @@ function processAuctionProcedures(whatToProcess)
 				addItemsToList('POPULATE-TEAM',data);
 				match_data = data;
 				break;
+			case "FF_TIMER_GRAPHICS-OPTIONS":
+				addItemsToList('TIMERS-OPTIONS',data);
+				addItemsToList('POPULATE-TEAM',data);
+				match_data = data;
+				break;
 			case "LOF_TEAM_BID_GRAPHICS-OPTIONS":
 				addItemsToList('LOF_TEAM_BID_OPTIONS',data);
 				match_data = data;
@@ -1946,7 +2019,7 @@ function processAuctionProcedures(whatToProcess)
 			}
 			break;
 			case 'POPULATE-SQUAD':  case 'POPULATE-SQUAD-IMAGE': case 'POPULATE-LOF_SQUAD': case 'POPULATE-ZONE_PLAYERS_STATS': case 'POPULATE-FF_FIVE_TOP_BUY_TEAM':
-			case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-FF_RETAIN_PLAYERS': case "POPULATE-FF_SQUAD_ROLE_TEAM": case 'POPULATE-BACKG':
+			case 'POPULATE-FF_TOP_BUY_TEAM': case 'POPULATE-FF_RETAIN_PLAYERS': case "POPULATE-FF_SQUAD_ROLE_TEAM": case 'POPULATE-BACKG': case 'POPULATE-FF_TIMER':
 				if(confirm('Animate In?') == true){
 					switch(whatToProcess){
 					case 'POPULATE-SQUAD':
@@ -1975,6 +2048,9 @@ function processAuctionProcedures(whatToProcess)
 						break;
 					case "POPULATE-FF_SQUAD_ROLE_TEAM":
 						processAuctionProcedures('ANIMATE-IN-FF_SQUAD_ROLE_TEAM');
+						break;
+					case 'POPULATE-FF_TIMER':
+						processAuctionProcedures('ANIMATE-IN-FF_TIMER');
 						break;
 					}	
 				}		
@@ -2453,7 +2529,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 	case 'PROFILE_FF_STATS-OPTIONS': case 'FLIPPER_SQUAD-OPTIONS':case "FF_SQUAD_TEAM-OPTIONS":case "FF_SQUAD_ROLE_TEAM-OPTIONS":case "LOF_TEAM_BID_OPTIONS": 
 	case 'PROFILEFF-OPTIONS': case 'FLIPPER_TEXT-OPTIONS': case 'CRAWL_TOP_SOLD_TEAM-OPTIONS': case 'CRAWL_SQUAD-OPTIONS': case 'ZONE-PLAYER_FULL-OPTIONS': case 'SQUAD_ANIMATION-OPTIONS':
 	case 'FF_BIG_PLAYERPROFILE-OPTIONS':	case 'SPLIT-OPTIONS': case 'SPLITPIP-OPTIONS':case'NAMESUPERSS-OPTIONS': case 'BACKG-OPTIONS': case 'PICKORDER-OPTIONS': case 'PICKORDERONLY-OPTIONS':
-	case 'GRAPHICS-FF_FIVE_RAIDER_DEFENDER_TOP_BUYS_AUCTION':	
+	case 'GRAPHICS-FF_FIVE_RAIDER_DEFENDER_TOP_BUYS_AUCTION': case 'TIMERS-OPTIONS':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
 		case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024':  case 'PSL': case 'AFG_DRAFT': case 'AFG_DRAFT_BIGSCREEN':
 		case 'UTT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_VIZ': case 'RALLY':  case 'MUMBAI_T20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10': case 'KCL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'PWL': case 'VCL': case 'ILT20': case 'ADT10':
@@ -2822,7 +2898,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 				case 'SQUAD-OPTIONS': case 'SQUADS-OPTIONS': case 'TOP-SOLD_TEAM-OPTIONS': case 'GOOGLY-OPTIONS': case 'CRAWL_TOP_SOLD_TEAM-OPTIONS': case 'LOF_TOP_SOLD_TEAM-OPTIONS': case'SQUAD_PLAYER-OPTIONS':
 				case 'FF_TOP_SOLD_TEAM-OPTIONS': case 'LOF_SQUAD_SIZE_CATEGORY_WISE_-OPTIONS': case 'LOF_SQUAD-OPTIONS': case 'CRAWL_SQUAD-OPTIONS': case 'TEAM_CURRENT_BID-OPTIONS':
 				case 'FF_TOP_FIVE_SOLD_TEAM-OPTIONS': case 'SINGLE_TEAM-OPTIONS': case 'FLIPPER_SQUAD-OPTIONS':case "FF_SQUAD_TEAM-OPTIONS":case "FF_SQUAD_ROLE_TEAM-OPTIONS":
-				case 'SQUAD_ANIMATION-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS':
+				case 'SQUAD_ANIMATION-OPTIONS': case 'RETAIN_PLAYERS-OPTIONS': case 'TEAMS-OPTIONS': case 'TIMERS-OPTIONS':
 					switch ($('#selected_broadcaster').val().toUpperCase()) {
 						case 'HANDBALL': case 'ISPL': case 'ISPL_VIZ': case 'VIZ_ISPL_2024': case 'UTT_BIGSCREEN':   case 'PSL': case 'AFG_DRAFT': case 'AFG_DRAFT_BIGSCREEN': case "UTT_VIZ": case 'MUMBAI_T20_BIGSCREEN': case 'MUMBAI_T20_VIZ': case 'RALLY': 
 						 case 'KCL': case 'PWL': case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'VCL': case 'ILT20': case 'ADT10':
@@ -4233,6 +4309,10 @@ function addItemsToList(whatToProcess, dataToProcess)
 				option.name = 'populate_Squad_team_btn';
 			    option.value = 'Populate ';
 				break;
+			case 'TIMERS-OPTIONS':
+				option.name = 'populate_timer_btn';
+				option.value = 'Populate ';
+				break;	
 			case "FF_SQUAD_ROLE_TEAM-OPTIONS":
 				option.name = 'populate_Squad_Role_team_btn';
 			    option.value = 'Populate ';

@@ -122,6 +122,7 @@
 			    <label id="player_name" class="col-sm-4 col-form-label text-left">NAME :</label>
 			    <label id="player_status" class="col-sm-4 col-form-label text-left">STATUS :</label>
 			    <label id="player_last_year_team" class="col-sm-4 col-form-label text-left">LAST YEAR TEAM :</label>
+			    <label id="Current_Pick_Team" class="col-sm-4 col-form-label text-left">CURRENT PICK TEAM : ${session_match.currentTeamPick}</label>
 			    
 			    <div class="custom-toggle">
 			        <label for="audioOnOrOff">
@@ -235,6 +236,20 @@
 			    </tbody>
 			  </table>	
   			</c:if>
+  			<c:if test="${(session_selected_broadcaster == 'AFG_DRAFT') || (session_selected_broadcaster == 'AFG_DRAFT_BIGSCREEN')}">
+				<table class="table table-bordered table-hover" style="font-size: 1.4rem; background-color: #e0f7fa; width: 100%; max-width: 100%;">
+					<thead>
+						<tr style="background-color: #219ebc; color: white; font-weight: 700;">
+							<th colspan="2" id="pickorder_round_header">Pick Order</th>
+						</tr>
+						<tr style="background-color: #219ebc; color: white; font-weight: 700;">
+							<th style="width:20%">Pick</th>
+							<th>Team</th>
+						</tr>
+					</thead>
+					<tbody id="pickorder_table_body"></tbody>
+				</table>
+			</c:if>
   			<!--<c:if test="${(session_selected_broadcaster == 'MUMBAI_T20_VIZ')}">
 				<table class="table table-bordered table-hover" style="font-size: 1.4rem; background-color: #e0f7fa; width: 100%; max-width: 100%;">
 				    <thead>
