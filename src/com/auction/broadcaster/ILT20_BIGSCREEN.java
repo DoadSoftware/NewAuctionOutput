@@ -103,6 +103,8 @@ public class ILT20_BIGSCREEN extends Scene{
 				populateFFSquadRoleTeam(true,print_writer, 1, Integer.valueOf(side2ValueToProcess), auction, auctionService, session_selected_broadcaster);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("REMAINING_PURSE_ALL")) {
 				populateRemainingPurse(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
+			}else if(which_graphics_onscreen.equalsIgnoreCase("FF_RTM_AND_PURSE_REMAINING")) {
+				populateFFRTMAndPurseRemaining(true,print_writer, 1, auction,auctionService,session_selected_broadcaster);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("SQUAD")) {
 				populateSquad(true,print_writer, Integer.valueOf(side2ValueToProcess.split(",")[0]), 
 						1, auction, auctionService, session_selected_broadcaster);
