@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.auction.broadcaster.ADT10;
+import com.auction.broadcaster.AFG_DRAFT;
 import com.auction.broadcaster.Doad;
 import com.auction.broadcaster.ILT20;
 import com.auction.broadcaster.ILT20_BIGSCREEN;
@@ -72,6 +73,7 @@ public class IndexController
 	public static UTT_BIGSCREEN this_utt_bigscreen;
 	public static VIZ_ISPL_2024 this_ispl_viz_2024;
 	public static PSL this_psl;
+	public static AFG_DRAFT this_afgDraft;
 	public static MUMBAI_T20_VIZ this_mumbai_t20_viz;
 	public static MUMBAI_T20_BIGSCREEN this_MUMBAI_T20_BIGSCREEN;
 	public static RALLY this_rally;
@@ -180,6 +182,7 @@ public class IndexController
 			this_ispl_viz = new ISPL_VIZ();
 			this_ispl_viz_2024 = new VIZ_ISPL_2024();
 			this_psl = new PSL();
+			this_afgDraft = new AFG_DRAFT();
 			this_mumbai_t20_viz = new MUMBAI_T20_VIZ();
 			this_rally = new RALLY();
 			
@@ -264,7 +267,7 @@ public class IndexController
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
 				print_writer.println("-1 RENDERER*BACK_LAYER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BS_Logo START \0");
 				break;
-			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL":  case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
+			case "ISPL_VIZ": case "VIZ_ISPL_2024": case "PSL": case "AFG_DRAFT": case "UTT_VIZ": case "MUMBAI_T20_VIZ": case "MUMBAI_T20_BIGSCREEN": case "KCL": 
 			 case "PWL": case "RALLY": case "VCL": case "ILT20": case "ADT10":
 				
 				scene.LoadScene("OVERLAYS", print_writer, session_Configurations);
@@ -304,8 +307,11 @@ public class IndexController
 				case "ILT20":
 					this_ilt20.resetData(print_writer);
 					break;
-				case "PSL":
+				case "PSL": 
 					this_psl.resetData(print_writer);
+					break;
+				case "AFG_DRAFT":
+					this_afgDraft.resetData(print_writer);
 					break;
 				case "UTT_VIZ":
 					this_utt_viz.resetData(print_writer);
@@ -363,6 +369,7 @@ public class IndexController
 			if(valueToProcess.equalsIgnoreCase("TRUE")) {
 				this_ispl_viz_2024.enableAudio = "TRUE";
 				this_psl.enableAudio = "TRUE";
+				this_afgDraft.enableAudio = "TRUE";
 				this_kcl.enableAudio = "TRUE";
 				this_vcl.enableAudio = "TRUE";
 				this_adt10.enableAudio = "TRUE";
@@ -373,6 +380,7 @@ public class IndexController
 			}else {
 				this_ispl_viz_2024.enableAudio = "FALSE";
 				this_psl.enableAudio = "FALSE";
+				this_afgDraft.enableAudio = "FALSE";
 				this_kcl.enableAudio = "FALSE";
 				this_vcl.enableAudio = "FALSE";
 				this_adt10.enableAudio = "FALSE";
@@ -445,6 +453,12 @@ public class IndexController
 						this_psl.data.setWhichside(2);
 					}
 					this_psl.updateData(session_auction,session_curr_bid,auctionService,print_writer);
+					break;
+				case "AFG_DRAFT":	
+					if(this_afgDraft.data.isBid_Start_or_not() == true) {
+						this_afgDraft.data.setWhichside(2);
+					}
+					this_afgDraft.updateData(session_auction,session_curr_bid,auctionService,print_writer);
 					break;
 				case "UTT_VIZ":
 					if(this_utt_viz.data.isBid_Start_or_not() == true) {
@@ -537,7 +551,10 @@ public class IndexController
 				break;
 			case "PSL":
 				this_psl.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
-				break;				
+				break;			
+			case "AFG_DRAFT":
+				this_afgDraft.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
+				break;	
 			case "MUMBAI_T20_VIZ":
 				this_mumbai_t20_viz.ProcessGraphicOption(whatToProcess, session_auction, session_curr_bid, auctionService, print_writer, session_selected_scenes, valueToProcess);
 				break;

@@ -949,6 +949,7 @@ public class KCL extends Scene{
 							populateFFFiveTopBuysAuction(print_writer, 1, auction, auctionService, session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_FIVE_TOPRD_BUYS_AUCTION":
+							populateFFFiveTopBuysAuctionRD(print_writer,valueToProcess.split(",")[0],1, auction,auctionService,session_selected_broadcaster);
 							break;
 						case "ANIMATE-IN-FF_FIVE_TOP_BUY_TEAM":
 							populateFFTopFiveBuysTeam(print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), auction, auctionService, session_selected_broadcaster);
@@ -1074,6 +1075,8 @@ public class KCL extends Scene{
 						}
 					}else {
 						ChangeOn(print_writer, which_graphics_onscreen, whatToProcess);
+						
+						TimeUnit.MILLISECONDS.sleep(2000);
 						switch (whatToProcess.toUpperCase()) {
 						case "ANIMATE-IN-LOF_REMAINING_PURSE":
 							populateLofRemainingPurse(print_writer, side2ValueToProcess, 1, auction, auctionService, session_selected_broadcaster);
@@ -3045,8 +3048,8 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$HeaderStyle1$img_TeamLogo*TEXTURE*IMAGE SET "
 				+ logo_path + "TLogo" + "\0");
 		
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "PURSE REMAINING" + " \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "PURSE REMAINING" + " \0");
 		
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 0 \0");
 		for(int i=0; i <= auction.getTeam().size()-1; i++) {
@@ -3107,14 +3110,14 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$HeaderStyle1$img_TeamLogo*TEXTURE*IMAGE SET "
 				+ logo_path + "TLogo" + "\0");
 		
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "TOP BUYS" + " \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "TOP BUYS" + " \0");
 		
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 2 \0");
 		
 		for(int m=0; m<= top_sold.size() - 1; m++) {
 			if(top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-	        	if(row < 5 && checkIconPlayer(top_sold.get(m).getPlayerId(), auctionService)) {
+	        	if(row < 5) {
 	        		row = row + 1;
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuys$Row" + row + "*ACTIVE SET 1 \0");
@@ -3223,8 +3226,8 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$HeaderStyle1$txt_Header2*GEOM*TEXT SET " 
 				+ auction.getTeam().get(team_id-1).getTeamName3() + " \0");
 		
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "TOP BUYS" + " \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "TOP BUYS" + " \0");
 		
 		
 		
@@ -3232,7 +3235,7 @@ public class KCL extends Scene{
 		
 		for(int m=0; m<= top_sold.size() - 1; m++) {
 			if(top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || top_sold.get(m).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-	        	if(row < 5 && checkIconPlayer(top_sold.get(m).getPlayerId(), auctionService)) {
+	        	if(row < 5) {
 	        		row = row + 1;
 	        		
 	        		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$TopBuysTeam$Row" + row + "*ACTIVE SET 1 \0");
@@ -3347,8 +3350,8 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$HeaderStyle1$txt_Header2*GEOM*TEXT SET " 
 				+ auction.getTeam().get(team_id-1).getTeamName3() + " \0");
 		
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "SQUAD" + " \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "SQUAD" + " \0");
 		
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 5\0");
 		
@@ -3407,8 +3410,8 @@ public class KCL extends Scene{
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$HeaderStyle1$txt_Header2*GEOM*TEXT SET " 
 				+ auction.getTeam().get(team_id-1).getTeamName3() + " \0");
 		
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
-		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + whichSide + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "SQUAD" + " \0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$Select_SubHead*FUNCTION*Omo*vis_con SET 1\0");
+		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$Header$Side" + which_side + "$SubHead$txt_SubHeader*GEOM*TEXT SET " + "SQUAD" + " \0");
 		
 		print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$AllGraphics$Side" + which_side + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 5\0");
 		
@@ -3928,7 +3931,7 @@ public class KCL extends Scene{
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-				if(row < 9 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
+				if(row < 9) {
 					row = row + 1;
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Right_Part$Team"+row+"*ACTIVE SET 1\0");
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Select_GraphicsType$TopBuys$Right_Part$DataAll$Team" + row +"$Name$txt_FirstName"
@@ -4036,7 +4039,7 @@ public class KCL extends Scene{
 			}
 			
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3"
-					+ "$SubHeader$txt_SubHeader*GEOM*TEXT SET TOP RAIDER BUYS\0");
+					+ "$SubHeader$txt_SubHeader*GEOM*TEXT SET TOP BUYS | RAIDER\0");
 			break;
 		case "DEFENDER":
 			for(Player pl:auction.getPlayers()) {
@@ -4049,7 +4052,7 @@ public class KCL extends Scene{
 				}
 			}
 			print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType3"
-					+ "$SubHeader$txt_SubHeader*GEOM*TEXT SET TOP DEFENDER BUYS\0");
+					+ "$SubHeader$txt_SubHeader*GEOM*TEXT SET TOP BUYS | DEFENDER\0");
 			break;
 		}
 		
@@ -4250,7 +4253,7 @@ public class KCL extends Scene{
 		
 		for(Player plyr : top_sold) {
 			if(plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || plyr.getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
-				if(row < 9 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
+				if(row < 9) {
 					row = row + 1;
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$TopBuys$Right_Part$Team"+row+"*ACTIVE SET 1\0");
 					print_writer.println("-1 RENDERER*BACK_LAYER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Select_GraphicsType$TopBuys$Right_Part$DataAll$Team" 
@@ -4764,7 +4767,7 @@ public class KCL extends Scene{
 			}
 			Collections.sort(top_sold,new AuctionFunctions.PlayerStatsComparator());
 			for(Player plyr : top_sold) {
-				if(row < 10 && checkIconPlayer(plyr.getPlayerId(), auctionService)) {
+				if(row < 10) {
 					row = row + 1;
 					
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "*ACTIVE SET 1\0");
@@ -4897,7 +4900,7 @@ public class KCL extends Scene{
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Header$txt_Header*GEOM*TEXT SET TOP BUYS - " + 
 					auction.getTeam().get(teamId-1).getTeamName1() + "\0");
 			for(int m=0; m<= top_sold.size() - 1; m++) {
-				if(row < 5 && checkIconPlayer(top_sold.get(m).getPlayerId(), auctionService)) {
+				if(row < 5) {
 					row = row + 1;
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "*ACTIVE SET 1\0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_Flipper$Data$Text_All$Scroll$" + row + "$Flag$Select_Flag*FUNCTION*Omo*vis_con SET 0\0");
