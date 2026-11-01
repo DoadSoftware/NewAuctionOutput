@@ -4107,7 +4107,7 @@ public class PSL extends Scene{
 	{
 		int row = 0;
 		data_str.clear();
-		data_str = AuctionFunctions.getSquadDataInZone(match,team_id,session_selected_broadcaster);
+		data_str = AuctionFunctions.getSquadDataInZone(match,team_id);
 		
 		Auction session_auction = match;
 		session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(), session_auction.getPlayers(), 
