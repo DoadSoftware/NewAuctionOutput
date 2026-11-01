@@ -11,6 +11,7 @@ com\auction\config\core\SpringMvcInitializer.class
 com\auction\broadcaster\PWL.class
 com\auction\broadcaster\ISPL_VIZ.class
 com\auction\broadcaster\KCL.class
+com\auction\broadcaster\AFG_DRAFT.class
 com\auction\broadcaster\KCL_BIGSCREEN.class
 com\auction\config\DataSourceConfig.class
 com\auction\containers\Data.class
@@ -23,6 +24,7 @@ com\auction\broadcaster\PSL.class
 com\auction\controller\IndexController$3.class
 com\auction\containers\Scene.class
 com\auction\containers\Configurations.class
+com\auction\broadcaster\AFG_DRAFT_BIGSCREEN.class
 com\auction\broadcaster\ILT20_BIGSCREEN.class
 com\auction\broadcaster\VIZ_ISPL_2024.class
 com\auction\config\WebMvcConfig.class

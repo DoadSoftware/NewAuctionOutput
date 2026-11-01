@@ -271,12 +271,12 @@ public class IndexController
 			case "AFG_DRAFT_BIGSCREEN":
 				scene.LoadScene("BIGSCREEN", print_writer, session_Configurations);
 				this_afgDraft_bigscreen.which_graphics_onscreen = "";
-				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 				
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Wipe START \0");
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Header SHOW 0.0\0");
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START \0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG START \0");
 				this_afgDraft_bigscreen.which_graphics_onscreen = "BG";
 				break;
 			case "KCL_BIGSCREEN":

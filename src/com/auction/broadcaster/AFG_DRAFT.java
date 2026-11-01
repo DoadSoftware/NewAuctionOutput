@@ -3734,7 +3734,7 @@ public class AFG_DRAFT extends Scene{
     				    print_writer.println("-1 " + dirPath + " SHOW 0.0\0");
     			   }else if(session_Auction.getPick().get(i).getTeamStatus().equalsIgnoreCase("PICKED")) {
     				   print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$AllGraphics$Side" + which_side + "$Select_GraphicsType"
-		                         + "$TeamsPick$Row" + row_id + "$TeamsPickData$NameGrp$txt_Pick*GEOM*TEXT SET " + " PICK " + session_Auction.getPick().get(i).getPickOrder() + "\0");
+		                         + "$TeamsPick$Row" + row_id + "$TeamsPickData$NameGrp$txt_Pick*GEOM*TEXT SET \0");
     				   print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$AllGraphics$Side" + which_side + "$Select_GraphicsType"
 		                         + "$TeamsPick$Row" + row_id + "$TeamsPickData$Pick_GRP$txt_Pick*GEOM*TEXT SET " + " PICK " + session_Auction.getPick().get(i).getPickOrder() + "\0");
     				   

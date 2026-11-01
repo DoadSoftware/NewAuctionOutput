@@ -90,7 +90,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 	{
 		if(update_gfx == true) {
 			if(which_graphics_onscreen.equalsIgnoreCase("IDENT")) {
-				populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
+				//populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
 				populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1],side2ValueToProcess.split(",")[2], 
 						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
@@ -620,10 +620,11 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 					TimeUnit.MILLISECONDS.sleep(1000);
 					
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 					
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START\0");
-					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG START\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG START\0");
+					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Wipe START \0");
 					which_graphics_onscreen = "BG";
 					break;
 				case "ANIMATE-OUT-PROFILE":
@@ -734,28 +735,28 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							break;
 						}
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
-						TimeUnit.MILLISECONDS.sleep(1000);
+						TimeUnit.MILLISECONDS.sleep(1200);
 						
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionBG START\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						TimeUnit.MILLISECONDS.sleep(200);
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						
 						
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 						
 //						TimeUnit.MILLISECONDS.sleep(1000);
 						
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionBG START\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						TimeUnit.MILLISECONDS.sleep(2000);
 						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 9\0");
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 						
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$AuctionBG SHOW 2.800\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG SHOW 2.800\0");
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change SHOW 0\0");
 						
 						switch (which_graphics_onscreen) {
@@ -1156,7 +1157,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 			switch (which_graphics_onscreen.toUpperCase()) {
 			case "BG":
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$AuctionBG START\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 				break;
 			case "FF_TIMER":
 				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BS_timer$Change_Out START\0");
@@ -2870,10 +2871,10 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Logo$Text$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Logo$Text$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 				auctionService.getTeams().get(team_id - 1).getTeamBadge() + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$HeaderAll$txt_Header2*GEOM*TEXT SET " + match.getCurrentCategory().toUpperCase() + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$HeaderAll$txt_Header2*GEOM*TEXT SET " + match.getCurrentCategory().toUpperCase() + "\0");
 		
 	}
 	public void populateSquad(boolean is_this_updating,PrintWriter print_writer,int team_id, int which_side, Auction match, AuctionService auctionService, String session_selected_broadcaster) throws Exception 
@@ -2882,10 +2883,11 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		
 		int total = 0;
 		
-		
-		for(int j=0; j <= match.getPlayers().size()-1; j++) {
-			if(match.getPlayers().get(j).getTeamId() == team_id) {
-				total = total + match.getPlayers().get(j).getSoldForPoints();
+		if(match.getPlayers() != null) {
+			for(int j=0; j <= match.getPlayers().size()-1; j++) {
+				if(match.getPlayers().get(j).getTeamId() == team_id) {
+					total = total + match.getPlayers().get(j).getSoldForPoints();
+				}
 			}
 		}
 		
@@ -2991,11 +2993,14 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		int total = 0;
 		
 		
-		for(int j=0; j <= match.getPlayers().size()-1; j++) {
-			if(match.getPlayers().get(j).getTeamId() == team_id) {
-				total = total + match.getPlayers().get(j).getSoldForPoints();
+		if(match.getPlayers() != null) {
+			for(int j=0; j <= match.getPlayers().size()-1; j++) {
+				if(match.getPlayers().get(j).getTeamId() == team_id) {
+					total = total + match.getPlayers().get(j).getSoldForPoints();
+				}
 			}
 		}
+		
 		
 		if(is_this_updating == false) {
 			

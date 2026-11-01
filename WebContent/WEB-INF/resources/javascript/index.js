@@ -500,7 +500,7 @@ function processUserSelectionData(whatToProcess,dataToProcess){
 			break;
 		case 's': // LOF SQUAD SIZE
 			switch ($('#selected_broadcaster').val()){
-			case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'UTT_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN':
+			case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'UTT_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'AFG_DRAFT_BIGSCREEN':
 				$("#captions_div").hide();
 				$("#cancel_match_setup_btn").hide();
 				$("#expiry_message").hide();
@@ -1644,7 +1644,7 @@ function processAuctionProcedures(whatToProcess)
 		break;
 	case 'POPULATE-SQUAD_ANIMATION':
 		switch ($('#selected_broadcaster').val().toUpperCase()) {
-		case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'UTT_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN':
+		case 'KCL_BIGSCREEN': case 'VCL_BIGSCREEN': case 'ILT20_BIGSCREEN': case 'UTT_BIGSCREEN': case 'MUMBAI_T20_BIGSCREEN': case 'AFG_DRAFT_BIGSCREEN':
 			let team_index;
 			if(which_GFX=== "POPULATE-SQUAD_ANIMATION"){
 				team_index = id;
