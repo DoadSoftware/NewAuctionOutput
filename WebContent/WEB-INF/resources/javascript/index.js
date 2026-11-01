@@ -2364,6 +2364,13 @@ function addItemsToList(whatToProcess, dataToProcess)
 			})
 		);
 		
+		$('#selectTeamName').append(
+			$(document.createElement('option')).prop({
+				value: 'APL_Logo',
+				text: 'APL Logo'
+			})
+		);
+		
 		dataToProcess.forEach(function(tm,index,arr1){
 			$('#selectTeamName').append(
 					$(document.createElement('option')).prop({
