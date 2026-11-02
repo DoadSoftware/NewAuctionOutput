@@ -636,7 +636,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 					TimeUnit.MILLISECONDS.sleep(1000);
 					
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 					
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Essentials START\0");
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG START\0");
@@ -753,7 +753,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 						}
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 						TimeUnit.MILLISECONDS.sleep(1200);
-						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						TimeUnit.MILLISECONDS.sleep(200);
@@ -1256,9 +1256,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			break;	
 		case "ANIMATE-IN-PLAYERPROFILE_FF": case "ANIMATE-IN-PROFILE_FF":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
-			if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_In  START\0");
-			}
+			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Profile$Change_In  START\0");
 			break;
 		case "ANIMATE-IN-FF_TOP_BUYS_AUCTION": case "ANIMATE-IN-FF_TOP_BUY_TEAM":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
@@ -1283,9 +1281,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			break;
 		case "ANIMATE-IN-SQUAD":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
-			if(!which_graphics_onscreen.equalsIgnoreCase("SQUAD")) {
-				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad19$Change_In  START\0");
-			}
+			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad19$Change_In  START\0");
 			break;
 		case "ANIMATE-IN-SQUAD_ANIMATION":
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*StartFlare START \0");
@@ -1447,14 +1443,20 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
 				update_gfx = false;
 			}
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 		}
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 0\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
+		
+		if(update_gfx_Screen == true) {
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
+			update_gfx_Screen = false;
+		}
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header1*GEOM*TEXT SET " 
-				+ "APL DRAFT" + "\0");
+				+ "APL T20 PLAYERS" + "\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Ident$HeaderAll$Header2$txt_Header2*GEOM*TEXT SET " 
-				+ "2026" + "\0");
+				+ "DRAFT 2026" + "\0");
 		
 		String venue = "";
 	    try {
@@ -1502,7 +1504,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			update_gfx_Screen = false;
 		}
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " + "APL DRAFT 2026" + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " + "APL T20 PLAYERS DRAFT 2026" + "\0");
 		
 		if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Name$txt_FirstName*GEOM*TEXT SET " 
@@ -1643,7 +1645,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			
 		}
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " + "APL DRAFT 2026" + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType1$txt_Header*GEOM*TEXT SET " + "APL T20 PLAYERS DRAFT 2026" + "\0");
 		
 		if(auctionService.getAllPlayer().get(playerId - 1).getSurname() != null) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Name$txt_FirstName*GEOM*TEXT SET " 
@@ -2236,7 +2238,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + whichSide + "$HeaderType2$LogoGrp$img_LogoBase"
 				+ "*TEXTURE*IMAGE SET " + logo_base + "TLogo" + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$Select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 		
 		for(int i=1; i<=8; i++) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + whichSide + "$IconPlayers$Players$Player" + i + "*ACTIVE SET 0\0");
@@ -2923,10 +2925,16 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			if(which_graphics_onscreen != "" && which_graphics_onscreen != "BG") {
 				update_gfx = false;
 			}
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
 		}
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
+		if(update_gfx_Screen == true) {
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
+			update_gfx_Screen = false;
+		}
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Logo$Text$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 				auctionService.getTeams().get(team_id - 1).getTeamBadge() + "\0");

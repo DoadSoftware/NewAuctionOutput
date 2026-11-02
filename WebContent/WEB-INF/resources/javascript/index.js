@@ -2426,23 +2426,42 @@ function addItemsToList(whatToProcess, dataToProcess)
 			break;
 		case 'AFG_DRAFT':
 			session_auction.playersList.forEach(function(plyr,index,arr1){
-				if(plyr.playerId == session_auction.players[session_auction.players.length- 1].playerId){
-					$('#selectPlayerName').append(
-						$(document.createElement('option')).prop({
-						value: plyr.playerId,
-						text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
-					}))
+				if(session_auction.players != null){
+					if(plyr.playerId == session_auction.players[session_auction.players.length- 1].playerId){
+						$('#selectPlayerName').append(
+							$(document.createElement('option')).prop({
+							value: plyr.playerId,
+							text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+						}))
+					}
 				}
 			});
 
 			dataToProcess.forEach(function(plyr,index,arr1){
-				if(plyr.playerId != session_auction.players[session_auction.players.length - 1].playerId && plyr.inDraft != null && plyr.inDraft == 'Yes'){
+				if(session_auction.players != null){
+					if(plyr.playerId != session_auction.players[session_auction.players.length - 1].playerId && plyr.inDraft != null && plyr.inDraft == 'Yes'){
+						$('#selectPlayerName').append(
+							$(document.createElement('option')).prop({
+							value: plyr.playerId,
+							text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+						}))
+					}
+				}else{
+					if(plyr.inDraft != null && plyr.inDraft == 'Yes'){
+						$('#selectPlayerName').append(
+							$(document.createElement('option')).prop({
+							value: plyr.playerId,
+							text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
+						}))
+					}
+				}
+				/*if(plyr.playerId != session_auction.players[session_auction.players.length - 1].playerId && plyr.inDraft != null && plyr.inDraft == 'Yes'){
 					$('#selectPlayerName').append(
 						$(document.createElement('option')).prop({
 						value: plyr.playerId,
 						text: plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category + ' - ' + plyr.role
 					}))
-				}
+				}*/
 			});
 			break;
 		default:
