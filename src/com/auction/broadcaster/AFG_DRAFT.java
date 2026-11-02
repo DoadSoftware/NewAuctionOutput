@@ -65,6 +65,7 @@ public class AFG_DRAFT extends Scene{
 	private String photo_path  = "C:\\Images\\Auction\\Photos\\";
 	
 	public boolean isProfileStatsOnScreen = false;
+	public boolean isWildcardOnScreen = false;
 	
 	public AFG_DRAFT() {
 		super();
@@ -603,6 +604,8 @@ public class AFG_DRAFT extends Scene{
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$StatBase CONTINUE\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$Stats CONTINUE\0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*MoveForStats_RTM CONTINUE REVERSE\0");
+						
+						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 50.0 0.0\0");
 						isProfileStatsOnScreen = false;
 						TimeUnit.MILLISECONDS.sleep(2000);
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$StatBase SHOW 0.0\0");
@@ -656,7 +659,22 @@ public class AFG_DRAFT extends Scene{
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Loop START \0");
 					TimeUnit.MILLISECONDS.sleep(500);
 					
+					System.out.println("isWildcardOnScreen ===================== " + isWildcardOnScreen);
+					
+					if(isWildcardOnScreen == true) {
+						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Wild_Card_Grp$Select_WildCard*FUNCTION*Omo*vis_con SET 1\0");
+						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$WildCard START \0");
+					}else {
+						print_writer.println("-1 RENDERER*TREE*$gfx_ScoreBug$Wild_Card_Grp$Select_WildCard*FUNCTION*Omo*vis_con SET 0\0");
+					}
+					
 					if(tickerValueToProcess.split(",")[2].equalsIgnoreCase("With_Stat")) {
+						
+						if(which_crwaler_onscreen != null && !which_crwaler_onscreen.isEmpty()) {
+							print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 91.0 0.0\0");
+						}else {
+							print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 50.0 0.0\0");
+						}
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$Stats START \0");
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$StatBase START \0");
 					}
@@ -909,7 +927,16 @@ public class AFG_DRAFT extends Scene{
 					break;
 					
 				case "ANIMATE-IN-CRAWL_REMAINING_PURSE": case "ANIMATE-IN-CRAWL_SQUAD_SIZE": case "ANIMATE-IN-CRAWLER_TEAM_TOP_SOLD": case "ANIMATE-IN-FLIPPER":
-				case "ANIMATE-IN-CRAWL_SQUAD":	
+				case "ANIMATE-IN-CRAWL_SQUAD":
+					
+					if(data.isData_on_screen()) {
+						if(tickerValueToProcess.split(",")[2].equalsIgnoreCase("With_Stat")) {
+							print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 91.0 0.0\0");
+						}else {
+							print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 50.0 0.0\0");
+						}
+					}
+					
 					if(which_crwaler_onscreen != null && !which_crwaler_onscreen.isEmpty()) {
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*Change_Crawl START \0");
 						
@@ -1080,6 +1107,7 @@ public class AFG_DRAFT extends Scene{
 		            data.setBid_Start_or_not(false);
 		            data.setData_on_screen(false);
 		            isProfileStatsOnScreen = false;
+		            isWildcardOnScreen = false;
 					data.setBid_result("");
 					break;
 					
@@ -1285,6 +1313,10 @@ public class AFG_DRAFT extends Scene{
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$Left_Data CONTINUE \0");
 					print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$RightData CONTINUE \0");
 					
+					if(isWildcardOnScreen == true) {
+						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$WildCard CONTINUE \0");
+					}
+					
 					if(tickerValueToProcess.split(",")[2].equalsIgnoreCase("With_Stat")) {
 						if(isProfileStatsOnScreen) {
 							print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_ScoreBug$In_Out$StatBase CONTINUE\0");
@@ -1324,6 +1356,7 @@ public class AFG_DRAFT extends Scene{
 					data.setPlayer_sold_or_unsold(false);
 					data.setData_on_screen(false);
 					data.setBid_result("");
+					isWildcardOnScreen = false;
 					break;
 				case "ANIMATE-OUT-RTM_GOOGLY":
 					switch (rtm_googly_on_screen) {
@@ -1351,6 +1384,12 @@ public class AFG_DRAFT extends Scene{
 						TimeUnit.MILLISECONDS.sleep(1200);
 						print_writer.println("-1 RENDERER*FRONT_LAYER*STAGE*DIRECTOR*anim_Crawl SHOW 0.0\0");
 						break;
+					}
+					
+					TimeUnit.MILLISECONDS.sleep(1500);
+					
+					if(data.isData_on_screen()) {
+						print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Position_Y$Shift_Y_ForCrawl*ANIMATION*KEY*$SB*VALUE SET 0.0 50.0 0.0\0");
 					}
 					break;
 				
@@ -1995,6 +2034,12 @@ public class AFG_DRAFT extends Scene{
 				//Auction Result
 				if(auction.getPlayers().get(i).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.SOLD) || auction.getPlayers().get(i).getSoldOrUnsold().equalsIgnoreCase(AuctionUtil.RTM)) {
 					
+					if(auction.getPlayers().get(i).getDraftType().equalsIgnoreCase("WILDCARD")) {
+						isWildcardOnScreen = true;
+					}else {
+						isWildcardOnScreen = false;
+					}
+					
 					print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$ImageGrp$Logo$img_Logo*TEXTURE*IMAGE SET "+ logo_path + 
 							auction.getTeam().get(auction.getPlayers().get(i).getTeamId()-1).getTeamBadge() + "\0");
 					
@@ -2041,11 +2086,17 @@ public class AFG_DRAFT extends Scene{
 				if(data.isData_on_screen() == true) {
 					if(data.isPlayer_sold_or_unsold() == false) {
 						PlayerSoldOrUnsold(print_writer, auction, playerId, which_side);
-						
 						if(whichTeam.equalsIgnoreCase("NO_TEAM")) {
 							if(data.isPlayer_sold_or_unsold() == true) {
 								if(data.getBid_result() != null && !data.getBid_result().isEmpty()) {
 									if(data.getBid_result().equalsIgnoreCase(AuctionUtil.SOLD) || data.getBid_result().equalsIgnoreCase(AuctionUtil.RTM)) {
+										
+										if(auction.getPlayers().get(auction.getPlayers().size() - 1).getDraftType().equalsIgnoreCase("WILDCARD")) {
+											isWildcardOnScreen = true;
+										}else {
+											isWildcardOnScreen = false;
+										}
+										
 										print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$Main$ImageGrp$Logo$img_Logo*TEXTURE*IMAGE SET "+ logo_path + 
 												auction.getTeam().get(auction.getPlayers().get(auction.getPlayers().size()-1).getTeamId()-1).getTeamBadge() + "\0");
 										
@@ -2089,7 +2140,6 @@ public class AFG_DRAFT extends Scene{
 		
 		if(is_this_updating == false) {
 			
-			System.out.println("showStats ---------------------- " + showStats);
 			if(showStats.equalsIgnoreCase("With_Stat")) {
 				populateProfileStats(print_writer, "T20s", which_side, auction, auctionService,playerId);
 			}
