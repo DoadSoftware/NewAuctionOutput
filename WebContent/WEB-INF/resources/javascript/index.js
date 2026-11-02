@@ -3661,15 +3661,15 @@ function addItemsToList(whatToProcess, dataToProcess)
 										break;
 									case 'MUMBAI_T20_VIZ': case 'RALLY': case 'MUMBAI_T20_BIGSCREEN': case 'AFG_DRAFT': case 'AFG_DRAFT_BIGSCREEN':
 										option = document.createElement('option');
-										option.value = 'without';
-										option.text = 'WithOut Stats';
-										select.appendChild(option);
-										
-										option = document.createElement('option');
 										option.value = 'with_info';
 										option.text = 'With Stats';
 										select.appendChild(option);
 									
+										option = document.createElement('option');
+										option.value = 'without';
+										option.text = 'WithOut Stats';
+										select.appendChild(option);
+										
 										select.setAttribute('onchange',"processUserSelection(this)");
 										row.insertCell(cellCount).appendChild(select);
 										cellCount = cellCount + 1;
@@ -3739,7 +3739,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 										            });
 													break;
 												case 'AFG_DRAFT': case 'AFG_DRAFT_BIGSCREEN':
-													['T20s', 'FC', 'LIST_A'].forEach(value => {
+													['T20s', 'IT20'].forEach(value => {
 													    const option = document.createElement('option');
 													    option.value = value;
 													    option.text = value;

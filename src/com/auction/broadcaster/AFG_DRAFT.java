@@ -26,6 +26,7 @@ import com.auction.service.AuctionService;
 import com.auction.model.Auction;
 import com.auction.model.Flipper;
 import com.auction.model.NameSuper;
+import com.auction.model.PickOrder;
 import com.auction.util.AuctionFunctions;
 import com.auction.util.AuctionUtil;
 
@@ -1743,7 +1744,9 @@ public class AFG_DRAFT extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers START\0");
 			break;
 		case "ANIMATE-IN-FF_SQUAD_ROLE_TEAM":
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category START\0");
+			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-FF_SQUAD_ROLE_TEAM")) {
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category START\0");
+			}
 			break;
 			
 		}
@@ -1851,7 +1854,10 @@ public class AFG_DRAFT extends Scene{
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers SHOW 0.0\0");
 					break;
 				case "ANIMATE-IN-FF_SQUAD_ROLE_TEAM":
-					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad_Category SHOW 2.480\0");
+					if(!whichGraphicOnScreen.equalsIgnoreCase("FF_SQUAD_ROLE_TEAM")) {
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad_Category SHOW 2.480\0");
+					}
+					
 					print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category SHOW 0.0\0");
 					break;
 			}
@@ -1975,8 +1981,10 @@ public class AFG_DRAFT extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers SHOW 0.0\0");
 			break;
 		case "FF_SQUAD_ROLE_TEAM":
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad_Category SHOW 0.0\0");
-			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category SHOW 0.0\0");
+			if(!whatToProcess.equalsIgnoreCase("ANIMATE-IN-FF_SQUAD_ROLE_TEAM")) {
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$Squad_Category SHOW 0.0\0");
+				print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Squad_Category SHOW 0.0\0");
+			}
 			break;
 		}
 		prevRowHighlight = rowHighlight;
@@ -2224,6 +2232,8 @@ public class AFG_DRAFT extends Scene{
 		}
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Abhishek_Kumar_Dalhor"
+				+ "*TEXTURE*IMAGE SET "+ photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$Abhishek_Kumar_Dalhor"
 				+ "*TEXTURE*IMAGE SET "+ photo_path + auctionService.getAllPlayer().get(playerId - 1).getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$ImageGrp$OverseasAll$select_Overseas*FUNCTION*Omo*vis_con SET 0\0");
@@ -2276,9 +2286,9 @@ public class AFG_DRAFT extends Scene{
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
 						"T20 CAREER" + "\0");
 				break;
-			case "FC":
+			case "IT20":
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-						"FIRST CLASS CAREER" + "\0");
+						"T20I CAREER" + "\0");
 				break;
 			case "LIST_A":
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
@@ -3810,7 +3820,11 @@ public class AFG_DRAFT extends Scene{
 			int row_id =0;
 			 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$Header$Side" + which_side + "$Select_HeaderStyle*FUNCTION*Omo*vis_con SET 1\0");
 			 
-			 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$SubHead$Side" + which_side + "$txt_SubHeader*GEOM*TEXT SET " + session_Auction.getCurrentCategory().toUpperCase() + "\0");
+			 for(PickOrder po : auctionService.getPickOrders()) {
+				 if(po.getPickRound().replace("Round", "").trim().equalsIgnoreCase(session_Auction.getCurrentRound())) {
+					 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$SubHead$Side" + which_side + "$txt_SubHeader*GEOM*TEXT SET " + po.getCategory().toUpperCase() + " - " + po.getPickRound().toUpperCase() + "\0");
+				 }
+			 }
 			 
 			 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$Header$Side" + which_side + "$HeaderStyle2$txt_Header1*GEOM*TEXT SET APL T20 PLAYERS\0");
 			 print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_LOF$All$Header$Side" + which_side + "$HeaderStyle2$txt_Header2*GEOM*TEXT SET DRAFT 2026\0");
@@ -4627,35 +4641,35 @@ public class AFG_DRAFT extends Scene{
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$1$txt_Title*GEOM*TEXT SET MATCHES\0");
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$1$txt_Text*GEOM*TEXT SET " 
-					+ (stat.getMatches().equalsIgnoreCase("0") ? "-" : stat.getMatches()) + "\0");
+					+ (stat != null ? (stat.getMatches().equalsIgnoreCase("0") ? "-" : stat.getMatches()) : "-") + "\0");
 			
 			switch (player.getRole().toUpperCase()) {
 			case "BATSMAN": case "BAT/KEEPER": case "WICKET-KEEPER": case "BATTER":
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Title*GEOM*TEXT SET RUNS\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Text*GEOM*TEXT SET " 
-						+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
+						+ (stat != null ? (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) : "-") + "\0");
 				
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Title*GEOM*TEXT SET STRIKE RATE\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Text*GEOM*TEXT SET " 
-						+ (stat.getStrikeRate().equalsIgnoreCase("0") ? "-" : stat.getStrikeRate()) + "\0");
+						+ (stat != null ? (stat.getStrikeRate().equalsIgnoreCase("0") ? "-" : stat.getStrikeRate()) : "-") + "\0");
 				break;
 			case "BOWLER":
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Title*GEOM*TEXT SET WICKETS\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Text*GEOM*TEXT SET " 
-						+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
+						+ (stat != null ? (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) : "-") + "\0");
 				
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Title*GEOM*TEXT SET ECONOMY\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Text*GEOM*TEXT SET " 
-						+ (stat.getEconomy().equalsIgnoreCase("0") ? "-" : stat.getEconomy()) + "\0");
+						+ (stat != null ? (stat.getEconomy().equalsIgnoreCase("0") ? "-" : stat.getEconomy()) : "-") + "\0");
 				break;
 			case "ALL-ROUNDER":
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Title*GEOM*TEXT SET RUNS\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$2$txt_Text*GEOM*TEXT SET " 
-						+ (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) + "\0");
+						+ (stat != null ? (stat.getRuns().equalsIgnoreCase("0") ? "-" : stat.getRuns()) : "-") + "\0");
 				
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Title*GEOM*TEXT SET WICKETS\0");
 				print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$3$txt_Text*GEOM*TEXT SET "
-						+ (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) + "\0");
+						+ (stat != null ? (stat.getWickets().equalsIgnoreCase("0") ? "-" : stat.getWickets()) : "-") + "\0");
 			}
 			
 			print_writer.println("-1 RENDERER*FRONT_LAYER*TREE*$gfx_ScoreBug$StatsGrp$Side" + whichSide + "$Stats$4$txt_Title*GEOM*TEXT SET \0");
@@ -4973,7 +4987,9 @@ public class AFG_DRAFT extends Scene{
 				previewCommand = previewCommand + "Change$IconPlayers 2.000 Change$IconPlayers$Change_Out 0.560 Change$IconPlayers$Change_In 2.000 ";
 				break;
 			case "POPULATE-FF_SQUAD_ROLE_TEAM":
-				previewCommand = previewCommand + "Change$Squad_Category 1.920 Change$Squad_Category$Change_Out 0.820 Change$Squad_Category$Change_In 1.920 ";
+				if(!which_graphics_onscreen.equalsIgnoreCase("FF_SQUAD_ROLE_TEAM")) {
+					previewCommand = previewCommand + "Change$Squad_Category 1.920 Change$Squad_Category$Change_Out 0.820 Change$Squad_Category$Change_In 1.920 ";
+				}
 				break;
 			}
 		}

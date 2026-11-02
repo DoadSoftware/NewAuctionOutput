@@ -22,6 +22,7 @@ import com.auction.model.StatsType;
 import com.auction.model.Team;
 import com.auction.service.AuctionService;
 import com.auction.model.Auction;
+import com.auction.model.PickOrder;
 import com.auction.util.AuctionFunctions;
 import com.auction.util.AuctionUtil;
 
@@ -61,6 +62,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 	private String logo_base = "IMAGE*/Default/Essentials/LogoBase/";
 	private String logo_path_bw = "IMAGE*/Default/Essentials/TeamLogoBW/";
 	private String logo_path = "IMAGE*/Default/Essentials/TeamLogo/";
+	
+	private String bg_path = "IMAGE*/Default/Essentials/BG/";
 	private String icon_path = "IMAGE*/Default/Essentials/Icons/";
 	private String photo_path  = "C:\\Images\\Auction\\Photos\\";
 	
@@ -1727,9 +1730,9 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
 						"T20 CAREER" + "\0");
 				break;
-			case "FC":
+			case "IT20":
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
-						"FIRST CLASS CAREER" + "\0");
+						"T20I CAREER" + "\0");
 				break;
 			case "LIST_A":
 				print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Category$txt_Category*GEOM*TEXT SET " + 
@@ -2928,6 +2931,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Timer$Text$txt_Timer*GEOM*TEXT SET 50\0");
 		}
 		
 		if(update_gfx_Screen == true) {
@@ -2936,10 +2941,19 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			update_gfx_Screen = false;
 		}
 		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Logo$img_BG*TEXTURE*IMAGE SET " + bg_path + 
+				auctionService.getTeams().get(team_id - 1).getTeamBadge() + "\0");
+		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Logo$Text$img_Logo*TEXTURE*IMAGE SET " + logo_path + 
 				auctionService.getTeams().get(team_id - 1).getTeamBadge() + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$HeaderAll$txt_Header2*GEOM*TEXT SET " + match.getCurrentCategory().toUpperCase() + "\0");
+		for(PickOrder po : auctionService.getPickOrders()) {
+			 if(po.getPickRound().replace("Round", "").trim().equalsIgnoreCase(match.getCurrentRound())) {
+				 print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$HeaderAll$txt_Header2*GEOM*TEXT SET " + po.getCategory().toUpperCase() + "\0");
+			 }
+		 }
+		
+		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$InfoGrp$Info1$txt_Info*GEOM*TEXT SET ROUND " + match.getCurrentRound() + "\0");
 		
 	}
 	public void populateSquad(boolean is_this_updating,PrintWriter print_writer,int team_id, int which_side, Auction match, AuctionService auctionService, String session_selected_broadcaster) throws Exception 
@@ -3002,7 +3016,6 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		}
 		
 		
-		
 		for (int i = 1; i <= session_auction.getTeamZoneList().size(); i++) {
 			PlayerCount teamZone = session_auction.getTeamZoneList().get(i - 1); 
 		    if (teamZone.getTeamId() == team_id) {
@@ -3025,6 +3038,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		    } 
 		}
 		
+		
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
 			if(row <= 19) {
@@ -3036,7 +3050,6 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							+ "*GEOM*TEXT SET " + data_str.get(k) + "\0");
 				}else {
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
-					
 					for(Player plyrs : match.getPlayers()) {
 						if(plyrs.getPlayerId() == Integer.valueOf(data_str.get(k))) {
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$txt_Category"
@@ -3044,6 +3057,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							break;
 						}
 					}
+						
+					
 					
 					for(Player plyr : match.getPlayersList()) {
 						if(plyr.getPlayerId() == Integer.valueOf(data_str.get(k))) {
@@ -3064,19 +3079,10 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$ImageGrp$"
 									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 							
-//							if(update_gfx_Screen == true) {
-//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
-//										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
-//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
-//										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-//								update_gfx_Screen = false;
-//							}
-							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$OverseasAll"
 									+ "*ACTIVE SET " + (plyr.getOverseasPlayer() != null ? plyr.getOverseasPlayer() : 0) + "\0");
 							
-//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$txt_Category"
-//									+ "*GEOM*TEXT SET " + plyr.getCategory() + "\0");
+							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + 
 									"$Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + styleIcons(plyr) + "\0");
 						}
@@ -3084,6 +3090,93 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 				}
 			}
 		}
+		
+		
+		
+		
+		//-------------------------------------------------
+		
+//		for (int i = 1; i <= session_auction.getTeamZoneList().size(); i++) {
+//			PlayerCount teamZone = session_auction.getTeamZoneList().get(i - 1); 
+//		    if (teamZone.getTeamId() == team_id) {
+//		    	int j=0;
+//		    	List<String> categoryOrder = Arrays.asList("PLATINUM", "DIAMOND", "GOLD", "SILVER", "EMERGING", "SUPPLEMENTARY");
+//		     
+//	        	for (String category : categoryOrder) {
+//	        		j++;
+//        	        Integer value = teamZone.getCategory().getOrDefault(category, 0);
+//        	        
+//        	        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType5$SquadData$Category$" + j
+//        	                + "$txt_Zone*GEOM*TEXT SET " + category + "\0");
+//        	        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType5$SquadData$Category$" + j
+//        	                + "$txt_Value*GEOM*TEXT SET " + value + "\0");
+//	        	}
+//		        	
+//	        	// Team Total Value 
+//		        print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$HeaderType5$SquadData$txt_SquadSize*GEOM*TEXT SET " 
+//		        		+ teamZone.getPlayers() + "\0");
+//		    } 
+//		}
+//		
+//		for(int k=0;k<=data_str.size()-1;k++) {
+//			row = row + 1;
+//			if(row <= 19) {
+//				if(data_str.get(k).equalsIgnoreCase("PLATINUM") || data_str.get(k).equalsIgnoreCase("DIAMOND") || data_str.get(k).equalsIgnoreCase("GOLD") 
+//						|| data_str.get(k).equalsIgnoreCase("SILVER") || data_str.get(k).equalsIgnoreCase("EMERGING") || data_str.get(k).equalsIgnoreCase("SUPPLEMENTARY")) {
+//					
+//					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 1\0");
+//					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$NoData$NameGrp$txt_LastName"
+//							+ "*GEOM*TEXT SET " + data_str.get(k) + "\0");
+//				}else {
+//					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
+//					
+//					for(Player plyrs : match.getPlayers()) {
+//						if(plyrs.getPlayerId() == Integer.valueOf(data_str.get(k))) {
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$txt_Category"
+//									+ "*GEOM*TEXT SET " + plyrs.getCategory() + "\0");
+//							break;
+//						}
+//					}
+//					
+//					for(Player plyr : match.getPlayersList()) {
+//						if(plyr.getPlayerId() == Integer.valueOf(data_str.get(k))) {
+//							if(plyr.getSurname() != null) {
+//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$NameGrp$"
+//										+ "txt_FirstName*GEOM*TEXT SET " + plyr.getFirstname() + "\0");
+//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$NameGrp$"
+//										+ "txt_LastName*GEOM*TEXT SET " + plyr.getSurname() + "\0");
+//							}else {
+//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$NameGrp$"
+//										+ "txt_FirstName*GEOM*TEXT SET " + "" + "\0");
+//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$NameGrp$"
+//										+ "txt_LastName*GEOM*TEXT SET " + plyr.getFirstname() + "\0");
+//							}
+//							
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$ImageGrp$"
+//									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$ImageGrp$"
+//									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
+//							
+////							if(update_gfx_Screen == true) {
+////								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
+////										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
+////								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
+////										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
+////								update_gfx_Screen = false;
+////							}
+//							
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$OverseasAll"
+//									+ "*ACTIVE SET " + (plyr.getOverseasPlayer() != null ? plyr.getOverseasPlayer() : 0) + "\0");
+//							
+////							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$txt_Category"
+////									+ "*GEOM*TEXT SET " + plyr.getCategory() + "\0");
+//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + 
+//									"$Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + styleIcons(plyr) + "\0");
+//						}
+//					}
+//				}
+//			}
+//		}
 		
 		
 	}
@@ -3172,7 +3265,6 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		    } 
 		}
 		
-//		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 3\0");
 		
 		for(int k=0;k<=data_str.size()-1;k++) {
 			row = row + 1;
@@ -3185,7 +3277,6 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							+ "*GEOM*TEXT SET " + data_str.get(k) + "\0");
 				}else {
 					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$Select_DataType*FUNCTION*Omo*vis_con SET 2\0");
-					
 					for(Player plyrs : match.getPlayers()) {
 						if(plyrs.getPlayerId() == Integer.valueOf(data_str.get(k))) {
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$txt_Category"
@@ -3193,6 +3284,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							break;
 						}
 					}
+						
+					
 					
 					for(Player plyr : match.getPlayersList()) {
 						if(plyr.getPlayerId() == Integer.valueOf(data_str.get(k))) {
@@ -3213,22 +3306,10 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$ImageGrp$"
 									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
 							
-//							if(update_gfx_Screen == true) {
-//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
-//										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + "Blank" + AuctionUtil.PNG_EXTENSION + "\0");
-//								print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$Squad18$Player" + row + "$WithData$ImageGrp$"
-//										+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-//								update_gfx_Screen = false;
-//							}
-							
-//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$WithData$ImageGrp$"
-//									+ "img_Player*TEXTURE*IMAGE SET " + photo_path + plyr.getPhotoName() + AuctionUtil.PNG_EXTENSION + "\0");
-							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + "$OverseasAll"
 									+ "*ACTIVE SET " + (plyr.getOverseasPlayer() != null ? plyr.getOverseasPlayer() : 0) + "\0");
 							
-//							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Players$Player" + row + "$WithData$txt_Category"
-//									+ "*GEOM*TEXT SET " + plyr.getCategory() + "\0");
+							
 							print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Squad18$Player" + row + 
 									"$Icon$img_Icon*TEXTURE*IMAGE SET " + icon_path + styleIcons(plyr) + "\0");
 						}
