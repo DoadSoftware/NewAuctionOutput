@@ -779,7 +779,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 						TimeUnit.MILLISECONDS.sleep(200);
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG SHOW 2.800\0");
+						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG SHOW 2.500\0");
+						TimeUnit.MILLISECONDS.sleep(2000);
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change SHOW 0\0");
 						
 						switch (which_graphics_onscreen) {
@@ -1691,9 +1692,6 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$PlayerRole$txt_Role*GEOM*TEXT SET " + 
 				auctionService.getAllPlayer().get(playerId - 1).getRole().replace("Batsman", "BATTER").toUpperCase() + "\0");
 		
-		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Career$txt_Career*GEOM*TEXT SET " + 
-				auctionService.getAllPlayer().get(playerId - 1).getCategory().toUpperCase() + "\0");
-		
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value*FUNCTION*Omo*vis_con SET 0\0");
 		print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value$txt_Title*GEOM*TEXT SET BASE PRICE\0");
 		
@@ -1706,6 +1704,13 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		if(auction.getPlayers() != null) {
 			for(Player auc : auction.getPlayers()) {
 				if(auc.getPlayerId() == playerId) {
+					if(auc.getDraftType().equalsIgnoreCase("WILDCARD")) {
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$WildCard$Select_Wildcard*FUNCTION*Omo*vis_con SET 1\0");
+					}else {
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$WildCard$Select_Wildcard*FUNCTION*Omo*vis_con SET 0\0");
+					}
+					print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$Career$txt_Career*GEOM*TEXT SET " + 
+							auc.getCategory().toUpperCase() + "\0");
 					switch(auc.getSoldOrUnsold()) {
 					case AuctionUtil.SOLD: case AuctionUtil.RTM:
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$Profile$BasePrice$Select_Value*FUNCTION*Omo*vis_con SET 0\0");
@@ -2944,6 +2949,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 		if(update_gfx_Screen == true) {
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side" + which_side + "$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$select_GraphicsType*FUNCTION*Omo*vis_con SET 4\0");
+			
+			print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side" + which_side + "$BS_timer$Timer$Text$txt_Timer*GEOM*TEXT SET 50\0");
 			update_gfx_Screen = false;
 		}
 		
@@ -3662,8 +3669,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 						+ "Change$Ident 2.340 Change$Ident$Change_Out 0.700 Change$Ident$Change_In 2.340 ";
 				break;
 			case "PLAYERPROFILE_FF":
-				previewCommand = "anim_Fullframe$In_Out$Header 0.0 anim_Fullframe$In_Out$Header$In 0.0 Change$Profile 2.180 "
-						+ "Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.180 ";
+				previewCommand = "anim_Fullframe$In_Out$Header 0.0 anim_Fullframe$In_Out$Header$In 0.0 Change$Profile 2.500 "
+						+ "Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.500 ";
 				break;
 			case "FF_TOP_BUYS_AUCTION": case "FF_TOP_BUY_TEAM":
 				previewCommand = previewCommand + "Change$Header 2.600 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
@@ -3693,6 +3700,9 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 "
 						+ "Change$IconPlayers 2.000 Change$IconPlayers$Change_Out 0.560 Change$IconPlayers$Change_In 2.000 ";
 				break;
+			case "BG":
+				previewCommand = "Change$Header 2.660 Change$Header$Change_Out 0.640 Change$Header$Change_In 2.660 Change$BG$Change_Out 1.000 ";
+				break;	
 			}
 			
 			switch (whatToProcess.toUpperCase()) {
@@ -3704,7 +3714,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 				break;
 			case "POPULATE-PLAYERPROFILE_FF": case "POPULATE-PROFILE_FF":
 				if(!which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-					previewCommand = previewCommand + "Change$Profile 2.180 Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.180 ";
+					previewCommand = previewCommand + "Change$Profile 2.500 Change$Profile$Change_Out 0.620 Change$Profile$Change_In 2.500 ";
 				}
 				break;
 			case "POPULATE-REMAINING_PURSE_ALL":case "POPULATE-FF_RTM_AND_PURSE_REMAINING":

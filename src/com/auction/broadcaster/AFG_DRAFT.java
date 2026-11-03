@@ -4702,6 +4702,11 @@ public class AFG_DRAFT extends Scene{
 			if(isProfileStatsOnScreen) {
 				previewCommand =previewCommand + "anim_ScoreBug$In_Out$StatBase 2.500 anim_ScoreBug$In_Out$StatBase$In 1.500 anim_ScoreBug$In_Out$Stats 2.500 anim_ScoreBug$In_Out$Stats$In 1.760 ";
 			}
+			
+			if(isWildcardOnScreen) {
+				previewCommand =previewCommand + "anim_ScoreBug$In_Out$WildCard 2.500 anim_ScoreBug$In_Out$WildCard$In 1.400 ";
+			}
+			
 			switch (whatToProcess.toUpperCase()) {
 			case "POPULATE-FF-PLAYERPROFILE":
 				previewCommand = previewCommand + "anim_ScoreBug$In_Out 2.500 anim_ScoreBug$In_Out$Essentials 2.500 anim_ScoreBug$In_Out$Essentials$In 1.500 "
@@ -4851,7 +4856,7 @@ public class AFG_DRAFT extends Scene{
 					break;
 				case "POPULATE-FF_SQUAD_ROLE_TEAM":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
-							+ "anim_Fullframe$In_Out$Main$TopBuys 2.480 anim_Fullframe$In_Out$Main$Squad_Category$In 2.420";
+							+ "anim_Fullframe$In_Out$Header$In$In 0.800 anim_Fullframe$In_Out$Main$Squad_Category 2.480 anim_Fullframe$In_Out$Main$Squad_Category$In 2.420";
 					break;
 				case "POPULATE-FF_FIVE_TOP_BUYS_AUCTION": case "POPULATE-FF_FIVE_TOP_BUY_TEAM":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
@@ -4863,7 +4868,7 @@ public class AFG_DRAFT extends Scene{
 					break;
 				case "POPULATE-SQUAD":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
-							+ "anim_Fullframe$In_Out$Main$Squad19 2.980 anim_Fullframe$In_Out$Main$Squad19$In 2.380";
+							+ "anim_Fullframe$In_Out$Header$In$In 0.800 anim_Fullframe$In_Out$Main$Squad19 2.980 anim_Fullframe$In_Out$Main$Squad19$In 2.380";
 					break;
 				case "POPULATE-ZONE_PLAYERS_STATS": case "POPULATE-ZONE_PLAYERS_FULL":
 					previewCommand = previewCommand + "anim_Fullframe$In_Out$Header 2.480 anim_Fullframe$In_Out$Header$In 2.340 "
@@ -5092,7 +5097,7 @@ public class AFG_DRAFT extends Scene{
 			if(plyr.getBatsmanStyle().equalsIgnoreCase("LHB")) {
 				whichStyle = "Batsman_Lefthand";
 			}else {
-				whichStyle = "Batsman_RightHand";
+				whichStyle = "RightHandBatsman";
 			}
 		}else if(plyr.getRole().equalsIgnoreCase("BOWLER")) {
 			if(plyr.getBowlerStyle() == null) {
@@ -5113,17 +5118,17 @@ public class AFG_DRAFT extends Scene{
 		}else if(plyr.getRole().equalsIgnoreCase("ALL-ROUNDER")) {
 			if(plyr.getBowlerStyle() == null) {
 				if(plyr.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-					whichStyle = "Off_SpinnerAllrounderLeftHand";
+					whichStyle = "Off_Spin_Allrounder_Left";
 				}else {
-					whichStyle = "Off_SpinnerAllrounderRightHand";
+					whichStyle = "Off_Spin_Allrounder";
 				}
 			}else {
 				switch(plyr.getBowlerStyle()) {
 				case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
 					if(plyr.getBatsmanStyle().equalsIgnoreCase("LHB")) {
-						whichStyle = "Off_Spin_Allrounder_Left";
+						whichStyle = "Pace_BowlerAllrounerLeftHand";
 					}else {
-						whichStyle = "Off_Spin_Allrounder";
+						whichStyle = "Pace_BowlerAllrounerRightHand";
 					}
 					break;
 				case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
