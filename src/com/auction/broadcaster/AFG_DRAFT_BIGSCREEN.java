@@ -39,6 +39,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 	public int zoneSize = 0, current_index = 0,side2val = 0;
 	private boolean update_gfx = false;
 	private boolean update_gfx_Screen = false;
+	public boolean isWildcardOnScreen = false;
 	
 	List<Player> squad = new ArrayList<Player>();
 	List<String> data_str = new ArrayList<String>();
@@ -96,8 +97,8 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			if(which_graphics_onscreen.equalsIgnoreCase("IDENT")) {
 				//populateIdent(true,print_writer,1,session_selected_broadcaster, auctionService);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("PLAYERPROFILE_FF")) {
-				populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1],side2ValueToProcess.split(",")[2], 
-						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
+//				populateProfileFF(true,print_writer, 1, Integer.valueOf(side2ValueToProcess.split(",")[0]), side2ValueToProcess.split(",")[1],side2ValueToProcess.split(",")[2], 
+//						auctionService.getAllStats(), auction, auctionService, session_selected_broadcaster);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("FF_TOP_BUYS_AUCTION")) {
 				populateFFTopBuysAuction(true,print_writer, 1, auction, auctionService, session_selected_broadcaster);
 			}else if(which_graphics_onscreen.equalsIgnoreCase("FF_FIVE_TOP_BUYS_AUCTION")) {
@@ -717,7 +718,7 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 					case "SQUAD": case "REMAINING_PURSE_ALL": case "FF_ICONIC_PLAYERS": case "ZONE-PLAYER_STATS": case "FF_FIVE_TOP_BUYS_AUCTION":
 					case "FF_FIVE_TOP_BUY_TEAM":case "FF_SQUAD_TEAM": case "FF_SQUAD_ROLE_TEAM": case "ANIMATE-SINGLEPURSE_TEAM": case "SQUAD_ANIMATION":
 					case "ZONE-PLAYER_FULL": case "FF_TIMER":	
-						
+						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side2$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
 						switch (which_graphics_onscreen) {
 						case "IDENT":
@@ -754,28 +755,30 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 							print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$SinglePurse$Change_Out START\0");
 							break;
 						}
+						
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 						TimeUnit.MILLISECONDS.sleep(1200);
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
+						//TimeUnit.MILLISECONDS.sleep(1200);
+						//print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
-						TimeUnit.MILLISECONDS.sleep(200);
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
+						//TimeUnit.MILLISECONDS.sleep(200);
+						//print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						
 						
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$Header START\0");
 						
 //						TimeUnit.MILLISECONDS.sleep(1000);
 						
-						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
+						//print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG START\0");
 //						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Loop START \0");
 						
-						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
+						//print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side2$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						TimeUnit.MILLISECONDS.sleep(2000);
 						
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Main$Side1$select_GraphicsType*FUNCTION*Omo*vis_con SET 6\0");
 						print_writer.println("-1 RENDERER*TREE*$gfx_FullFrames$Header$Side1$Select_HeaderType*FUNCTION*Omo*vis_con SET 0\0");
-						
+						TimeUnit.MILLISECONDS.sleep(200);
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG SHOW 2.800\0");
 						print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change SHOW 0\0");
 						
@@ -1436,6 +1439,9 @@ public class AFG_DRAFT_BIGSCREEN extends Scene{
 			print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$IconPlayers SHOW 0.0\0");
 			break;
 		}
+		
+		print_writer.println("-1 RENDERER*STAGE*DIRECTOR*Change$BG SHOW 0.0\0");
+		print_writer.println("-1 RENDERER*STAGE*DIRECTOR*anim_Fullframe$In_Out$Main$BG SHOW 0.0\0");
 		prevRowHighlight = rowHighlight;
 	}
 

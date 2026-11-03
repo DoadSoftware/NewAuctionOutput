@@ -3401,13 +3401,13 @@ function addItemsToList(whatToProcess, dataToProcess)
 							select.name = select.id;
 
 							option = document.createElement('option');
-							option.value = 'With_Stat';
-							option.text = 'With Stats';
-							select.appendChild(option);
-
-							option = document.createElement('option');
 							option.value = 'WithOut_Stat';
 							option.text = 'WithOut Stats';
+							select.appendChild(option);
+							
+							option = document.createElement('option');
+							option.value = 'With_Stat';
+							option.text = 'With Stats';
 							select.appendChild(option);
 
 							select.setAttribute('onchange',"processUserSelection(this)");
